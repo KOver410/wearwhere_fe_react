@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAtom } from 'jotai';
 import { OnboardingLayout } from '@/app/pages/onboarding/OnboardingLayout';
 import { Label } from '@/app/components/ui/label';
 import { Input } from '@/app/components/ui/input';
@@ -11,10 +12,14 @@ import {
   SelectValue,
 } from '@/app/components/ui/select';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { onboardingSizesAtom, onboardingGenderAtom } from '@/app/stores/onboarding';
+import type { Gender } from '@/types/user';
 
 export function OnboardingSizeLocationPage() {
   const navigate = useNavigate();
   const { v } = useLanguage();
+  const [preferredSizes, setPreferredSizes] = useAtom(onboardingSizesAtom);
+  const [gender, setGender] = useAtom(onboardingGenderAtom);
   const [sizes, setSizes] = useState({
     tops: '',
     bottoms: '',
@@ -23,7 +28,9 @@ export function OnboardingSizeLocationPage() {
   const [location, setLocation] = useState('');
 
   const handleNext = () => {
-    console.log('Sizes:', sizes, 'Location:', location);
+    // Collect unique sizes
+    const allSizes = [sizes.tops, sizes.bottoms, sizes.shoes].filter(Boolean).map(s => s.toUpperCase());
+    setPreferredSizes(allSizes);
     navigate('/onboarding/complete');
   };
 
@@ -95,15 +102,34 @@ export function OnboardingSizeLocationPage() {
           </div>
         </div>
 
+        {/* Gender Section */}
+        <div className="space-y-6">
+          <h3 className="text-lg font-semibold border-b pb-2">{v('Gender', 'Giới tính')}</h3>
+          <div className="space-y-2">
+            <Label>{v('I shop for', 'Tôi mua đồ cho')}</Label>
+            <Select value={gender || ''} onValueChange={(val) => setGender(val as Gender)}>
+              <SelectTrigger>
+                <SelectValue placeholder={v('Select', 'Chọn')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="MALE">{v('Men', 'Nam')}</SelectItem>
+                <SelectItem value="FEMALE">{v('Women', 'Nữ')}</SelectItem>
+                <SelectItem value="UNISEX">{v('Unisex', 'Unisex')}</SelectItem>
+                <SelectItem value="OTHER">{v('Other', 'Khác')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         {/* Location Section */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold border-b pb-2">{v('Location', 'Vị trí')}</h3>
-          
+
           <div className="space-y-2">
             <Label htmlFor="location">{v('City or Country', 'Thành phố hoặc Quốc gia')}</Label>
-            <Input 
-              id="location" 
-              placeholder={v('e.g. New York, USA', 'VD: Hồ Chí Minh, Việt Nam')} 
+            <Input
+              id="location"
+              placeholder={v('e.g. New York, USA', 'VD: Hồ Chí Minh, Việt Nam')}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="h-12"

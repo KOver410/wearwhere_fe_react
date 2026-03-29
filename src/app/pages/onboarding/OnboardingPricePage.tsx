@@ -1,17 +1,17 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAtom } from 'jotai';
 import { OnboardingLayout } from '@/app/pages/onboarding/OnboardingLayout';
 import { Slider } from '@/app/components/ui/slider';
 import { Label } from '@/app/components/ui/label';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { onboardingBudgetAtom } from '@/app/stores/onboarding';
 
 export function OnboardingPricePage() {
   const navigate = useNavigate();
-  const [priceRange, setPriceRange] = useState([50, 500]);
+  const [priceRange, setPriceRange] = useAtom(onboardingBudgetAtom);
   const { v } = useLanguage();
 
   const handleNext = () => {
-    console.log('Price range:', priceRange);
     navigate('/onboarding/size-location');
   };
 

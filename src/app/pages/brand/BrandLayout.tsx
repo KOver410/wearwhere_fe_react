@@ -1,11 +1,21 @@
-import { Link, Outlet, useLocation } from 'react-router';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router';
+import { useEffect } from 'react';
 import { LayoutDashboard, ShoppingBag, BarChart3, LogOut, Settings, MapPin, Store, Package, ShoppingCart, RotateCcw, ChevronRight } from 'lucide-react';
 import { cn } from '@/app/components/ui/utils';
 import { Button } from '@/app/components/ui/button';
 import logoImage from 'figma:asset/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 export function BrandLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn, isLoading, user, logout } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && (!isLoggedIn || (user && user.role !== 'BRAND'))) {
+      navigate('/login');
+    }
+  }, [isLoggedIn, isLoading, user, navigate]);
   
   const navigation = [
     { name: 'Overview', href: '/brand/dashboard', icon: LayoutDashboard },
@@ -62,12 +72,14 @@ export function BrandLayout() {
               <p className="text-xs text-slate-400">brand1@gmail.com</p>
             </div>
           </div>
-          <Link to="/login">
-            <Button variant="outline" className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20 bg-transparent">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20 bg-transparent"
+            onClick={() => logout().then(() => navigate('/login'))}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign Out
+          </Button>
         </div>
       </div>
 

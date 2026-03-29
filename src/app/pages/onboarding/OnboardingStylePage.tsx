@@ -1,8 +1,9 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Check } from 'lucide-react';
+import { useAtom } from 'jotai';
 import { OnboardingLayout } from '@/app/pages/onboarding/OnboardingLayout';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { onboardingStylesAtom } from '@/app/stores/onboarding';
 
 const STYLES = [
   { id: 'streetwear', name: 'Streetwear', nameVi: 'Đường phố', image: 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?auto=format&fit=crop&q=80&w=600' },
@@ -15,7 +16,7 @@ const STYLES = [
 
 export function OnboardingStylePage() {
   const navigate = useNavigate();
-  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+  const [selectedStyles, setSelectedStyles] = useAtom(onboardingStylesAtom);
   const { v, lang } = useLanguage();
 
   const toggleStyle = (id: string) => {
@@ -25,7 +26,6 @@ export function OnboardingStylePage() {
   };
 
   const handleNext = () => {
-    console.log('Selected styles:', selectedStyles);
     navigate('/onboarding/price');
   };
 

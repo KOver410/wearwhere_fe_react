@@ -61,11 +61,11 @@ export function AccountLayout({ children }: { children: React.ReactNode }) {
               </nav>
 
               <div className="mt-4 pt-4" style={{ borderTop: '1px solid #e0d8cf' }}>
-                <Link to="/" onClick={() => logout()}
-                  className="flex items-center gap-3 px-3 py-2.5 text-[#d41c1c] hover:bg-[#fef2f2] transition-colors"
+                <button onClick={() => logout().then(() => window.location.href = '/login')}
+                  className="flex items-center gap-3 px-3 py-2.5 text-[#d41c1c] hover:bg-[#fef2f2] transition-colors w-full"
                   style={{ fontSize: '14px', fontWeight: 700 }}>
                   <LogOut className="w-4 h-4" /><span>{v('Log Out', 'Đăng xuất')}</span>
-                </Link>
+                </button>
               </div>
             </div>
           </aside>

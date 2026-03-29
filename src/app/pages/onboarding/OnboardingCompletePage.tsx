@@ -1,7 +1,18 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAtom } from 'jotai';
 import { OnboardingLayout } from '@/app/pages/onboarding/OnboardingLayout';
 import { ProductCard } from '@/app/components/ProductCard';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { userService } from '@/services/user';
+import { toast } from 'sonner';
+import {
+  onboardingStylesAtom,
+  onboardingBudgetAtom,
+  onboardingSizesAtom,
+  onboardingGenderAtom,
+} from '@/app/stores/onboarding';
 
 const RECOMMENDED_PRODUCTS = [
   {
@@ -33,9 +44,32 @@ const RECOMMENDED_PRODUCTS = [
 export function OnboardingCompletePage() {
   const navigate = useNavigate();
   const { v } = useLanguage();
+  const { refreshUser } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFinish = () => {
-    navigate('/');
+  const [stylePrefs] = useAtom(onboardingStylesAtom);
+  const [budget] = useAtom(onboardingBudgetAtom);
+  const [preferredSizes] = useAtom(onboardingSizesAtom);
+  const [gender] = useAtom(onboardingGenderAtom);
+
+  const handleFinish = async () => {
+    setIsSubmitting(true);
+    try {
+      await userService.updatePreferences({
+        stylePrefs,
+        budgetMin: budget[0],
+        budgetMax: budget[1],
+        preferredSizes,
+        ...(gender ? { gender } : {}),
+      });
+      await refreshUser();
+      toast.success(v('Preferences saved!', 'Đã lưu sở thích!'));
+      navigate('/');
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || v('Failed to save preferences.', 'Lưu sở thích thất bại.'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -46,6 +80,7 @@ export function OnboardingCompletePage() {
       subtitle={v("Based on your preferences, we think you'll love these items.", 'Dựa trên sở thích của bạn, chúng tôi nghĩ bạn sẽ thích những sản phẩm này.')}
       nextLabel={v('Start Exploring', 'Bắt đầu khám phá')}
       onNext={handleFinish}
+      isNextDisabled={isSubmitting}
     >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {RECOMMENDED_PRODUCTS.map((product) => (

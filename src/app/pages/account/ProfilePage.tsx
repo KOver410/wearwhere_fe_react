@@ -1,18 +1,37 @@
-import { useState } from 'react';
-import { Camera, Edit3, Save, X, Plus, Heart, Eye, MoreHorizontal, Tag, Share2, Link as LinkIcon, ShieldAlert, Ban, AlertTriangle, Info } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Camera, Edit3, Save, X, Plus, Heart, Eye, MoreHorizontal, Tag, Share2, Link as LinkIcon, ShieldAlert, Ban, AlertTriangle, Info, Loader2 } from 'lucide-react';
 import { Link } from 'react-router';
 import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
-import { currentUser, ootdPosts } from '@/app/data/accountMockData';
+import { ootdPosts } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { useAuth } from '@/app/contexts/AuthContext';
+import { userService } from '@/services/user';
+import { toast } from 'sonner';
 
 export function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
-  const [form, setForm] = useState({ ...currentUser });
+  const [isSaving, setIsSaving] = useState(false);
+  const [form, setForm] = useState({ fullName: '', phone: '', bio: '', email: '', avatarUrl: '' });
   const [activeTab, setActiveTab] = useState<'posts' | 'tagged'>('posts');
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const { v } = useLanguage();
-  const myPosts = ootdPosts.filter(p => p.user.id === currentUser.id);
+  const { user, refreshUser } = useAuth();
+
+  // Initialize form from user profile
+  useEffect(() => {
+    if (user) {
+      setForm({
+        fullName: user.fullName || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        email: user.email || '',
+        avatarUrl: user.avatarUrl || '',
+      });
+    }
+  }, [user]);
+
+  const myPosts = ootdPosts.filter(p => p.user.id === '1');
 
   // Mock tagged products count
   const taggedProductsCount = myPosts.reduce((sum, p) => sum + p.products.length, 0);
@@ -20,12 +39,34 @@ export function ProfilePage() {
   // Mock view counts for posts
   const viewCounts = [52000, 32000, 26000, 56000, 18000, 41000, 9500, 23000];
 
-  const handleSave = () => {
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await userService.updateProfile({
+        fullName: form.fullName || undefined,
+        phone: form.phone || undefined,
+        bio: form.bio || undefined,
+      });
+      await refreshUser();
+      toast.success(v('Profile updated!', 'Cập nhật hồ sơ thành công!'));
+      setIsEditing(false);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || v('Failed to update profile.', 'Cập nhật hồ sơ thất bại.'));
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
-    setForm({ ...currentUser });
+    if (user) {
+      setForm({
+        fullName: user.fullName || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        email: user.email || '',
+        avatarUrl: user.avatarUrl || '',
+      });
+    }
     setIsEditing(false);
   };
 
@@ -42,7 +83,7 @@ export function ProfilePage() {
           {/* Avatar */}
           <div className="flex-shrink-0">
             <ImageWithFallback
-              src={form.avatar}
+              src={form.avatarUrl}
               alt={form.fullName}
               className="w-24 h-24 sm:w-[120px] sm:h-[120px] rounded-full object-cover"
               style={{ border: '3px solid #e0d8cf' } as any}
@@ -60,7 +101,7 @@ export function ProfilePage() {
                 color: '#0d0d0d',
                 lineHeight: 1.2,
               }}>
-                {form.username}
+                {user?.fullName || user?.email || ''}
               </h1>
               <button
                 onClick={() => setIsEditing(true)}
@@ -124,14 +165,7 @@ export function ProfilePage() {
 
             {/* Follower / Following stats */}
             <div className="flex items-center gap-1 flex-wrap" style={{ fontSize: '14px', color: '#0d0d0d', fontFamily: "'Montserrat', sans-serif" }}>
-              <span>
-                <span style={{ fontWeight: 700 }}>{currentUser.followers.toLocaleString()}</span>
-                <span style={{ color: '#666', marginLeft: '4px' }}>{v('followers', 'người theo dõi')}</span>
-              </span>
-              <span style={{ color: '#ccc', margin: '0 8px' }}>·</span>
-              <span>
-                {v('Following', 'Theo dõi là')} <span style={{ fontWeight: 700 }}>{currentUser.following}</span>
-              </span>
+              <span style={{ color: '#666' }}>{user?.email}</span>
             </div>
 
             {/* Bio */}
@@ -360,7 +394,7 @@ export function ProfilePage() {
                 <div className="flex items-center gap-5">
                   <div className="relative">
                     <ImageWithFallback
-                      src={form.avatar}
+                      src={form.avatarUrl}
                       alt={form.fullName}
                       className="w-20 h-20 rounded-full object-cover"
                       style={{ border: '3px solid #e0d8cf' } as any}
@@ -386,14 +420,14 @@ export function ProfilePage() {
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FieldRow label={v('Full Name', 'Họ và tên')} value={form.fullName} onChange={val => setForm({ ...form, fullName: val })} />
-                    <FieldRow label={v('Username', 'Tên người dùng')} value={form.username} onChange={val => setForm({ ...form, username: val })} />
-                    <FieldRow label={v('Email', 'Email')} value={form.email} onChange={val => setForm({ ...form, email: val })} type="email" />
+                    <FieldRow label={v('Email', 'Email')} value={form.email} onChange={() => {}} readonly />
                     <FieldRow label={v('Phone', 'Điện thoại')} value={form.phone} onChange={val => setForm({ ...form, phone: val })} type="tel" />
                     <div className="sm:col-span-2">
                       <FieldRow label={v('Bio', 'Giới thiệu')} value={form.bio} onChange={val => setForm({ ...form, bio: val })} multiline />
                     </div>
-                    <FieldRow label={v('Location', 'Vị trí')} value={form.location} onChange={val => setForm({ ...form, location: val })} />
-                    <FieldRow label={v('Member Since', 'Tham gia từ')} value={new Date(form.joinDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} onChange={() => {}} readonly />
+                    {user?.createdAt && (
+                      <FieldRow label={v('Member Since', 'Tham gia từ')} value={new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} onChange={() => {}} readonly />
+                    )}
                   </div>
                 </div>
               </div>
@@ -408,10 +442,11 @@ export function ProfilePage() {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors"
+                  disabled={isSaving}
+                  className="flex items-center gap-2 px-5 py-2.5 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors disabled:opacity-50"
                   style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}
                 >
-                  <Save className="w-4 h-4" />
+                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   {v('Save Changes', 'Lưu thay đổi')}
                 </button>
               </div>

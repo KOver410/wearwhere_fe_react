@@ -1,0 +1,435 @@
+# Auth API Integration Guide
+
+Tài liệu hướng dẫn Frontend kết nối các API xác thực của WearWhere.
+
+**Base URL:** `http://localhost:3001/api/v1`
+**Production:** `https://api.wearwhere.vn/api/v1`
+
+---
+
+## Tổng quan luồng xác thực
+
+```
+┌──────────┐    Firebase Token     ┌──────────┐    JWT (cookie)     ┌──────────┐
+│  Client   │ ──────────────────── │  Server  │ ──────────────────> │  Client  │
+│ Firebase  │  POST /auth/login    │  Verify  │  Set-Cookie:        │  Mọi     │
+│  SDK      │                      │  + Issue │  ww_token=<jwt>     │  request │
+│           │                      │  JWT     │                     │  tự gửi  │
+└──────────┘                       └──────────┘                     └──────────┘
+```
+
+1. Client dùng **Firebase Client SDK** để đăng nhập (phone/email/Google/Apple)
+2. Lấy `firebaseToken` (ID token) từ Firebase
+3. Gửi token đến `POST /auth/login`
+4. Server trả JWT qua **HTTP-only cookie** (`ww_token`) — tự động gửi kèm mọi request sau đó
+5. Logout gọi `POST /auth/logout` — server blacklist token, xóa cookie
+
+---
+
+## Cấu hình HTTP Client
+
+### Axios (khuyên dùng)
+
+```typescript
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1',
+  withCredentials: true, // BẮT BUỘC: gửi cookie cross-origin
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export default api;
+```
+
+### Fetch API
+
+```typescript
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1';
+
+async function apiFetch(path: string, options: RequestInit = {}) {
+  const res = await fetch(`${API_URL}${path}`, {
+    credentials: 'include', // BẮT BUỘC: gửi cookie cross-origin
+    headers: { 'Content-Type': 'application/json', ...options.headers },
+    ...options,
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw error;
+  }
+
+  return res.status === 204 ? null : res.json();
+}
+```
+
+> **Quan trọng:** `withCredentials: true` (Axios) hoặc `credentials: 'include'` (Fetch) là **bắt buộc** để browser gửi/nhận cookie `ww_token`.
+
+---
+
+## Endpoints
+
+### 1. POST /auth/login
+
+Đăng nhập hoặc tự động đăng ký bằng Firebase token.
+
+**Request:**
+
+```http
+POST /api/v1/auth/login
+Content-Type: application/json
+
+{
+  "firebaseToken": "<Firebase ID Token>"
+}
+```
+
+**Response `200 OK`:**
+
+```jsonc
+{
+  "data": {
+    "accessToken": "eyJhbGciOi...",  // JWT token (backup, cookie đã set)
+    "expiresIn": 2592000,             // 30 ngày (giây)
+    "user": {
+      "id": "uuid",
+      "email": "user@email.com",
+      "role": "CUSTOMER",             // CUSTOMER | ADMIN | BRAND
+      "onboardingDone": false
+    }
+  }
+}
+```
+
+**Response headers sẽ bao gồm:**
+
+```
+Set-Cookie: ww_token=<jwt>; Path=/api; HttpOnly; SameSite=Lax; Max-Age=2592000
+```
+
+**Errors:**
+
+| Status | Message | Nguyên nhân |
+|--------|---------|-------------|
+| 401 | `Firebase token is required` | Thiếu field `firebaseToken` trong body |
+| 401 | `Invalid Firebase token` | Token sai, hết hạn, hoặc không thuộc project |
+| 429 | `ThrottlerException: Too Many Requests` | Vượt quá 10 request / 15 phút |
+
+**Ví dụ FE (React + Firebase):**
+
+```typescript
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import api from './api';
+
+async function loginWithGoogle() {
+  // Bước 1: Login với Firebase
+  const auth = getAuth();
+  const result = await signInWithPopup(auth, new GoogleAuthProvider());
+  const firebaseToken = await result.user.getIdToken();
+
+  // Bước 2: Gửi token đến backend
+  const { data } = await api.post('/auth/login', { firebaseToken });
+
+  // Cookie ww_token đã được set tự động
+  // data.data.user chứa thông tin user
+  return data.data;
+}
+```
+
+**Ví dụ login bằng số điện thoại:**
+
+```typescript
+import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
+import api from './api';
+
+// Bước 1: Gửi OTP
+async function sendOTP(phoneNumber: string) {
+  const auth = getAuth();
+  const recaptcha = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+  const confirmation = await signInWithPhoneNumber(auth, phoneNumber, recaptcha);
+  return confirmation; // Lưu lại để verify OTP
+}
+
+// Bước 2: Verify OTP + Login
+async function verifyOTPAndLogin(confirmation: any, otp: string) {
+  const result = await confirmation.confirm(otp);
+  const firebaseToken = await result.user.getIdToken();
+  const { data } = await api.post('/auth/login', { firebaseToken });
+  return data.data;
+}
+```
+
+---
+
+### 2. POST /auth/logout
+
+Đăng xuất — blacklist JWT token hiện tại và xóa cookie.
+
+**Request:**
+
+```http
+POST /api/v1/auth/logout
+Cookie: ww_token=<jwt>
+```
+
+Không cần body.
+
+**Response `204 No Content`:**
+
+Không có body. Cookie `ww_token` sẽ bị xóa.
+
+**Errors:**
+
+| Status | Message | Nguyên nhân |
+|--------|---------|-------------|
+| 401 | `Unauthorized` | Không có token |
+| 401 | `Token has been revoked` | Token đã bị logout trước đó |
+
+**Ví dụ FE:**
+
+```typescript
+async function logout() {
+  await api.post('/auth/logout');
+  // Cookie đã bị xóa bởi server
+  // Redirect về trang login
+  window.location.href = '/login';
+}
+```
+
+---
+
+### 3. POST /auth/refresh-token
+
+Làm mới JWT token. Yêu cầu Firebase token (re-authenticate) — token cũ sẽ bị blacklist và cấp token mới.
+
+**Request:**
+
+```http
+POST /api/v1/auth/refresh-token
+Content-Type: application/json
+Cookie: ww_token=<old-jwt>
+
+{
+  "firebaseToken": "<Firebase ID Token>"
+}
+```
+
+**Response `200 OK`:**
+
+```jsonc
+{
+  "data": {
+    "accessToken": "eyJhbGciOi...",  // JWT mới
+    "expiresIn": 2592000
+  }
+}
+```
+
+Cookie `ww_token` cũng được cập nhật tự động.
+
+**Errors:**
+
+| Status | Message | Nguyên nhân |
+|--------|---------|-------------|
+| 401 | `Firebase token is required` | Thiếu firebaseToken |
+| 401 | `Invalid Firebase token` | Token Firebase không hợp lệ |
+| 401 | `User not found` | User không tồn tại trong DB |
+| 429 | `ThrottlerException: Too Many Requests` | Vượt quá 20 request / phút |
+
+**Ví dụ FE:**
+
+```typescript
+import { getAuth } from 'firebase/auth';
+import api from './api';
+
+async function refreshToken() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (!user) throw new Error('Not logged in');
+
+  // Force refresh Firebase token
+  const firebaseToken = await user.getIdToken(true);
+  const { data } = await api.post('/auth/refresh-token', { firebaseToken });
+  return data.data;
+}
+```
+
+---
+
+## Xử lý lỗi 401 (Interceptor)
+
+Khi token hết hạn hoặc bị revoke, mọi API sẽ trả 401. FE nên setup interceptor để tự động xử lý:
+
+```typescript
+import { getAuth } from 'firebase/auth';
+import api from './api';
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Nếu 401 và chưa retry
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        // Thử refresh token
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const firebaseToken = await user.getIdToken(true);
+          await api.post('/auth/refresh-token', { firebaseToken });
+          // Cookie đã được cập nhật, retry request gốc
+          return api(originalRequest);
+        }
+      } catch {
+        // Refresh thất bại → redirect login
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+```
+
+---
+
+## Xác thực cho các request sau login
+
+Sau khi login thành công, **không cần làm gì thêm**. Cookie `ww_token` tự động gửi kèm mọi request (nhờ `withCredentials: true`).
+
+```typescript
+// Các request này tự có authentication qua cookie
+const profile = await api.get('/users/me');
+const orders = await api.get('/orders');
+const wishlist = await api.get('/wishlist');
+```
+
+Server chấp nhận JWT qua 2 cách (ưu tiên cookie):
+1. **Cookie** `ww_token` (mặc định, khuyên dùng)
+2. **Header** `Authorization: Bearer <token>` (cho mobile app hoặc API client)
+
+---
+
+## JWT Payload (decode để dùng ở client)
+
+```typescript
+interface JwtPayload {
+  sub: string;         // userId (UUID)
+  email: string;
+  role: 'CUSTOMER' | 'ADMIN' | 'BRAND';
+  brandId?: string;    // chỉ có khi role = BRAND
+  onboardingDone: boolean;
+  jti: string;         // token ID (dùng cho revocation)
+  iat: number;         // issued at (unix timestamp)
+  exp: number;         // expires at (unix timestamp)
+}
+```
+
+FE có thể decode JWT (không cần verify) để lấy thông tin user nhanh:
+
+```typescript
+function parseJwt(token: string): JwtPayload {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  return JSON.parse(atob(base64));
+}
+
+// Kiểm tra token còn hạn không
+function isTokenExpired(token: string): boolean {
+  const { exp } = parseJwt(token);
+  return Date.now() >= exp * 1000;
+}
+```
+
+> **Lưu ý:** Cookie `ww_token` là `HttpOnly` nên JS không thể đọc trực tiếp qua `document.cookie`. Dùng `accessToken` từ response login để decode nếu cần.
+
+---
+
+## Rate Limiting
+
+| Endpoint | Limit | Window |
+|----------|-------|--------|
+| `POST /auth/login` | 10 requests | 15 phút |
+| `POST /auth/refresh-token` | 20 requests | 1 phút |
+| Các endpoint khác | 100 requests | 1 phút |
+
+Khi vượt limit, server trả:
+
+```json
+{
+  "statusCode": 429,
+  "message": "ThrottlerException: Too Many Requests"
+}
+```
+
+---
+
+## Checklist tích hợp
+
+- [ ] Cài Firebase Client SDK và cấu hình project `wearwhere-856ac`
+- [ ] Setup HTTP client với `withCredentials: true`
+- [ ] Implement login flow (Firebase → `/auth/login`)
+- [ ] Lưu `user` info từ login response vào state management
+- [ ] Implement logout (`/auth/logout` + clear local state)
+- [ ] Setup 401 interceptor với auto-refresh
+- [ ] Xử lý `onboardingDone: false` → redirect sang trang onboarding
+- [ ] Xử lý phân quyền theo `role` (CUSTOMER / ADMIN / BRAND)
+- [ ] Test trên localhost với `CORS_ORIGIN=http://localhost:5173`
+
+---
+
+## Cấu hình Firebase Client SDK
+
+```typescript
+// firebase.ts
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: '<FIREBASE_API_KEY>',
+  authDomain: 'wearwhere-856ac.firebaseapp.com',
+  projectId: 'wearwhere-856ac',
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+```
+
+> `apiKey` lấy từ Firebase Console → Project Settings → General → Web API Key.
+
+---
+
+## Error response format
+
+Mọi lỗi từ server đều theo format thống nhất:
+
+```jsonc
+{
+  "statusCode": 401,
+  "message": "Unauthorized",         // hoặc string mô tả lỗi
+  "timestamp": "2026-03-29T04:00:00.000Z",
+  "path": "/api/v1/auth/login"
+}
+```
+
+Validation errors (422):
+
+```jsonc
+{
+  "statusCode": 422,
+  "message": "Validation failed",
+  "errors": [
+    { "field": "firebaseToken", "message": "firebaseToken should not be empty" }
+  ],
+  "timestamp": "...",
+  "path": "..."
+}
+```

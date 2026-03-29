@@ -4,21 +4,21 @@ import { Button } from '@/app/components/ui/button';
 import { LayoutDashboard, Activity, Users, Package, Store, Shield, ShoppingBag, Megaphone, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '@/app/components/ui/utils';
 import logoImage from 'figma:asset/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
+import { useAuth } from '@/app/contexts/AuthContext';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoggedIn, isLoading, user, logout } = useAuth();
 
   useEffect(() => {
-    const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
-    if (!isAuthenticated) {
+    if (!isLoading && (!isLoggedIn || (user && user.role !== 'ADMIN'))) {
       navigate('/login');
     }
-  }, [navigate]);
+  }, [isLoggedIn, isLoading, user, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('adminAuth');
-    navigate('/login');
+    logout().then(() => navigate('/login'));
   };
 
   const navigation = [
