@@ -1,4 +1,5 @@
-import { Link, Outlet, useLocation } from 'react-router';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router';
+import { useAuth } from '@/shared/contexts/AuthContext';
 import { LayoutDashboard, ShoppingBag, BarChart3, LogOut, Settings, MapPin, Store, Package, ShoppingCart, RotateCcw, ChevronRight } from 'lucide-react';
 import { cn } from '@/shared/ui/utils';
 import { Button } from '@/shared/ui/button';
@@ -6,6 +7,19 @@ import logoImage from '@/assets/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
 
 export function BrandLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await logout();
+    } catch {
+      // Ignore logout request errors; the local session is cleared regardless.
+    }
+    navigate('/brand/login');
+  };
+
+  const initial = (user?.name?.trim()?.[0] ?? 'B').toUpperCase();
   
   const navigation = [
     { name: 'Overview', href: '/brand/dashboard', icon: LayoutDashboard },
@@ -55,19 +69,21 @@ export function BrandLayout() {
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center p-3 mb-4 rounded-lg bg-white/5 border border-white/10">
             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#F54900] to-[#FF7A45] flex items-center justify-center text-white font-bold mr-3">
-              B
+              {initial}
             </div>
             <div>
-              <p className="text-sm font-medium text-white">Brand One</p>
-              <p className="text-xs text-slate-400">brand1@gmail.com</p>
+              <p className="text-sm font-medium text-white">{user?.name ?? 'Brand'}</p>
+              <p className="text-xs text-slate-400">{user?.email ?? ''}</p>
             </div>
           </div>
-          <Link to="/login">
-            <Button variant="outline" className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20 bg-transparent">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
-          </Link>
+          <Button
+            onClick={handleSignOut}
+            variant="outline"
+            className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20 bg-transparent"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign Out
+          </Button>
         </div>
       </div>
 
