@@ -33,6 +33,24 @@ export async function loginCustomer(input: LoginCustomerInput) {
   return assertAuthResponse(response)
 }
 
+export async function loginBrand(input: LoginCustomerInput) {
+  const response = await apiRequest<unknown>('/auth/brand/login', {
+    method: 'POST',
+    body: input,
+  })
+
+  return assertAuthResponse(response)
+}
+
+export async function loginAdmin(input: LoginCustomerInput) {
+  const response = await apiRequest<unknown>('/auth/admin/login', {
+    method: 'POST',
+    body: input,
+  })
+
+  return assertAuthResponse(response)
+}
+
 export async function logoutCustomer(refreshToken: string): Promise<void> {
   await apiRequest<void>('/auth/logout', {
     method: 'POST',

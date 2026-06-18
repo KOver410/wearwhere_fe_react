@@ -303,4 +303,43 @@ describe('authApi', () => {
       code: 'INVALID_OTP_RESPONSE',
     })
   })
+
+  it('posts brand login payload to /auth/brand/login and returns a validated auth response', async () => {
+    const brandUser = { ...customerUser, role: 'brand' }
+    apiRequestMock.mockResolvedValue({ user: brandUser, tokens })
+    const { loginBrand } = await import('./authApi')
+
+    await expect(
+      loginBrand({ email: 'brand@example.com', password: 'P@ssw0rd!' }),
+    ).resolves.toEqual({ user: brandUser, tokens })
+
+    expect(apiRequestMock).toHaveBeenCalledWith('/auth/brand/login', {
+      method: 'POST',
+      body: { email: 'brand@example.com', password: 'P@ssw0rd!' },
+    })
+  })
+
+  it('posts admin login payload to /auth/admin/login and returns a validated auth response', async () => {
+    const adminUser = { ...customerUser, role: 'admin' }
+    apiRequestMock.mockResolvedValue({ user: adminUser, tokens })
+    const { loginAdmin } = await import('./authApi')
+
+    await expect(
+      loginAdmin({ email: 'admin@example.com', password: 'P@ssw0rd!' }),
+    ).resolves.toEqual({ user: adminUser, tokens })
+
+    expect(apiRequestMock).toHaveBeenCalledWith('/auth/admin/login', {
+      method: 'POST',
+      body: { email: 'admin@example.com', password: 'P@ssw0rd!' },
+    })
+  })
+
+  it('fails closed when the brand login response has invalid tokens', async () => {
+    apiRequestMock.mockResolvedValue({ user: { ...customerUser, role: 'brand' }, tokens: { access_token: 'x' } })
+    const { loginBrand } = await import('./authApi')
+
+    await expect(
+      loginBrand({ email: 'brand@example.com', password: 'P@ssw0rd!' }),
+    ).rejects.toMatchObject({ code: 'INVALID_AUTH_RESPONSE' })
+  })
 })
