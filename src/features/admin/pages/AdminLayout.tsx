@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Outlet, useNavigate, Link, useLocation } from 'react-router';
+import { useAuth } from '@/shared/contexts/AuthContext';
 import { Button } from '@/shared/ui/button';
 import { LayoutDashboard, Activity, Users, Package, Store, Shield, ShoppingBag, Megaphone, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '@/shared/ui/utils';
@@ -8,18 +8,18 @@ import logoImage from '@/assets/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
 
-  useEffect(() => {
-    const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
-    if (!isAuthenticated) {
-      navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // Ignore logout request errors; the local session is cleared regardless.
     }
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminAuth');
-    navigate('/login');
+    navigate('/admin/login');
   };
+
+  const initial = (user?.name?.trim()?.[0] ?? 'A').toUpperCase();
 
   const navigation = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -69,11 +69,11 @@ export default function AdminLayout() {
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center p-3 mb-4 rounded-lg bg-white/5 border border-white/10">
             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#F54900] to-[#FF7A45] flex items-center justify-center text-white font-bold mr-3" style={{ fontFamily: 'Arimo, sans-serif' }}>
-              A
+              {initial}
             </div>
             <div>
-              <p className="text-sm font-medium text-white" style={{ fontFamily: 'Arimo, sans-serif' }}>Admin One</p>
-              <p className="text-xs text-slate-400" style={{ fontFamily: 'Arimo, sans-serif' }}>admin1@gmail.com</p>
+              <p className="text-sm font-medium text-white" style={{ fontFamily: 'Arimo, sans-serif' }}>{user?.name ?? 'Admin'}</p>
+              <p className="text-xs text-slate-400" style={{ fontFamily: 'Arimo, sans-serif' }}>{user?.email ?? ''}</p>
             </div>
           </div>
           <Button
