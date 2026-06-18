@@ -44,6 +44,8 @@ import { OnboardingPricePage } from '@/features/onboarding/pages/OnboardingPrice
 import { OnboardingSizeLocationPage } from '@/features/onboarding/pages/OnboardingSizeLocationPage';
 import { OnboardingCompletePage } from '@/features/onboarding/pages/OnboardingCompletePage';
 import { BrandLayout } from '@/features/brand/pages/BrandLayout';
+import { BrandLoginPage } from '@/features/brand/pages/BrandLoginPage';
+import { RequireRole } from '@/shared/components/RequireRole';
 import { BrandDashboardPage } from '@/features/brand/pages/BrandDashboardPage';
 import { BrandSalesPage } from '@/features/brand/pages/BrandSalesPage';
 import { BrandTrafficPage } from '@/features/brand/pages/BrandTrafficPage';
@@ -148,8 +150,11 @@ export function AppRoutes() {
       <Route path="/onboarding/size-location" element={<OnboardingSizeLocationPage />} />
       <Route path="/onboarding/complete" element={<OnboardingCompletePage />} />
 
+      {/* Portal Login Pages */}
+      <Route path="/brand/login" element={<BrandLoginPage />} />
+
       {/* Brand Pages */}
-      <Route path="/brand" element={<BrandLayout />}>
+      <Route path="/brand" element={<RequireRole role="brand" loginPath="/brand/login"><BrandLayout /></RequireRole>}>
         <Route path="dashboard" element={<BrandDashboardPage />} />
         <Route path="sales" element={<BrandSalesPage />} />
         <Route path="traffic" element={<BrandTrafficPage />} />
