@@ -27,6 +27,7 @@ import { Label } from '@/app/components/ui/label';
 import { Textarea } from '@/app/components/ui/textarea';
 import { Switch } from '@/app/components/ui/switch';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockCategories = [
@@ -117,6 +118,7 @@ const mockCategories = [
 ];
 
 export default function AdminCategoriesPage() {
+  const { v } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -143,22 +145,22 @@ export default function AdminCategoriesPage() {
   };
 
   const handleCreate = () => {
-    toast.success('Category created successfully');
+    toast.success(v('Category created successfully', 'Tạo danh mục thành công'));
     setCreateModalOpen(false);
     setFormData({ name: '', slug: '', description: '', isActive: true });
   };
 
   const handleEdit = () => {
-    toast.success('Category updated successfully');
+    toast.success(v('Category updated successfully', 'Cập nhật danh mục thành công'));
     setEditModalOpen(false);
   };
 
   const handleDelete = (id: number) => {
-    toast.success('Category deleted successfully');
+    toast.success(v('Category deleted successfully', 'Xóa danh mục thành công'));
   };
 
   const handleToggleStatus = (id: number) => {
-    toast.success('Category status updated');
+    toast.success(v('Category status updated', 'Cập nhật trạng thái danh mục'));
   };
 
   const openEditModal = (category: any) => {
@@ -186,7 +188,7 @@ export default function AdminCategoriesPage() {
               marginBottom: '8px',
             }}
           >
-            Categories Management
+            {v('Categories Management', 'Quản Lý Danh Mục')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -209,7 +211,7 @@ export default function AdminCategoriesPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Products
+              {v('Back to Products', 'Quay Lại Sản Phẩm')}
             </Button>
           </Link>
           <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
@@ -226,7 +228,7 @@ export default function AdminCategoriesPage() {
                 }}
               >
                 <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Add Category
+                {v('Add Category', 'Thêm Danh Mục')}
               </Button>
             </DialogTrigger>
             <DialogContent style={{ maxWidth: '500px', borderRadius: '14px', padding: '32px' }}>
@@ -239,10 +241,10 @@ export default function AdminCategoriesPage() {
                     marginBottom: '8px',
                   }}
                 >
-                  Create New Category
+                  {v('Create New Category', 'Tạo Danh Mục Mới')}
                 </DialogTitle>
                 <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-                  Add a new product category to the system
+                  {v('Add a new product category to the system', 'Thêm danh mục sản phẩm mới vào hệ thống')}
                 </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -254,10 +256,10 @@ export default function AdminCategoriesPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Category Name
+                    {v('Category Name', 'Tên Danh Mục')}
                   </Label>
                   <Input
-                    placeholder="e.g., Áo Sơ Mi"
+                    placeholder={v('e.g., Áo Sơ Mi', 'ví dụ: Áo Sơ Mi')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -277,10 +279,10 @@ export default function AdminCategoriesPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Slug
+                    {v('Slug', 'Đường Dẫn')}
                   </Label>
                   <Input
-                    placeholder="e.g., ao-so-mi"
+                    placeholder={v('e.g., ao-so-mi', 'ví dụ: ao-so-mi')}
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -300,10 +302,10 @@ export default function AdminCategoriesPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Description
+                    {v('Description', 'Mô Tả')}
                   </Label>
                   <Textarea
-                    placeholder="Brief description..."
+                    placeholder={v('Brief description...', 'Mô tả ngắn gọn...')}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -323,7 +325,7 @@ export default function AdminCategoriesPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Active Status
+                    {v('Active Status', 'Trạng Thái Hoạt Động')}
                   </Label>
                   <Switch
                     checked={formData.isActive}
@@ -344,7 +346,7 @@ export default function AdminCategoriesPage() {
                     padding: '0 24px',
                   }}
                 >
-                  Cancel
+                  {v('Cancel', 'Hủy')}
                 </Button>
                 <Button
                   onClick={handleCreate}
@@ -358,7 +360,7 @@ export default function AdminCategoriesPage() {
                     padding: '0 24px',
                   }}
                 >
-                  Create Category
+                  {v('Create Category', 'Tạo Danh Mục')}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -389,7 +391,7 @@ export default function AdminCategoriesPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Categories
+              {v('Total Categories', 'Tổng Danh Mục')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -421,7 +423,7 @@ export default function AdminCategoriesPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Categories
+              {v('Active Categories', 'Danh Mục Hoạt Động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -453,7 +455,7 @@ export default function AdminCategoriesPage() {
                 marginBottom: '4px',
               }}
             >
-              Inactive Categories
+              {v('Inactive Categories', 'Danh Mục Ngừng Hoạt Động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -485,7 +487,7 @@ export default function AdminCategoriesPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Products
+              {v('Total Products', 'Tổng Sản Phẩm')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -508,7 +510,7 @@ export default function AdminCategoriesPage() {
             style={{ width: '16px', height: '16px' }}
           />
           <Input
-            placeholder="Search categories..."
+            placeholder={v('Search categories...', 'Tìm kiếm danh mục...')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 border-[#D1D5DC]"
@@ -564,7 +566,7 @@ export default function AdminCategoriesPage() {
                         padding: '4px 12px',
                       }}
                     >
-                      {category.isActive ? 'Active' : 'Inactive'}
+                      {category.isActive ? v('Active', 'Đang hoạt động') : v('Inactive', 'Ngừng hoạt động')}
                     </Badge>
                   </div>
                   <p
@@ -591,7 +593,7 @@ export default function AdminCategoriesPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    📦 {category.productCount.toLocaleString('vi-VN')} products
+                    📦 {category.productCount.toLocaleString('vi-VN')} {v('products', 'sản phẩm')}
                   </p>
                 </div>
               </div>
@@ -637,7 +639,7 @@ export default function AdminCategoriesPage() {
                     marginBottom: '8px',
                   }}
                 >
-                  SUBCATEGORIES
+                  {v('SUBCATEGORIES', 'DANH MỤC CON')}
                 </p>
                 <div className="flex flex-wrap" style={{ gap: '8px' }}>
                   {category.subcategories.map((sub) => (
@@ -673,10 +675,10 @@ export default function AdminCategoriesPage() {
                 marginBottom: '8px',
               }}
             >
-              Edit Category
+              {v('Edit Category', 'Chỉnh Sửa Danh Mục')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Update category information
+              {v('Update category information', 'Cập nhật thông tin danh mục')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -688,10 +690,10 @@ export default function AdminCategoriesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Category Name
+                {v('Category Name', 'Tên Danh Mục')}
               </Label>
               <Input
-                placeholder="e.g., Áo Sơ Mi"
+                placeholder={v('e.g., Áo Sơ Mi', 'ví dụ: Áo Sơ Mi')}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -711,10 +713,10 @@ export default function AdminCategoriesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Slug
+                {v('Slug', 'Đường Dẫn')}
               </Label>
               <Input
-                placeholder="e.g., ao-so-mi"
+                placeholder={v('e.g., ao-so-mi', 'ví dụ: ao-so-mi')}
                 value={formData.slug}
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -734,10 +736,10 @@ export default function AdminCategoriesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Description
+                {v('Description', 'Mô Tả')}
               </Label>
               <Textarea
-                placeholder="Brief description..."
+                placeholder={v('Brief description...', 'Mô tả ngắn gọn...')}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -757,7 +759,7 @@ export default function AdminCategoriesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Active Status
+                {v('Active Status', 'Trạng Thái Hoạt Động')}
               </Label>
               <Switch
                 checked={formData.isActive}
@@ -778,7 +780,7 @@ export default function AdminCategoriesPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleEdit}
@@ -792,7 +794,7 @@ export default function AdminCategoriesPage() {
                 padding: '0 24px',
               }}
             >
-              Save Changes
+              {v('Save Changes', 'Lưu Thay Đổi')}
             </Button>
           </DialogFooter>
         </DialogContent>

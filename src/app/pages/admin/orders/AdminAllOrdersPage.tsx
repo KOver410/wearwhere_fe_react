@@ -21,6 +21,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockOrders = [
@@ -53,6 +54,21 @@ const paymentConfig = {
 };
 
 export default function AdminAllOrdersPage() {
+  const { v } = useLanguage();
+  const statusLabels: Record<string, string> = {
+    pending: v('Pending', 'Đang chờ'),
+    processing: v('Processing', 'Đang xử lý'),
+    shipped: v('Shipped', 'Đang giao hàng'),
+    delivered: v('Delivered', 'Đã giao'),
+    cancelled: v('Cancelled', 'Đã hủy'),
+    disputed: v('Disputed', 'Đang tranh chấp'),
+  };
+  const paymentLabels: Record<string, string> = {
+    pending: v('Pending', 'Đang chờ'),
+    paid: v('Paid', 'Đã thanh toán'),
+    refunded: v('Refunded', 'Đã hoàn tiền'),
+    failed: v('Failed', 'Thất bại'),
+  };
   const [orders, setOrders] = useState(mockOrders);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -99,7 +115,7 @@ export default function AdminAllOrdersPage() {
     a.href = url;
     a.download = 'all-orders.csv';
     a.click();
-    toast.success('Orders exported');
+    toast.success(v('Orders exported', 'Đã xuất đơn hàng'));
   };
 
   return (
@@ -116,13 +132,13 @@ export default function AdminAllOrdersPage() {
               marginBottom: '8px',
             }}
           >
-            All Orders
+            {v('All Orders', 'Tất cả đơn hàng')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Danh sách tất cả orders trên platform
+            {v('Danh sách tất cả orders trên platform', 'Danh sách tất cả đơn hàng trên nền tảng')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -140,7 +156,7 @@ export default function AdminAllOrdersPage() {
               }}
             >
               <AlertCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              View Disputes
+              {v('View Disputes', 'Xem tranh chấp')}
             </Button>
           </Link>
           <Link to="/admin/orders/refunds">
@@ -156,7 +172,7 @@ export default function AdminAllOrdersPage() {
                 padding: '0 24px',
               }}
             >
-              View Refunds
+              {v('View Refunds', 'Xem hoàn tiền')}
             </Button>
           </Link>
         </div>
@@ -185,7 +201,7 @@ export default function AdminAllOrdersPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Orders
+              {v('Total Orders', 'Tổng đơn hàng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -217,7 +233,7 @@ export default function AdminAllOrdersPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Revenue
+              {v('Total Revenue', 'Tổng doanh thu')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -249,7 +265,7 @@ export default function AdminAllOrdersPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Orders
+              {v('Pending Orders', 'Đơn hàng đang chờ')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -281,7 +297,7 @@ export default function AdminAllOrdersPage() {
                 marginBottom: '4px',
               }}
             >
-              Disputed Orders
+              {v('Disputed Orders', 'Đơn hàng tranh chấp')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -307,7 +323,7 @@ export default function AdminAllOrdersPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search by order ID, customer, email, brand..."
+                placeholder={v('Search by order ID, customer, email, brand...', 'Tìm theo mã đơn, khách hàng, email, thương hiệu...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -333,16 +349,16 @@ export default function AdminAllOrdersPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Order Status" />
+                <SelectValue placeholder={v('Order Status', 'Trạng thái đơn hàng')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="shipped">Shipped</SelectItem>
-                <SelectItem value="delivered">Delivered</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="disputed">Disputed</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending', 'Đang chờ')}</SelectItem>
+                <SelectItem value="processing">{v('Processing', 'Đang xử lý')}</SelectItem>
+                <SelectItem value="shipped">{v('Shipped', 'Đang giao hàng')}</SelectItem>
+                <SelectItem value="delivered">{v('Delivered', 'Đã giao')}</SelectItem>
+                <SelectItem value="cancelled">{v('Cancelled', 'Đã hủy')}</SelectItem>
+                <SelectItem value="disputed">{v('Disputed', 'Đang tranh chấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -359,14 +375,14 @@ export default function AdminAllOrdersPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Payment Status" />
+                <SelectValue placeholder={v('Payment Status', 'Trạng thái thanh toán')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Payment</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
-                <SelectItem value="refunded">Refunded</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="all">{v('All Payment', 'Tất cả thanh toán')}</SelectItem>
+                <SelectItem value="pending">{v('Pending', 'Đang chờ')}</SelectItem>
+                <SelectItem value="paid">{v('Paid', 'Đã thanh toán')}</SelectItem>
+                <SelectItem value="refunded">{v('Refunded', 'Đã hoàn tiền')}</SelectItem>
+                <SelectItem value="failed">{v('Failed', 'Thất bại')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -386,7 +402,7 @@ export default function AdminAllOrdersPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export CSV
+            {v('Export CSV', 'Xuất CSV')}
           </Button>
         </div>
       </Card>
@@ -414,7 +430,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Order ID
+                  {v('Order ID', 'Mã đơn hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -425,7 +441,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Customer
+                  {v('Customer', 'Khách hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -436,7 +452,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -447,7 +463,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Items
+                  {v('Items', 'Sản phẩm')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -458,7 +474,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Total
+                  {v('Total', 'Tổng tiền')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -469,7 +485,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -480,7 +496,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Payment
+                  {v('Payment', 'Thanh toán')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -491,7 +507,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Date
+                  {v('Date', 'Ngày')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -502,7 +518,7 @@ export default function AdminAllOrdersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -578,7 +594,7 @@ export default function AdminAllOrdersPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {statusConfig[order.status as keyof typeof statusConfig].label}
+                      {statusLabels[order.status]}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -592,7 +608,7 @@ export default function AdminAllOrdersPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {paymentConfig[order.payment as keyof typeof paymentConfig].label}
+                      {paymentLabels[order.payment]}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -637,9 +653,9 @@ export default function AdminAllOrdersPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredOrders.length)} of{' '}
-            {filteredOrders.length} orders
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredOrders.length)} {v('of', 'trong')}{' '}
+            {filteredOrders.length} {v('orders', 'đơn hàng')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -654,7 +670,7 @@ export default function AdminAllOrdersPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -691,7 +707,7 @@ export default function AdminAllOrdersPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Tiếp')}
             </Button>
           </div>
         </div>

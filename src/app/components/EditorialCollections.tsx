@@ -114,10 +114,10 @@ export function EditorialCollections() {
         >
           <div>
             <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-              COLLECTIONS
+              {lang === 'vi' ? 'BỘ SƯU TẬP' : 'COLLECTIONS'}
             </span>
             <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#fff9f2', lineHeight: 0.95, letterSpacing: '-0.01em' }}>
-              HOT DROPS
+              {lang === 'vi' ? 'HÀNG HOT' : 'HOT DROPS'}
             </h2>
           </div>
           <Link to="/shop" className="group inline-flex items-center gap-3"

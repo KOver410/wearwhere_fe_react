@@ -32,6 +32,7 @@ import {
   X,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockKeywords = [
@@ -63,7 +64,22 @@ const severityConfig = {
   low: { label: 'Low', color: 'bg-[#6A7282]/10 text-[#6A7282]' },
 };
 
+const categoryLabelVi: Record<string, string> = {
+  spam: 'Spam',
+  harassment: 'Quấy rối',
+  misleading: 'Gây hiểu lầm',
+  fraud: 'Lừa đảo',
+  profanity: 'Ngôn từ thô tục',
+};
+
+const severityLabelVi: Record<string, string> = {
+  high: 'Cao',
+  medium: 'Trung bình',
+  low: 'Thấp',
+};
+
 export default function AdminKeywordBlacklistPage() {
+  const { v } = useLanguage();
   const [keywords, setKeywords] = useState(mockKeywords);
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -103,7 +119,7 @@ export default function AdminKeywordBlacklistPage() {
 
   const handleAddKeyword = () => {
     if (!newKeyword.trim()) {
-      toast.error('Please enter a keyword');
+      toast.error(v('Please enter a keyword', 'Vui lòng nhập từ khóa'));
       return;
     }
     const newItem = {
@@ -118,12 +134,12 @@ export default function AdminKeywordBlacklistPage() {
     setKeywords([...keywords, newItem]);
     setNewKeyword('');
     setAddModalOpen(false);
-    toast.success('Keyword added');
+    toast.success(v('Keyword added', 'Đã thêm từ khóa'));
   };
 
   const handleBulkAdd = () => {
     if (!bulkKeywords.trim()) {
-      toast.error('Please enter keywords');
+      toast.error(v('Please enter keywords', 'Vui lòng nhập từ khóa'));
       return;
     }
     const lines = bulkKeywords.split('\n').filter((line) => line.trim());
@@ -139,18 +155,19 @@ export default function AdminKeywordBlacklistPage() {
     setKeywords([...keywords, ...newItems]);
     setBulkKeywords('');
     setBulkModalOpen(false);
-    toast.success(`${newItems.length} keywords added`);
+    toast.success(v(`${newItems.length} keywords added`, `Đã thêm ${newItems.length} từ khóa`));
   };
 
   const handleDeleteKeyword = (id: number) => {
     setKeywords(keywords.filter((k) => k.id !== id));
-    toast.success('Keyword removed');
+    toast.success(v('Keyword removed', 'Đã gỡ từ khóa'));
   };
 
   const handleBulkDelete = () => {
+    const count = selectedKeywords.length;
     setKeywords(keywords.filter((k) => !selectedKeywords.includes(k.id)));
     setSelectedKeywords([]);
-    toast.success(`${selectedKeywords.length} keywords removed`);
+    toast.success(v(`${count} keywords removed`, `Đã gỡ ${count} từ khóa`));
   };
 
   const handleToggleSelect = (id: number) => {
@@ -177,7 +194,7 @@ export default function AdminKeywordBlacklistPage() {
     a.href = url;
     a.download = 'keyword-blacklist.csv';
     a.click();
-    toast.success('Keywords exported');
+    toast.success(v('Keywords exported', 'Đã xuất từ khóa'));
   };
 
   return (
@@ -194,13 +211,13 @@ export default function AdminKeywordBlacklistPage() {
               marginBottom: '8px',
             }}
           >
-            Keyword Blacklist
+            {v('Keyword Blacklist', 'Danh sách từ khóa cấm')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý danh sách từ khóa bị cấm
+            {v('Manage the list of blocked keywords', 'Quản lý danh sách từ khóa bị cấm')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -218,7 +235,7 @@ export default function AdminKeywordBlacklistPage() {
               }}
             >
               <Filter style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Filter Settings
+              {v('Filter Settings', 'Cài đặt bộ lọc')}
             </Button>
           </Link>
           <Link to="/admin/moderation">
@@ -234,7 +251,7 @@ export default function AdminKeywordBlacklistPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Queue
+              {v('Back to Queue', 'Quay lại hàng đợi')}
             </Button>
           </Link>
         </div>
@@ -263,7 +280,7 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Keywords
+              {v('Total Keywords', 'Tổng số từ khóa')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -295,7 +312,7 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '4px',
               }}
             >
-              High Severity
+              {v('High Severity', 'Mức độ cao')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -327,7 +344,7 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Matches
+              {v('Total Matches', 'Tổng số lượt khớp')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -359,7 +376,7 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '4px',
               }}
             >
-              Spam Keywords
+              {v('Spam Keywords', 'Từ khóa spam')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -390,7 +407,7 @@ export default function AdminKeywordBlacklistPage() {
               }}
             >
               <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Add Keyword
+              {v('Add Keyword', 'Thêm từ khóa')}
             </Button>
             <Button
               onClick={() => setBulkModalOpen(true)}
@@ -405,7 +422,7 @@ export default function AdminKeywordBlacklistPage() {
               }}
             >
               <Upload style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Bulk Add
+              {v('Bulk Add', 'Thêm hàng loạt')}
             </Button>
             {selectedKeywords.length > 0 && (
               <Button
@@ -421,7 +438,7 @@ export default function AdminKeywordBlacklistPage() {
                 }}
               >
                 <Trash2 style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Delete Selected ({selectedKeywords.length})
+                {v('Delete Selected', 'Xóa mục đã chọn')} ({selectedKeywords.length})
               </Button>
             )}
           </div>
@@ -438,7 +455,7 @@ export default function AdminKeywordBlacklistPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export CSV
+            {v('Export CSV', 'Xuất CSV')}
           </Button>
         </div>
       </Card>
@@ -457,7 +474,7 @@ export default function AdminKeywordBlacklistPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search keywords..."
+                placeholder={v('Search keywords...', 'Tìm kiếm từ khóa...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -483,13 +500,13 @@ export default function AdminKeywordBlacklistPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder={v('Category', 'Danh mục')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{v('All Categories', 'Tất cả danh mục')}</SelectItem>
                 {categories.map((cat) => (
                   <SelectItem key={cat.value} value={cat.value}>
-                    {cat.label}
+                    {v(cat.label, categoryLabelVi[cat.value] ?? cat.label)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -508,13 +525,13 @@ export default function AdminKeywordBlacklistPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Severity" />
+                <SelectValue placeholder={v('Severity', 'Mức độ')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Severity</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{v('All Severity', 'Tất cả mức độ')}</SelectItem>
+                <SelectItem value="high">{v('High', 'Cao')}</SelectItem>
+                <SelectItem value="medium">{v('Medium', 'Trung bình')}</SelectItem>
+                <SelectItem value="low">{v('Low', 'Thấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -553,7 +570,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Keyword
+                  {v('Keyword', 'Từ khóa')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -564,7 +581,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Category
+                  {v('Category', 'Danh mục')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -575,7 +592,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Severity
+                  {v('Severity', 'Mức độ')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -586,7 +603,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Matches
+                  {v('Matches', 'Lượt khớp')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -597,7 +614,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Added By
+                  {v('Added By', 'Người thêm')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -608,7 +625,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Added Date
+                  {v('Added Date', 'Ngày thêm')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -619,7 +636,7 @@ export default function AdminKeywordBlacklistPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -657,7 +674,7 @@ export default function AdminKeywordBlacklistPage() {
                           padding: '6px 12px',
                         }}
                       >
-                        {cat?.label}
+                        {cat ? v(cat.label, categoryLabelVi[cat.value] ?? cat.label) : null}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -671,7 +688,10 @@ export default function AdminKeywordBlacklistPage() {
                           padding: '6px 12px',
                         }}
                       >
-                        {severityConfig[keyword.severity as keyof typeof severityConfig].label}
+                        {v(
+                          severityConfig[keyword.severity as keyof typeof severityConfig].label,
+                          severityLabelVi[keyword.severity] ?? severityConfig[keyword.severity as keyof typeof severityConfig].label
+                        )}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -736,9 +756,9 @@ export default function AdminKeywordBlacklistPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredKeywords.length)} of{' '}
-            {filteredKeywords.length} keywords
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredKeywords.length)} {v('of', 'trong')}{' '}
+            {filteredKeywords.length} {v('keywords', 'từ khóa')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -753,7 +773,7 @@ export default function AdminKeywordBlacklistPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -790,7 +810,7 @@ export default function AdminKeywordBlacklistPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>
@@ -808,10 +828,10 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '8px',
               }}
             >
-              Add Keyword
+              {v('Add Keyword', 'Thêm từ khóa')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Add a new keyword to the blacklist
+              {v('Add a new keyword to the blacklist', 'Thêm từ khóa mới vào danh sách cấm')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -825,10 +845,10 @@ export default function AdminKeywordBlacklistPage() {
                   display: 'block',
                 }}
               >
-                Keyword *
+                {v('Keyword', 'Từ khóa')} *
               </Label>
               <Input
-                placeholder="Enter keyword or phrase..."
+                placeholder={v('Enter keyword or phrase...', 'Nhập từ khóa hoặc cụm từ...')}
                 value={newKeyword}
                 onChange={(e) => setNewKeyword(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -850,7 +870,7 @@ export default function AdminKeywordBlacklistPage() {
                   display: 'block',
                 }}
               >
-                Category *
+                {v('Category', 'Danh mục')} *
               </Label>
               <Select value={newCategory} onValueChange={setNewCategory}>
                 <SelectTrigger
@@ -867,7 +887,7 @@ export default function AdminKeywordBlacklistPage() {
                 <SelectContent>
                   {categories.map((cat) => (
                     <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
+                      {v(cat.label, categoryLabelVi[cat.value] ?? cat.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -883,7 +903,7 @@ export default function AdminKeywordBlacklistPage() {
                   display: 'block',
                 }}
               >
-                Severity *
+                {v('Severity', 'Mức độ')} *
               </Label>
               <Select value={newSeverity} onValueChange={setNewSeverity}>
                 <SelectTrigger
@@ -898,9 +918,9 @@ export default function AdminKeywordBlacklistPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="high">{v('High', 'Cao')}</SelectItem>
+                  <SelectItem value="medium">{v('Medium', 'Trung bình')}</SelectItem>
+                  <SelectItem value="low">{v('Low', 'Thấp')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -918,7 +938,7 @@ export default function AdminKeywordBlacklistPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleAddKeyword}
@@ -933,7 +953,7 @@ export default function AdminKeywordBlacklistPage() {
               }}
             >
               <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Add Keyword
+              {v('Add Keyword', 'Thêm từ khóa')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -951,10 +971,10 @@ export default function AdminKeywordBlacklistPage() {
                 marginBottom: '8px',
               }}
             >
-              Bulk Add Keywords
+              {v('Bulk Add Keywords', 'Thêm từ khóa hàng loạt')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Add multiple keywords at once (one per line)
+              {v('Add multiple keywords at once (one per line)', 'Thêm nhiều từ khóa cùng lúc (mỗi từ khóa một dòng)')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -968,7 +988,7 @@ export default function AdminKeywordBlacklistPage() {
                   display: 'block',
                 }}
               >
-                Keywords (one per line) *
+                {v('Keywords (one per line)', 'Từ khóa (mỗi từ khóa một dòng)')} *
               </Label>
               <textarea
                 placeholder="spam&#10;fake&#10;scam&#10;..."
@@ -991,7 +1011,7 @@ export default function AdminKeywordBlacklistPage() {
                   marginTop: '6px',
                 }}
               >
-                {bulkKeywords.split('\n').filter((l) => l.trim()).length} keywords entered
+                {bulkKeywords.split('\n').filter((l) => l.trim()).length} {v('keywords entered', 'từ khóa đã nhập')}
               </p>
             </div>
             <div className="grid grid-cols-2" style={{ gap: '16px' }}>
@@ -1005,7 +1025,7 @@ export default function AdminKeywordBlacklistPage() {
                     display: 'block',
                   }}
                 >
-                  Category *
+                  {v('Category', 'Danh mục')} *
                 </Label>
                 <Select value={newCategory} onValueChange={setNewCategory}>
                   <SelectTrigger
@@ -1022,7 +1042,7 @@ export default function AdminKeywordBlacklistPage() {
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
+                        {v(cat.label, categoryLabelVi[cat.value] ?? cat.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -1038,7 +1058,7 @@ export default function AdminKeywordBlacklistPage() {
                     display: 'block',
                   }}
                 >
-                  Severity *
+                  {v('Severity', 'Mức độ')} *
                 </Label>
                 <Select value={newSeverity} onValueChange={setNewSeverity}>
                   <SelectTrigger
@@ -1053,9 +1073,9 @@ export default function AdminKeywordBlacklistPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="high">{v('High', 'Cao')}</SelectItem>
+                    <SelectItem value="medium">{v('Medium', 'Trung bình')}</SelectItem>
+                    <SelectItem value="low">{v('Low', 'Thấp')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -1074,7 +1094,7 @@ export default function AdminKeywordBlacklistPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleBulkAdd}
@@ -1089,7 +1109,7 @@ export default function AdminKeywordBlacklistPage() {
               }}
             >
               <Upload style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Bulk Add
+              {v('Bulk Add', 'Thêm hàng loạt')}
             </Button>
           </DialogFooter>
         </DialogContent>

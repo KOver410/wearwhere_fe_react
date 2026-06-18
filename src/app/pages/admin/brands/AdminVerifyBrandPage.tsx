@@ -13,6 +13,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockBrand = {
@@ -40,8 +41,18 @@ const verificationCriteria = [
 ];
 
 export default function AdminVerifyBrandPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const criteriaLabels: Record<string, string> = {
+    business_license: v('Valid business license verified', 'Đã xác minh giấy phép kinh doanh hợp lệ'),
+    tax_documents: v('Tax registration documents verified', 'Đã xác minh tài liệu đăng ký thuế'),
+    brand_authenticity: v('Brand authenticity confirmed', 'Đã xác nhận tính xác thực của thương hiệu'),
+    quality_standards: v('Products meet quality standards', 'Sản phẩm đáp ứng tiêu chuẩn chất lượng'),
+    customer_service: v('Customer service standards met', 'Đáp ứng tiêu chuẩn dịch vụ khách hàng'),
+    no_violations: v('No policy violations in the past 6 months', 'Không vi phạm chính sách trong 6 tháng qua'),
+  };
   const [criteria, setCriteria] = useState(verificationCriteria);
   const [verificationNote, setVerificationNote] = useState('');
 
@@ -55,23 +66,23 @@ export default function AdminVerifyBrandPage() {
 
   const handleVerify = () => {
     if (!allChecked) {
-      toast.error('Please verify all criteria before granting the verified badge');
+      toast.error(v('Please verify all criteria before granting the verified badge', 'Vui lòng xác minh tất cả tiêu chí trước khi cấp huy hiệu xác minh'));
       return;
     }
     if (!verificationNote.trim()) {
-      toast.error('Please add verification notes');
+      toast.error(v('Please add verification notes', 'Vui lòng thêm ghi chú xác minh'));
       return;
     }
-    toast.success('Verified badge granted successfully');
+    toast.success(v('Verified badge granted successfully', 'Đã cấp huy hiệu xác minh thành công'));
     navigate(`/admin/brands/${id}`);
   };
 
   const handleRemoveVerification = () => {
     if (!verificationNote.trim()) {
-      toast.error('Please add a note explaining the removal');
+      toast.error(v('Please add a note explaining the removal', 'Vui lòng thêm ghi chú giải thích lý do gỡ bỏ'));
       return;
     }
-    toast.success('Verified badge removed');
+    toast.success(v('Verified badge removed', 'Đã gỡ bỏ huy hiệu xác minh'));
     navigate(`/admin/brands/${id}`);
   };
 
@@ -102,13 +113,13 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '8px',
               }}
             >
-              Verify Brand
+              {v('Verify Brand', 'Xác minh thương hiệu')}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Grant or remove verified badge for {mockBrand.name}
+              {v('Grant or remove verified badge for', 'Cấp hoặc gỡ bỏ huy hiệu xác minh cho')} {mockBrand.name}
             </p>
           </div>
         </div>
@@ -159,7 +170,7 @@ export default function AdminVerifyBrandPage() {
                       }}
                     >
                       <Shield style={{ width: '14px', height: '14px' }} />
-                      Verified
+                      {v('Verified', 'Đã xác minh')}
                     </Badge>
                   )}
                 </div>
@@ -178,7 +189,7 @@ export default function AdminVerifyBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    🏪 {mockBrand.stats.stores} stores
+                    🏪 {mockBrand.stats.stores} {v('stores', 'cửa hàng')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -188,7 +199,7 @@ export default function AdminVerifyBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    📦 {mockBrand.stats.products.toLocaleString('vi-VN')} products
+                    📦 {mockBrand.stats.products.toLocaleString('vi-VN')} {v('products', 'sản phẩm')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -219,7 +230,7 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '20px',
               }}
             >
-              Verification Criteria
+              {v('Verification Criteria', 'Tiêu chí xác minh')}
             </h3>
             <p
               className="text-[#6A7282]"
@@ -229,7 +240,7 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '24px',
               }}
             >
-              All criteria must be met before granting the verified badge
+              {v('All criteria must be met before granting the verified badge', 'Phải đáp ứng tất cả tiêu chí trước khi cấp huy hiệu xác minh')}
             </p>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {criteria.map((criterion) => (
@@ -252,7 +263,7 @@ export default function AdminVerifyBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    {criterion.label}
+                    {criteriaLabels[criterion.id] ?? criterion.label}
                   </Label>
                   {criterion.checked && (
                     <CheckCircle
@@ -279,10 +290,10 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '20px',
               }}
             >
-              Verification Notes
+              {v('Verification Notes', 'Ghi chú xác minh')}
             </h3>
             <Textarea
-              placeholder="Add detailed notes about the verification process and decision..."
+              placeholder={v('Add detailed notes about the verification process and decision...', 'Thêm ghi chú chi tiết về quá trình xác minh và quyết định...')}
               value={verificationNote}
               onChange={(e) => setVerificationNote(e.target.value)}
               className="border-[#D1D5DC]"
@@ -312,7 +323,7 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '16px',
               }}
             >
-              Current Status
+              {v('Current Status', 'Trạng thái hiện tại')}
             </h3>
             {mockBrand.verified ? (
               <Badge
@@ -327,7 +338,7 @@ export default function AdminVerifyBrandPage() {
                 }}
               >
                 <Shield style={{ width: '16px', height: '16px' }} />
-                Verified
+                {v('Verified', 'Đã xác minh')}
               </Badge>
             ) : (
               <Badge
@@ -340,7 +351,7 @@ export default function AdminVerifyBrandPage() {
                   padding: '8px 16px',
                 }}
               >
-                Not Verified
+                {v('Not Verified', 'Chưa xác minh')}
               </Badge>
             )}
           </Card>
@@ -359,7 +370,7 @@ export default function AdminVerifyBrandPage() {
                 marginBottom: '16px',
               }}
             >
-              Verification Progress
+              {v('Verification Progress', 'Tiến độ xác minh')}
             </h3>
             <div style={{ marginBottom: '12px' }}>
               <div className="flex items-center justify-between" style={{ marginBottom: '8px' }}>
@@ -367,7 +378,7 @@ export default function AdminVerifyBrandPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Criteria Met
+                  {v('Criteria Met', 'Tiêu chí đã đạt')}
                 </span>
                 <span
                   className="text-[#0A0A0A]"
@@ -399,7 +410,7 @@ export default function AdminVerifyBrandPage() {
                 className="text-[#F54900]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                All criteria must be verified
+                {v('All criteria must be verified', 'Phải xác minh tất cả tiêu chí')}
               </p>
             )}
           </Card>
@@ -419,7 +430,7 @@ export default function AdminVerifyBrandPage() {
                   marginBottom: '16px',
                 }}
               >
-                Grant Verified Badge
+                {v('Grant Verified Badge', 'Cấp huy hiệu xác minh')}
               </h3>
               <Button
                 onClick={handleVerify}
@@ -434,7 +445,7 @@ export default function AdminVerifyBrandPage() {
                 }}
               >
                 <Shield style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Grant Verified Badge
+                {v('Grant Verified Badge', 'Cấp huy hiệu xác minh')}
               </Button>
             </Card>
           )}
@@ -454,7 +465,7 @@ export default function AdminVerifyBrandPage() {
                   marginBottom: '16px',
                 }}
               >
-                Remove Verification
+                {v('Remove Verification', 'Gỡ bỏ xác minh')}
               </h3>
               <Button
                 onClick={handleRemoveVerification}
@@ -469,7 +480,7 @@ export default function AdminVerifyBrandPage() {
                 }}
               >
                 <AlertTriangle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Remove Verified Badge
+                {v('Remove Verified Badge', 'Gỡ bỏ huy hiệu xác minh')}
               </Button>
             </Card>
           )}
@@ -493,14 +504,13 @@ export default function AdminVerifyBrandPage() {
                   marginBottom: '4px',
                 }}
               >
-                Important
+                {v('Important', 'Quan trọng')}
               </p>
               <p
                 className="text-[#0A0A0A]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                The verified badge is a mark of trust. Only grant it to brands that meet all
-                criteria and maintain high standards.
+                {v('The verified badge is a mark of trust. Only grant it to brands that meet all criteria and maintain high standards.', 'Huy hiệu xác minh là dấu hiệu của sự tin cậy. Chỉ cấp cho các thương hiệu đáp ứng tất cả tiêu chí và duy trì tiêu chuẩn cao.')}
               </p>
             </div>
           </div>

@@ -12,7 +12,7 @@ const winterSunImage = 'https://images.unsplash.com/photo-1548036328-c9fa89d128f
 const girlsNightImage = 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=400&fit=crop';
 
 export function ShopByStyle() {
-  const { t, lang } = useLanguage();
+  const { t, lang, v } = useLanguage();
 
   const categories = [
     { id: 1, name: t('shopByStyle.localTees'), image: dateNightImage, slug: 'streetwear' },
@@ -69,12 +69,12 @@ export function ShopByStyle() {
               <div className="absolute top-4 left-4 w-10 h-10" style={{ borderTop: '2px solid #d41c1c', borderLeft: '2px solid #d41c1c' }} />
               <div className="absolute bottom-4 right-4 w-10 h-10" style={{ borderBottom: '2px solid #d41c1c', borderRight: '2px solid #d41c1c' }} />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                <span className="block mb-2" style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>Style</span>
+                <span className="block mb-2" style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{v('Style', 'Phong cách')}</span>
                 <h3 className="text-white" style={{ fontSize: '26px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, textTransform: 'uppercase' }}>
                   {categories[0].name}
                 </h3>
                 <div className="inline-flex items-center gap-3 text-white mt-3 group-hover:gap-5 transition-all" style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>
-                  <span>Explore</span>
+                  <span>{v('Explore', 'Khám phá')}</span>
                   <div className="w-6 h-px bg-white group-hover:w-10 transition-all duration-300" />
                 </div>
               </div>
@@ -120,12 +120,12 @@ export function ShopByStyle() {
               <div className="absolute bottom-4 right-4 w-10 h-10" style={{ borderBottom: '2px solid #d41c1c', borderRight: '2px solid #d41c1c' }} />
               <div className="absolute inset-0 flex items-center p-8 md:p-12">
                 <div>
-                  <span className="block mb-2" style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>Featured Style</span>
+                  <span className="block mb-2" style={{ fontSize: '12px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{v('Featured Style', 'Phong cách nổi bật')}</span>
                   <h3 className="text-white mb-3" style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, textTransform: 'uppercase' }}>
                     {categories[5].name}
                   </h3>
                   <div className="inline-flex items-center gap-3 text-white group-hover:gap-5 transition-all" style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>
-                    <span>Explore Collection</span>
+                    <span>{v('Explore Collection', 'Khám phá bộ sưu tập')}</span>
                     <div className="w-6 h-px bg-white group-hover:w-10 transition-all duration-300" />
                   </div>
                 </div>

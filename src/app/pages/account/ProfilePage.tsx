@@ -366,7 +366,7 @@ export function ProfilePage() {
                       style={{ border: '3px solid #e0d8cf' } as any}
                     />
                     <button
-                      onClick={() => alert('Avatar upload coming soon!')}
+                      onClick={() => alert(v('Avatar upload coming soon!', 'Tính năng tải ảnh đại diện sắp ra mắt!'))}
                       className="absolute inset-0 w-20 h-20 rounded-full bg-black/40 flex items-center justify-center cursor-pointer transition-opacity opacity-0 hover:opacity-100"
                     >
                       <Camera className="w-5 h-5 text-white" />

@@ -32,6 +32,7 @@ import {
   Check,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockBrands = [
@@ -117,6 +118,38 @@ const subscriptionTiers = [
 ];
 
 export default function AdminBrandSubscriptionsPage() {
+  const { v } = useLanguage();
+  const tierName = (id: string) =>
+    ({
+      starter: v('Starter', 'Khởi đầu'),
+      business: v('Business', 'Doanh nghiệp'),
+      premium: v('Premium', 'Cao cấp'),
+    }[id] ?? id);
+  const tierPrice = (id: string, fallback: string) =>
+    ({
+      starter: v('Free', 'Miễn phí'),
+      business: v('2,000,000 VND/month', '2.000.000 VNĐ/tháng'),
+      premium: v('5,000,000 VND/month', '5.000.000 VNĐ/tháng'),
+    }[id] ?? fallback);
+  const featureLabel = (feature: string) =>
+    ({
+      'Up to 50 products': v('Up to 50 products', 'Tối đa 50 sản phẩm'),
+      '1 store location': v('1 store location', '1 địa điểm cửa hàng'),
+      'Basic analytics': v('Basic analytics', 'Phân tích cơ bản'),
+      '5% commission': v('5% commission', 'Hoa hồng 5%'),
+      'Up to 500 products': v('Up to 500 products', 'Tối đa 500 sản phẩm'),
+      '5 store locations': v('5 store locations', '5 địa điểm cửa hàng'),
+      'Advanced analytics': v('Advanced analytics', 'Phân tích nâng cao'),
+      '3% commission': v('3% commission', 'Hoa hồng 3%'),
+      'Priority support': v('Priority support', 'Hỗ trợ ưu tiên'),
+      'Unlimited products': v('Unlimited products', 'Sản phẩm không giới hạn'),
+      'Unlimited stores': v('Unlimited stores', 'Cửa hàng không giới hạn'),
+      'Full analytics suite': v('Full analytics suite', 'Bộ phân tích đầy đủ'),
+      '2% commission': v('2% commission', 'Hoa hồng 2%'),
+      '24/7 priority support': v('24/7 priority support', 'Hỗ trợ ưu tiên 24/7'),
+      'Verified badge': v('Verified badge', 'Huy hiệu xác minh'),
+      'Featured placement': v('Featured placement', 'Vị trí nổi bật'),
+    }[feature] ?? feature);
   const [searchQuery, setSearchQuery] = useState('');
   const [tierFilter, setTierFilter] = useState('all');
   const [selectedBrand, setSelectedBrand] = useState<any>(null);
@@ -140,10 +173,15 @@ export default function AdminBrandSubscriptionsPage() {
 
   const handleChangeTier = () => {
     if (!changeNote.trim()) {
-      toast.error('Please add a note for the tier change');
+      toast.error(v('Please add a note for the tier change', 'Vui lòng thêm ghi chú cho việc đổi gói'));
       return;
     }
-    toast.success(`Subscription changed to ${newTier} successfully`);
+    toast.success(
+      v(
+        `Subscription changed to ${tierName(newTier)} successfully`,
+        `Đã đổi gói đăng ký sang ${tierName(newTier)} thành công`
+      )
+    );
     setChangeModalOpen(false);
     setSelectedBrand(null);
     setChangeNote('');
@@ -169,13 +207,13 @@ export default function AdminBrandSubscriptionsPage() {
               marginBottom: '8px',
             }}
           >
-            Brand Subscription Management
+            {v('Brand Subscription Management', 'Quản lý gói đăng ký thương hiệu')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý subscription tiers của brands
+            {v('Manage subscription tiers of brands', 'Quản lý các gói đăng ký của thương hiệu')}
           </p>
         </div>
         <Link to="/admin/brands">
@@ -191,7 +229,7 @@ export default function AdminBrandSubscriptionsPage() {
               padding: '0 24px',
             }}
           >
-            Back to Brands
+            {v('Back to Brands', 'Quay lại Thương hiệu')}
           </Button>
         </Link>
       </div>
@@ -219,7 +257,7 @@ export default function AdminBrandSubscriptionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Starter Tier
+              {v('Starter Tier', 'Gói Khởi đầu')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -251,7 +289,7 @@ export default function AdminBrandSubscriptionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Business Tier
+              {v('Business Tier', 'Gói Doanh nghiệp')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -283,7 +321,7 @@ export default function AdminBrandSubscriptionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Premium Tier
+              {v('Premium Tier', 'Gói Cao cấp')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -315,7 +353,7 @@ export default function AdminBrandSubscriptionsPage() {
               }}
             >
               <Crown style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-              {tier.name}
+              {tierName(tier.id)}
             </Badge>
             <h3
               className="text-[#0A0A0A]"
@@ -326,7 +364,7 @@ export default function AdminBrandSubscriptionsPage() {
                 marginBottom: '4px',
               }}
             >
-              {tier.price}
+              {tierPrice(tier.id, tier.price)}
             </h3>
             <div
               className="border-t border-[#E5E7EB]"
@@ -343,7 +381,7 @@ export default function AdminBrandSubscriptionsPage() {
                       className="text-[#0A0A0A]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {feature}
+                      {featureLabel(feature)}
                     </span>
                   </li>
                 ))}
@@ -367,7 +405,7 @@ export default function AdminBrandSubscriptionsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search brands..."
+                placeholder={v('Search brands...', 'Tìm kiếm thương hiệu...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -393,13 +431,13 @@ export default function AdminBrandSubscriptionsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Tier" />
+                <SelectValue placeholder={v('Tier', 'Gói')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Tiers</SelectItem>
-                <SelectItem value="starter">Starter</SelectItem>
-                <SelectItem value="business">Business</SelectItem>
-                <SelectItem value="premium">Premium</SelectItem>
+                <SelectItem value="all">{v('All Tiers', 'Tất cả các gói')}</SelectItem>
+                <SelectItem value="starter">{v('Starter', 'Khởi đầu')}</SelectItem>
+                <SelectItem value="business">{v('Business', 'Doanh nghiệp')}</SelectItem>
+                <SelectItem value="premium">{v('Premium', 'Cao cấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -429,7 +467,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -440,7 +478,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Current Tier
+                  {v('Current Tier', 'Gói hiện tại')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -451,7 +489,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Monthly Revenue
+                  {v('Monthly Revenue', 'Doanh thu tháng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -462,7 +500,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Products
+                  {v('Products', 'Sản phẩm')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -473,7 +511,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Member Since
+                  {v('Member Since', 'Thành viên từ')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -484,7 +522,7 @@ export default function AdminBrandSubscriptionsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Hành động')}
                 </th>
               </tr>
             </thead>
@@ -530,7 +568,7 @@ export default function AdminBrandSubscriptionsPage() {
                         }}
                       >
                         <Crown style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                        {tierConfig?.name}
+                        {tierConfig ? tierName(tierConfig.id) : ''}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -579,7 +617,7 @@ export default function AdminBrandSubscriptionsPage() {
                             fontFamily: 'Arimo, sans-serif',
                           }}
                         >
-                          Change Tier
+                          {v('Change Tier', 'Đổi gói')}
                           <ArrowRight
                             style={{ width: '14px', height: '14px', marginLeft: '6px' }}
                           />
@@ -606,10 +644,10 @@ export default function AdminBrandSubscriptionsPage() {
                 marginBottom: '8px',
               }}
             >
-              Change Subscription Tier
+              {v('Change Subscription Tier', 'Đổi gói đăng ký')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Update subscription tier for {selectedBrand?.name}
+              {v('Update subscription tier for', 'Cập nhật gói đăng ký cho')} {selectedBrand?.name}
             </DialogDescription>
           </DialogHeader>
           {selectedBrand && (
@@ -650,7 +688,7 @@ export default function AdminBrandSubscriptionsPage() {
                       padding: '4px 10px',
                     }}
                   >
-                    Current: {subscriptionTiers.find((t) => t.id === selectedBrand.currentTier)?.name}
+                    {v('Current', 'Hiện tại')}: {tierName(selectedBrand.currentTier)}
                   </Badge>
                 </div>
               </div>
@@ -666,7 +704,7 @@ export default function AdminBrandSubscriptionsPage() {
                     display: 'block',
                   }}
                 >
-                  New Subscription Tier
+                  {v('New Subscription Tier', 'Gói đăng ký mới')}
                 </Label>
                 <Select value={newTier} onValueChange={setNewTier}>
                   <SelectTrigger
@@ -681,9 +719,9 @@ export default function AdminBrandSubscriptionsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="starter">Starter - Free</SelectItem>
-                    <SelectItem value="business">Business - 2,000,000 VND/month</SelectItem>
-                    <SelectItem value="premium">Premium - 5,000,000 VND/month</SelectItem>
+                    <SelectItem value="starter">{v('Starter - Free', 'Khởi đầu - Miễn phí')}</SelectItem>
+                    <SelectItem value="business">{v('Business - 2,000,000 VND/month', 'Doanh nghiệp - 2.000.000 VNĐ/tháng')}</SelectItem>
+                    <SelectItem value="premium">{v('Premium - 5,000,000 VND/month', 'Cao cấp - 5.000.000 VNĐ/tháng')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -699,10 +737,10 @@ export default function AdminBrandSubscriptionsPage() {
                     display: 'block',
                   }}
                 >
-                  Change Note
+                  {v('Change Note', 'Ghi chú thay đổi')}
                 </Label>
                 <Textarea
-                  placeholder="Add a note explaining the tier change..."
+                  placeholder={v('Add a note explaining the tier change...', 'Thêm ghi chú giải thích việc đổi gói...')}
                   value={changeNote}
                   onChange={(e) => setChangeNote(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -729,7 +767,7 @@ export default function AdminBrandSubscriptionsPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleChangeTier}
@@ -744,7 +782,7 @@ export default function AdminBrandSubscriptionsPage() {
               }}
             >
               <Crown style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Change Tier
+              {v('Change Tier', 'Đổi gói')}
             </Button>
           </DialogFooter>
         </DialogContent>

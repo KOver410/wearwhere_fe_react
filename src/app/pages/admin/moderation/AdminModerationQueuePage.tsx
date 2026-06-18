@@ -23,6 +23,7 @@ import {
   TrendingUp,
   Filter,
 } from 'lucide-react';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockReportedOOTDs = [
@@ -162,7 +163,29 @@ const statusConfig = {
   resolved: { label: 'Resolved', color: 'bg-[#10B981]/10 text-[#10B981]', icon: Eye },
 };
 
+const priorityLabelVi: Record<string, string> = {
+  high: 'Cao',
+  medium: 'Trung bình',
+  low: 'Thấp',
+};
+
+const statusLabelVi: Record<string, string> = {
+  pending: 'Đang chờ',
+  claimed: 'Đã nhận',
+  resolved: 'Đã xử lý',
+};
+
+const reasonLabelVi: Record<string, string> = {
+  Spam: 'Spam',
+  'Inappropriate Content': 'Nội dung không phù hợp',
+  Misleading: 'Gây hiểu lầm',
+  Advertisement: 'Quảng cáo',
+  Harassment: 'Quấy rối',
+  'False Information': 'Thông tin sai lệch',
+};
+
 export default function AdminModerationQueuePage() {
+  const { v } = useLanguage();
   const [activeTab, setActiveTab] = useState('ootd');
   const [searchQuery, setSearchQuery] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('all');
@@ -234,7 +257,7 @@ export default function AdminModerationQueuePage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Moderation Queue
+              {v('Moderation Queue', 'Hàng đợi kiểm duyệt')}
             </h1>
             <Badge
               className="bg-[#E7000B]/10 text-[#E7000B]"
@@ -246,14 +269,14 @@ export default function AdminModerationQueuePage() {
                 padding: '6px 16px',
               }}
             >
-              {stats.totalPending} Pending
+              {stats.totalPending} {v('Pending', 'Đang chờ')}
             </Badge>
           </div>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Review reported content và take action
+            {v('Review reported content và take action', 'Xem xét nội dung bị báo cáo và xử lý')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -271,7 +294,7 @@ export default function AdminModerationQueuePage() {
               }}
             >
               <Filter style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Auto-filter Settings
+              {v('Auto-filter Settings', 'Cài đặt bộ lọc tự động')}
             </Button>
           </Link>
           <Link to="/admin/moderation/history">
@@ -288,7 +311,7 @@ export default function AdminModerationQueuePage() {
               }}
             >
               <Clock style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              History
+              {v('History', 'Lịch sử')}
             </Button>
           </Link>
         </div>
@@ -317,7 +340,7 @@ export default function AdminModerationQueuePage() {
                 marginBottom: '4px',
               }}
             >
-              Total Pending
+              {v('Total Pending', 'Tổng đang chờ')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -349,7 +372,7 @@ export default function AdminModerationQueuePage() {
                 marginBottom: '4px',
               }}
             >
-              OOTD Posts
+              {v('OOTD Posts', 'Bài đăng OOTD')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -381,7 +404,7 @@ export default function AdminModerationQueuePage() {
                 marginBottom: '4px',
               }}
             >
-              Comments
+              {v('Comments', 'Bình luận')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -413,7 +436,7 @@ export default function AdminModerationQueuePage() {
                 marginBottom: '4px',
               }}
             >
-              Reviews
+              {v('Reviews', 'Đánh giá')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -439,7 +462,7 @@ export default function AdminModerationQueuePage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search content..."
+                placeholder={v('Search content...', 'Tìm kiếm nội dung...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -465,13 +488,13 @@ export default function AdminModerationQueuePage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Priority" />
+                <SelectValue placeholder={v('Priority', 'Mức ưu tiên')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="high">High Priority</SelectItem>
-                <SelectItem value="medium">Medium Priority</SelectItem>
-                <SelectItem value="low">Low Priority</SelectItem>
+                <SelectItem value="all">{v('All Priority', 'Tất cả mức ưu tiên')}</SelectItem>
+                <SelectItem value="high">{v('High Priority', 'Ưu tiên cao')}</SelectItem>
+                <SelectItem value="medium">{v('Medium Priority', 'Ưu tiên trung bình')}</SelectItem>
+                <SelectItem value="low">{v('Low Priority', 'Ưu tiên thấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -488,13 +511,13 @@ export default function AdminModerationQueuePage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="claimed">Claimed</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending', 'Đang chờ')}</SelectItem>
+                <SelectItem value="claimed">{v('Claimed', 'Đã nhận')}</SelectItem>
+                <SelectItem value="resolved">{v('Resolved', 'Đã xử lý')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -514,9 +537,9 @@ export default function AdminModerationQueuePage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="priority">Sort by Priority</SelectItem>
-                <SelectItem value="reports">Sort by Report Count</SelectItem>
-                <SelectItem value="date">Sort by Date</SelectItem>
+                <SelectItem value="priority">{v('Sort by Priority', 'Sắp xếp theo mức ưu tiên')}</SelectItem>
+                <SelectItem value="reports">{v('Sort by Report Count', 'Sắp xếp theo số lượt báo cáo')}</SelectItem>
+                <SelectItem value="date">{v('Sort by Date', 'Sắp xếp theo ngày')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -541,7 +564,7 @@ export default function AdminModerationQueuePage() {
             }}
           >
             <Image style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            OOTD Posts ({stats.ootdPending})
+            {v('OOTD Posts', 'Bài đăng OOTD')} ({stats.ootdPending})
           </TabsTrigger>
           <TabsTrigger
             value="comments"
@@ -555,7 +578,7 @@ export default function AdminModerationQueuePage() {
             }}
           >
             <MessageSquare style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Comments ({stats.commentsPending})
+            {v('Comments', 'Bình luận')} ({stats.commentsPending})
           </TabsTrigger>
           <TabsTrigger
             value="reviews"
@@ -569,7 +592,7 @@ export default function AdminModerationQueuePage() {
             }}
           >
             <Star style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Reviews ({stats.reviewsPending})
+            {v('Reviews', 'Đánh giá')} ({stats.reviewsPending})
           </TabsTrigger>
         </TabsList>
 
@@ -586,7 +609,7 @@ export default function AdminModerationQueuePage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    No reports found
+                    {v('No reports found', 'Không tìm thấy báo cáo nào')}
                   </p>
                 </div>
               </Card>
@@ -632,7 +655,7 @@ export default function AdminModerationQueuePage() {
                               className="text-[#6A7282]"
                               style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                             >
-                              Reported {new Date(item.reportedAt).toLocaleString('vi-VN')}
+                              {v('Reported', 'Đã báo cáo')} {new Date(item.reportedAt).toLocaleString('vi-VN')}
                             </p>
                           </div>
                         </div>
@@ -652,7 +675,10 @@ export default function AdminModerationQueuePage() {
                             <TrendingUp
                               style={{ width: '12px', height: '12px', marginRight: '4px' }}
                             />
-                            {priorityConfig[item.priority as keyof typeof priorityConfig].label}
+                            {v(
+                              priorityConfig[item.priority as keyof typeof priorityConfig].label,
+                              priorityLabelVi[item.priority] ?? priorityConfig[item.priority as keyof typeof priorityConfig].label
+                            )}
                           </Badge>
                           <Badge
                             className={statusConfig[item.status as keyof typeof statusConfig].color}
@@ -664,7 +690,10 @@ export default function AdminModerationQueuePage() {
                               padding: '6px 12px',
                             }}
                           >
-                            {statusConfig[item.status as keyof typeof statusConfig].label}
+                            {v(
+                              statusConfig[item.status as keyof typeof statusConfig].label,
+                              statusLabelVi[item.status] ?? statusConfig[item.status as keyof typeof statusConfig].label
+                            )}
                           </Badge>
                         </div>
                       </div>
@@ -708,7 +737,7 @@ export default function AdminModerationQueuePage() {
                                   marginBottom: '4px',
                                 }}
                               >
-                                Product
+                                {v('Product', 'Sản phẩm')}
                               </p>
                               <p
                                 className="text-[#0A0A0A]"
@@ -742,7 +771,7 @@ export default function AdminModerationQueuePage() {
                                   marginBottom: '4px',
                                 }}
                               >
-                                Comment on
+                                {v('Comment on', 'Bình luận về')}
                               </p>
                               <p
                                 className="text-[#0A0A0A]"
@@ -787,7 +816,7 @@ export default function AdminModerationQueuePage() {
                               fontFamily: 'Arimo, sans-serif',
                             }}
                           >
-                            {item.reportCount} reports
+                            {item.reportCount} {v('reports', 'báo cáo')}
                           </span>
                         </div>
                         <div className="flex items-center" style={{ gap: '6px', flexWrap: 'wrap' }}>
@@ -802,7 +831,7 @@ export default function AdminModerationQueuePage() {
                                 padding: '4px 10px',
                               }}
                             >
-                              {reason}
+                              {v(reason, reasonLabelVi[reason] ?? reason)}
                             </Badge>
                           ))}
                         </div>
@@ -811,7 +840,7 @@ export default function AdminModerationQueuePage() {
                             className="text-[#6A7282]"
                             style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                           >
-                            Claimed by {item.claimedBy}
+                            {v('Claimed by', 'Nhận bởi')} {item.claimedBy}
                           </span>
                         )}
                       </div>
@@ -833,7 +862,7 @@ export default function AdminModerationQueuePage() {
                           }}
                         >
                           <Eye style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                          Review
+                          {v('Review', 'Xem xét')}
                         </Button>
                       </Link>
                       {item.status === 'pending' && (
@@ -849,7 +878,7 @@ export default function AdminModerationQueuePage() {
                             fontFamily: 'Arimo, sans-serif',
                           }}
                         >
-                          Claim
+                          {v('Claim', 'Nhận xử lý')}
                         </Button>
                       )}
                     </div>

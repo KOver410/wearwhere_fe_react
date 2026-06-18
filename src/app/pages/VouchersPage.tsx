@@ -23,7 +23,7 @@ export function VouchersPage() {
 
   const handleRedeem = () => {
     if (redeemCode.trim()) {
-      alert(`Voucher "${redeemCode}" has been applied!`);
+      alert(v(`Voucher "${redeemCode}" has been applied!`, `Voucher "${redeemCode}" đã được áp dụng!`));
       setRedeemCode('');
     }
   };
@@ -201,7 +201,7 @@ export function VouchersPage() {
                         </span>
                         {voucher.maxDiscount && (
                           <span style={{ fontSize: '12px', color: '#888' }}>
-                            Max: ${voucher.maxDiscount}
+                            {v('Max', 'Tối đa')}: ${voucher.maxDiscount}
                           </span>
                         )}
                       </div>

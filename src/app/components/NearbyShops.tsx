@@ -5,7 +5,7 @@ import { MapPin, Navigation, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function NearbyShops() {
-  const { t, lang } = useLanguage();
+  const { t, v, lang } = useLanguage();
 
   const formatPrice = (price: number) => {
     if (lang === 'vi') return `${price.toLocaleString('vi-VN')}d`;
@@ -48,7 +48,7 @@ export function NearbyShops() {
           className="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-4">
           <div>
             <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-              <Navigation className="w-3.5 h-3.5 inline-block mr-2 -mt-0.5" />NEAR YOU
+              <Navigation className="w-3.5 h-3.5 inline-block mr-2 -mt-0.5" />{v('NEAR YOU', 'GẦN BẠN')}
             </span>
             <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#0d0d0d', lineHeight: 0.95 }}>
               {t('nearbyShops.title')}

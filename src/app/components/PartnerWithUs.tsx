@@ -7,7 +7,7 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 export function PartnerWithUs() {
   const formRef = useRef<HTMLDivElement>(null);
   const benefitsRef = useRef<HTMLElement>(null);
-  const { t } = useLanguage();
+  const { t, v } = useLanguage();
 
   const scrollToForm = () => {
     formRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -31,7 +31,7 @@ export function PartnerWithUs() {
         <div className="absolute inset-0 z-0">
           <img
             src="https://images.unsplash.com/photo-1765009433753-c7462637d21f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwc3RvcmUlMjBpbnRlcmlvciUyMG1vZGVybnxlbnwxfHx8fDE3NzAwOTE3MTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-            alt="Fashion Store Interior"
+            alt={v('Fashion Store Interior', 'Nội thất cửa hàng thời trang')}
             className="w-full h-full object-cover brightness-50"
           />
         </div>
@@ -157,16 +157,16 @@ export function PartnerWithUs() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1" style={{ fontSize: '14px', color: '#4a4a4a' }}>{t('partner.firstName')}</label>
-                <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder="John" />
+                <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder={v('John', 'Văn A')} />
               </div>
               <div>
                 <label className="block mb-1" style={{ fontSize: '14px', color: '#4a4a4a' }}>{t('partner.lastName')}</label>
-                <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder="Doe" />
+                <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder={v('Doe', 'Nguyễn')} />
               </div>
             </div>
             <div>
               <label className="block mb-1" style={{ fontSize: '14px', color: '#4a4a4a' }}>{t('partner.brandName')}</label>
-              <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder="Your Brand" />
+              <input type="text" className="w-full px-4 py-2 border border-[#e0d8cf] focus:ring-2 focus:ring-[#d41c1c] focus:outline-none" style={{ borderRadius: '10px' }} placeholder={v('Your Brand', 'Thương hiệu của bạn')} />
             </div>
             <div>
               <label className="block mb-1" style={{ fontSize: '14px', color: '#4a4a4a' }}>{t('partner.emailAddress')}</label>

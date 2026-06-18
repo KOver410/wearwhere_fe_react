@@ -32,6 +32,7 @@ import {
   DialogTrigger,
 } from '@/app/components/ui/dialog';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockDeletedAccounts = [
@@ -105,6 +106,7 @@ const statusConfig = {
 };
 
 export default function AdminDeletedAccountsPage() {
+  const { v } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedAccount, setSelectedAccount] = useState<any>(null);
@@ -136,13 +138,20 @@ export default function AdminDeletedAccountsPage() {
     rejected: mockDeletedAccounts.filter((a) => a.status === 'rejected').length,
   };
 
+  const statusLabels: Record<string, string> = {
+    pending: v('Pending Review', 'Chờ duyệt'),
+    approved: v('Approved', 'Đã duyệt'),
+    rejected: v('Rejected', 'Từ chối'),
+    completed: v('Deleted', 'Đã xóa'),
+  };
+
   const handleApprove = () => {
-    toast.success('Account deletion request approved');
+    toast.success(v('Account deletion request approved', 'Đã duyệt yêu cầu xóa tài khoản'));
     setReviewModalOpen(false);
   };
 
   const handleReject = () => {
-    toast.success('Account deletion request rejected');
+    toast.success(v('Account deletion request rejected', 'Đã từ chối yêu cầu xóa tài khoản'));
     setReviewModalOpen(false);
   };
 
@@ -165,7 +174,7 @@ export default function AdminDeletedAccountsPage() {
               marginBottom: '8px',
             }}
           >
-            Deleted Accounts
+            {v('Deleted Accounts', 'Tài khoản đã xóa')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -188,7 +197,7 @@ export default function AdminDeletedAccountsPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Users
+              {v('Back to Users', 'Quay lại Người dùng')}
             </Button>
           </Link>
           <Button
@@ -204,7 +213,7 @@ export default function AdminDeletedAccountsPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export
+            {v('Export', 'Xuất')}
           </Button>
         </div>
       </div>
@@ -232,7 +241,7 @@ export default function AdminDeletedAccountsPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Review
+              {v('Pending Review', 'Chờ duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -264,7 +273,7 @@ export default function AdminDeletedAccountsPage() {
                 marginBottom: '4px',
               }}
             >
-              Approved
+              {v('Approved', 'Đã duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -296,7 +305,7 @@ export default function AdminDeletedAccountsPage() {
                 marginBottom: '4px',
               }}
             >
-              Completed
+              {v('Completed', 'Hoàn tất')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -328,7 +337,7 @@ export default function AdminDeletedAccountsPage() {
                 marginBottom: '4px',
               }}
             >
-              Rejected
+              {v('Rejected', 'Từ chối')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -354,7 +363,7 @@ export default function AdminDeletedAccountsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search accounts..."
+                placeholder={v('Search accounts...', 'Tìm kiếm tài khoản...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -380,14 +389,14 @@ export default function AdminDeletedAccountsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Review', 'Chờ duyệt')}</SelectItem>
+                <SelectItem value="approved">{v('Approved', 'Đã duyệt')}</SelectItem>
+                <SelectItem value="rejected">{v('Rejected', 'Từ chối')}</SelectItem>
+                <SelectItem value="completed">{v('Completed', 'Hoàn tất')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -417,7 +426,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  User
+                  {v('User', 'Người dùng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -428,7 +437,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Request Date
+                  {v('Request Date', 'Ngày yêu cầu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -439,7 +448,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Deletion Date
+                  {v('Deletion Date', 'Ngày xóa')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -450,7 +459,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Reason
+                  {v('Reason', 'Lý do')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -461,7 +470,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Activity
+                  {v('Activity', 'Hoạt động')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -472,7 +481,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -483,7 +492,7 @@ export default function AdminDeletedAccountsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -565,13 +574,13 @@ export default function AdminDeletedAccountsPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          {account.stats.orders} orders
+                          {account.stats.orders} {v('orders', 'đơn hàng')}
                         </span>
                         <span
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          {account.stats.posts} posts
+                          {account.stats.posts} {v('posts', 'bài đăng')}
                         </span>
                       </div>
                     </td>
@@ -590,7 +599,7 @@ export default function AdminDeletedAccountsPage() {
                         }}
                       >
                         <StatusIcon style={{ width: '12px', height: '12px' }} />
-                        {statusConfig[account.status as keyof typeof statusConfig].label}
+                        {statusLabels[account.status]}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -608,7 +617,7 @@ export default function AdminDeletedAccountsPage() {
                             }}
                           >
                             <Eye style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                            Review
+                            {v('Review', 'Xem xét')}
                           </Button>
                         )}
                       </div>
@@ -629,9 +638,9 @@ export default function AdminDeletedAccountsPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredAccounts.length)} of{' '}
-            {filteredAccounts.length} requests
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredAccounts.length)} {v('of', 'trên')}{' '}
+            {filteredAccounts.length} {v('requests', 'yêu cầu')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -646,7 +655,7 @@ export default function AdminDeletedAccountsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -683,7 +692,7 @@ export default function AdminDeletedAccountsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Tiếp')}
             </Button>
           </div>
         </div>
@@ -701,10 +710,13 @@ export default function AdminDeletedAccountsPage() {
                 marginBottom: '8px',
               }}
             >
-              Review Account Deletion Request
+              {v('Review Account Deletion Request', 'Xem xét yêu cầu xóa tài khoản')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Please review the user's deletion request carefully before making a decision.
+              {v(
+                "Please review the user's deletion request carefully before making a decision.",
+                'Vui lòng xem xét kỹ yêu cầu xóa của người dùng trước khi đưa ra quyết định.'
+              )}
             </DialogDescription>
           </DialogHeader>
           {selectedAccount && (
@@ -748,7 +760,7 @@ export default function AdminDeletedAccountsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Request Date:
+                    {v('Request Date:', 'Ngày yêu cầu:')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -766,7 +778,7 @@ export default function AdminDeletedAccountsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Reason:
+                    {v('Reason:', 'Lý do:')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -784,7 +796,7 @@ export default function AdminDeletedAccountsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Total Orders:
+                    {v('Total Orders:', 'Tổng đơn hàng:')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -802,7 +814,7 @@ export default function AdminDeletedAccountsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Total Reviews:
+                    {v('Total Reviews:', 'Tổng đánh giá:')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -820,7 +832,7 @@ export default function AdminDeletedAccountsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Total Posts:
+                    {v('Total Posts:', 'Tổng bài đăng:')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -851,13 +863,16 @@ export default function AdminDeletedAccountsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Warning: This action cannot be undone
+                    {v('Warning: This action cannot be undone', 'Cảnh báo: Hành động này không thể hoàn tác')}
                   </p>
                   <p
                     className="text-[#E7000B]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Once approved, all user data including orders, reviews, and posts will be permanently deleted after 7 days.
+                    {v(
+                      'Once approved, all user data including orders, reviews, and posts will be permanently deleted after 7 days.',
+                      'Sau khi duyệt, toàn bộ dữ liệu người dùng bao gồm đơn hàng, đánh giá và bài đăng sẽ bị xóa vĩnh viễn sau 7 ngày.'
+                    )}
                   </p>
                 </div>
               </div>
@@ -878,7 +893,7 @@ export default function AdminDeletedAccountsPage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Reject
+              {v('Reject', 'Từ chối')}
             </Button>
             <Button
               onClick={handleApprove}
@@ -893,7 +908,7 @@ export default function AdminDeletedAccountsPage() {
               }}
             >
               <CheckCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Approve Deletion
+              {v('Approve Deletion', 'Duyệt xóa')}
             </Button>
           </DialogFooter>
         </DialogContent>

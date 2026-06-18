@@ -73,11 +73,11 @@ export function PaymentMethodsPage() {
                       {method.type === 'momo' ? 'MoMo' : method.type === 'zalopay' ? 'ZaloPay' : method.type.charAt(0).toUpperCase() + method.type.slice(1)} ···· {method.last4}
                     </p>
                     {method.isDefault && (
-                      <span className="px-2 py-0.5 text-white" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: '#d41c1c', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>DEFAULT</span>
+                      <span className="px-2 py-0.5 text-white" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: '#d41c1c', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>{v('DEFAULT', 'MẶC ĐỊNH')}</span>
                     )}
                   </div>
                   <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
-                    {method.holderName}{method.expiryDate ? ` · Expires ${method.expiryDate}` : ''}
+                    {method.holderName}{method.expiryDate ? ` · ${v('Expires', 'Hết hạn')} ${method.expiryDate}` : ''}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">

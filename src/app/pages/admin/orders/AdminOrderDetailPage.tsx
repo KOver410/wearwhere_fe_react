@@ -30,6 +30,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 const mockOrderDetail = {
   id: 'ORD-2024-001',
@@ -81,6 +82,15 @@ const statusConfig = {
 };
 
 export default function AdminOrderDetailPage() {
+  const { v } = useLanguage();
+  const statusLabels: Record<string, string> = {
+    pending: v('Pending', 'Đang chờ'),
+    processing: v('Processing', 'Đang xử lý'),
+    shipped: v('Shipped', 'Đang giao hàng'),
+    delivered: v('Delivered', 'Đã giao'),
+    cancelled: v('Cancelled', 'Đã hủy'),
+    disputed: v('Disputed', 'Đang tranh chấp'),
+  };
   const { id } = useParams();
   const [order, setOrder] = useState(mockOrderDetail);
   const [statusModalOpen, setStatusModalOpen] = useState(false);
@@ -92,13 +102,13 @@ export default function AdminOrderDetailPage() {
   const handleUpdateStatus = () => {
     setOrder({ ...order, status: newStatus });
     setStatusModalOpen(false);
-    toast.success('Order status updated');
+    toast.success(v('Order status updated', 'Đã cập nhật trạng thái đơn hàng'));
   };
 
   const handleRefund = () => {
     setOrder({ ...order, payment: 'refunded', status: 'cancelled' });
     setRefundModalOpen(false);
-    toast.success('Refund processed successfully');
+    toast.success(v('Refund processed successfully', 'Đã xử lý hoàn tiền thành công'));
   };
 
   return (
@@ -130,13 +140,13 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '8px',
               }}
             >
-              Order {order.id}
+              {v('Order', 'Đơn hàng')} {order.id}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Placed on {new Date(order.date).toLocaleDateString('vi-VN')}
+              {v('Placed on', 'Đặt ngày')} {new Date(order.date).toLocaleDateString('vi-VN')}
             </p>
           </div>
         </div>
@@ -155,7 +165,7 @@ export default function AdminOrderDetailPage() {
             }}
           >
             <Edit3 style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Override Status
+            {v('Override Status', 'Ghi đè trạng thái')}
           </Button>
           <Button
             onClick={() => setRefundModalOpen(true)}
@@ -171,7 +181,7 @@ export default function AdminOrderDetailPage() {
             }}
           >
             <RotateCcw style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Process Refund
+            {v('Process Refund', 'Xử lý hoàn tiền')}
           </Button>
         </div>
       </div>
@@ -199,7 +209,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '8px',
               }}
             >
-              Order Status
+              {v('Order Status', 'Trạng thái đơn hàng')}
             </p>
             <Badge
               className={statusConfig[order.status as keyof typeof statusConfig].color}
@@ -211,7 +221,7 @@ export default function AdminOrderDetailPage() {
                 padding: '8px 16px',
               }}
             >
-              {statusConfig[order.status as keyof typeof statusConfig].label}
+              {statusLabels[order.status]}
             </Badge>
           </div>
         </Card>
@@ -237,7 +247,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '8px',
               }}
             >
-              Payment Status
+              {v('Payment Status', 'Trạng thái thanh toán')}
             </p>
             <Badge
               className={
@@ -253,7 +263,7 @@ export default function AdminOrderDetailPage() {
                 padding: '8px 16px',
               }}
             >
-              {order.payment === 'paid' ? 'Paid' : 'Refunded'}
+              {order.payment === 'paid' ? v('Paid', 'Đã thanh toán') : v('Refunded', 'Đã hoàn tiền')}
             </Badge>
           </div>
         </Card>
@@ -279,7 +289,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Amount
+              {v('Total Amount', 'Tổng số tiền')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -308,7 +318,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '20px',
               }}
             >
-              Order Items
+              {v('Order Items', 'Sản phẩm trong đơn')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {order.items.map((item) => (
@@ -343,13 +353,13 @@ export default function AdminOrderDetailPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        SKU: {item.sku}
+                        {v('SKU', 'Mã SKU')}: {item.sku}
                       </p>
                       <p
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Quantity: {item.quantity}
+                        {v('Quantity', 'Số lượng')}: {item.quantity}
                       </p>
                     </div>
                   </div>
@@ -376,7 +386,7 @@ export default function AdminOrderDetailPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Subtotal
+                  {v('Subtotal', 'Tạm tính')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -390,7 +400,7 @@ export default function AdminOrderDetailPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Shipping
+                  {v('Shipping', 'Phí vận chuyển')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -408,7 +418,7 @@ export default function AdminOrderDetailPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Total
+                  {v('Total', 'Tổng cộng')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -438,7 +448,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '20px',
               }}
             >
-              Order Timeline
+              {v('Order Timeline', 'Tiến trình đơn hàng')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {order.timeline.map((event, idx) => (
@@ -505,7 +515,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '16px',
               }}
             >
-              Customer
+              {v('Customer', 'Khách hàng')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div>
@@ -517,7 +527,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Name
+                  {v('Name', 'Tên')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -535,7 +545,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Email
+                  {v('Email', 'Email')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -553,7 +563,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Phone
+                  {v('Phone', 'Số điện thoại')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -571,7 +581,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Address
+                  {v('Address', 'Địa chỉ')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -597,7 +607,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '16px',
               }}
             >
-              Brand
+              {v('Brand', 'Thương hiệu')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div>
@@ -609,7 +619,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Name
+                  {v('Name', 'Tên')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -627,7 +637,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Email
+                  {v('Email', 'Email')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -645,7 +655,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Phone
+                  {v('Phone', 'Số điện thoại')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -671,7 +681,7 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '16px',
               }}
             >
-              Shipping
+              {v('Shipping', 'Vận chuyển')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div>
@@ -683,7 +693,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Method
+                  {v('Method', 'Phương thức')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -701,7 +711,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Carrier
+                  {v('Carrier', 'Đơn vị vận chuyển')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -719,7 +729,7 @@ export default function AdminOrderDetailPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Tracking Number
+                  {v('Tracking Number', 'Mã vận đơn')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -745,10 +755,10 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '8px',
               }}
             >
-              Override Order Status
+              {v('Override Order Status', 'Ghi đè trạng thái đơn hàng')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Manually change the order status
+              {v('Manually change the order status', 'Thay đổi trạng thái đơn hàng thủ công')}
             </DialogDescription>
           </DialogHeader>
           <div style={{ marginTop: '24px' }}>
@@ -761,7 +771,7 @@ export default function AdminOrderDetailPage() {
                 display: 'block',
               }}
             >
-              New Status *
+              {v('New Status', 'Trạng thái mới')} *
             </Label>
             <Select value={newStatus} onValueChange={setNewStatus}>
               <SelectTrigger
@@ -776,11 +786,11 @@ export default function AdminOrderDetailPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="shipped">Shipped</SelectItem>
-                <SelectItem value="delivered">Delivered</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="pending">{v('Pending', 'Đang chờ')}</SelectItem>
+                <SelectItem value="processing">{v('Processing', 'Đang xử lý')}</SelectItem>
+                <SelectItem value="shipped">{v('Shipped', 'Đang giao hàng')}</SelectItem>
+                <SelectItem value="delivered">{v('Delivered', 'Đã giao')}</SelectItem>
+                <SelectItem value="cancelled">{v('Cancelled', 'Đã hủy')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -797,7 +807,7 @@ export default function AdminOrderDetailPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleUpdateStatus}
@@ -811,7 +821,7 @@ export default function AdminOrderDetailPage() {
                 padding: '0 24px',
               }}
             >
-              Update Status
+              {v('Update Status', 'Cập nhật trạng thái')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -829,10 +839,10 @@ export default function AdminOrderDetailPage() {
                 marginBottom: '8px',
               }}
             >
-              Process Refund
+              {v('Process Refund', 'Xử lý hoàn tiền')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Issue a refund for this order
+              {v('Issue a refund for this order', 'Hoàn tiền cho đơn hàng này')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -846,7 +856,7 @@ export default function AdminOrderDetailPage() {
                   display: 'block',
                 }}
               >
-                Refund Amount *
+                {v('Refund Amount', 'Số tiền hoàn')} *
               </Label>
               <Input
                 type="number"
@@ -871,10 +881,10 @@ export default function AdminOrderDetailPage() {
                   display: 'block',
                 }}
               >
-                Reason *
+                {v('Reason', 'Lý do')} *
               </Label>
               <Textarea
-                placeholder="Enter refund reason..."
+                placeholder={v('Enter refund reason...', 'Nhập lý do hoàn tiền...')}
                 value={refundReason}
                 onChange={(e) => setRefundReason(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -900,7 +910,7 @@ export default function AdminOrderDetailPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleRefund}
@@ -915,7 +925,7 @@ export default function AdminOrderDetailPage() {
               }}
             >
               <RotateCcw style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Process Refund
+              {v('Process Refund', 'Xử lý hoàn tiền')}
             </Button>
           </DialogFooter>
         </DialogContent>

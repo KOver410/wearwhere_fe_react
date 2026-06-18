@@ -15,8 +15,10 @@ import {
 } from '@/app/components/ui/select';
 import { ArrowLeft, Tag, Percent, DollarSign, Users, Calendar, Info } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 export default function AdminCreateVoucherPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -40,7 +42,7 @@ export default function AdminCreateVoucherPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Voucher created successfully');
+    toast.success(v('Voucher created successfully', 'Tạo voucher thành công'));
     navigate('/admin/marketing/promotions');
   };
 
@@ -76,7 +78,7 @@ export default function AdminCreateVoucherPage() {
               marginBottom: '8px',
             }}
           >
-            Create Platform Voucher
+            {v('Create Platform Voucher', 'Tạo Voucher Nền tảng')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -105,7 +107,7 @@ export default function AdminCreateVoucherPage() {
                   marginBottom: '20px',
                 }}
               >
-                Basic Information
+                {v('Basic Information', 'Thông tin cơ bản')}
               </h3>
 
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -119,11 +121,11 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Voucher Name *
+                    {v('Voucher Name *', 'Tên Voucher *')}
                   </Label>
                   <Input
                     required
-                    placeholder="e.g., Summer Sale 2024"
+                    placeholder={v('e.g., Summer Sale 2024', 'VD: Khuyến mãi Hè 2024')}
                     value={formData.name}
                     onChange={(e) => handleChange('name', e.target.value)}
                     className="border-[#D1D5DC]"
@@ -146,11 +148,11 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Voucher Code *
+                    {v('Voucher Code *', 'Mã Voucher *')}
                   </Label>
                   <Input
                     required
-                    placeholder="e.g., SUMMER2024"
+                    placeholder={v('e.g., SUMMER2024', 'VD: SUMMER2024')}
                     value={formData.code}
                     onChange={(e) => handleChange('code', e.target.value.toUpperCase())}
                     className="border-[#D1D5DC]"
@@ -183,10 +185,10 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Description
+                    {v('Description', 'Mô tả')}
                   </Label>
                   <Textarea
-                    placeholder="Describe this promotion..."
+                    placeholder={v('Describe this promotion...', 'Mô tả chương trình khuyến mãi này...')}
                     value={formData.description}
                     onChange={(e) => handleChange('description', e.target.value)}
                     className="border-[#D1D5DC]"
@@ -209,7 +211,7 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Promotion Type *
+                    {v('Promotion Type *', 'Loại khuyến mãi *')}
                   </Label>
                   <Select value={formData.type} onValueChange={(v) => handleChange('type', v)}>
                     <SelectTrigger
@@ -224,8 +226,8 @@ export default function AdminCreateVoucherPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="sitewide">Sitewide Sale</SelectItem>
-                      <SelectItem value="voucher">Voucher Code</SelectItem>
+                      <SelectItem value="sitewide">{v('Sitewide Sale', 'Khuyến mãi toàn trang')}</SelectItem>
+                      <SelectItem value="voucher">{v('Voucher Code', 'Mã Voucher')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -246,7 +248,7 @@ export default function AdminCreateVoucherPage() {
                   marginBottom: '20px',
                 }}
               >
-                Discount Settings
+                {v('Discount Settings', 'Cài đặt giảm giá')}
               </h3>
 
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -260,7 +262,7 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Discount Type *
+                    {v('Discount Type *', 'Loại giảm giá *')}
                   </Label>
                   <Select
                     value={formData.discountType}
@@ -278,9 +280,9 @@ export default function AdminCreateVoucherPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="percentage">Percentage Discount</SelectItem>
-                      <SelectItem value="fixed">Fixed Amount</SelectItem>
-                      <SelectItem value="free_shipping">Free Shipping</SelectItem>
+                      <SelectItem value="percentage">{v('Percentage Discount', 'Giảm theo phần trăm')}</SelectItem>
+                      <SelectItem value="fixed">{v('Fixed Amount', 'Số tiền cố định')}</SelectItem>
+                      <SelectItem value="free_shipping">{v('Free Shipping', 'Miễn phí vận chuyển')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -296,13 +298,13 @@ export default function AdminCreateVoucherPage() {
                         display: 'block',
                       }}
                     >
-                      Discount Value *
+                      {v('Discount Value *', 'Giá trị giảm giá *')}
                     </Label>
                     <Input
                       required
                       type="number"
                       placeholder={
-                        formData.discountType === 'percentage' ? 'e.g., 20' : 'e.g., 100000'
+                        formData.discountType === 'percentage' ? v('e.g., 20', 'VD: 20') : v('e.g., 100000', 'VD: 100000')
                       }
                       value={formData.discountValue}
                       onChange={(e) => handleChange('discountValue', e.target.value)}
@@ -323,8 +325,8 @@ export default function AdminCreateVoucherPage() {
                       }}
                     >
                       {formData.discountType === 'percentage'
-                        ? 'Enter percentage (e.g., 20 for 20%)'
-                        : 'Enter amount in VND'}
+                        ? v('Enter percentage (e.g., 20 for 20%)', 'Nhập phần trăm (VD: 20 cho 20%)')
+                        : v('Enter amount in VND', 'Nhập số tiền theo VND')}
                     </p>
                   </div>
                 )}
@@ -339,11 +341,11 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Minimum Purchase Amount
+                    {v('Minimum Purchase Amount', 'Giá trị đơn hàng tối thiểu')}
                   </Label>
                   <Input
                     type="number"
-                    placeholder="e.g., 500000"
+                    placeholder={v('e.g., 500000', 'VD: 500000')}
                     value={formData.minPurchase}
                     onChange={(e) => handleChange('minPurchase', e.target.value)}
                     className="border-[#D1D5DC]"
@@ -362,7 +364,7 @@ export default function AdminCreateVoucherPage() {
                       marginTop: '6px',
                     }}
                   >
-                    Leave empty for no minimum
+                    {v('Leave empty for no minimum', 'Để trống nếu không yêu cầu tối thiểu')}
                   </p>
                 </div>
 
@@ -377,11 +379,11 @@ export default function AdminCreateVoucherPage() {
                         display: 'block',
                       }}
                     >
-                      Maximum Discount Amount
+                      {v('Maximum Discount Amount', 'Số tiền giảm tối đa')}
                     </Label>
                     <Input
                       type="number"
-                      placeholder="e.g., 200000"
+                      placeholder={v('e.g., 200000', 'VD: 200000')}
                       value={formData.maxDiscount}
                       onChange={(e) => handleChange('maxDiscount', e.target.value)}
                       className="border-[#D1D5DC]"
@@ -400,7 +402,7 @@ export default function AdminCreateVoucherPage() {
                         marginTop: '6px',
                       }}
                     >
-                      Cap the maximum discount for percentage discounts
+                      {v('Cap the maximum discount for percentage discounts', 'Giới hạn mức giảm tối đa cho giảm giá theo phần trăm')}
                     </p>
                   </div>
                 )}
@@ -421,7 +423,7 @@ export default function AdminCreateVoucherPage() {
                   marginBottom: '20px',
                 }}
               >
-                Usage Limits
+                {v('Usage Limits', 'Giới hạn sử dụng')}
               </h3>
 
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -435,11 +437,11 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Total Usage Limit
+                    {v('Total Usage Limit', 'Tổng giới hạn sử dụng')}
                   </Label>
                   <Input
                     type="number"
-                    placeholder="e.g., 1000"
+                    placeholder={v('e.g., 1000', 'VD: 1000')}
                     value={formData.usageLimit}
                     onChange={(e) => handleChange('usageLimit', e.target.value)}
                     className="border-[#D1D5DC]"
@@ -458,7 +460,7 @@ export default function AdminCreateVoucherPage() {
                       marginTop: '6px',
                     }}
                   >
-                    Leave empty for unlimited uses
+                    {v('Leave empty for unlimited uses', 'Để trống nếu không giới hạn lượt sử dụng')}
                   </p>
                 </div>
 
@@ -472,11 +474,11 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Usage Limit Per User
+                    {v('Usage Limit Per User', 'Giới hạn sử dụng mỗi người')}
                   </Label>
                   <Input
                     type="number"
-                    placeholder="e.g., 3"
+                    placeholder={v('e.g., 3', 'VD: 3')}
                     value={formData.usageLimitPerUser}
                     onChange={(e) => handleChange('usageLimitPerUser', e.target.value)}
                     className="border-[#D1D5DC]"
@@ -495,7 +497,7 @@ export default function AdminCreateVoucherPage() {
                       marginTop: '6px',
                     }}
                   >
-                    How many times each user can use this voucher
+                    {v('How many times each user can use this voucher', 'Số lần mỗi người dùng có thể sử dụng voucher này')}
                   </p>
                 </div>
               </div>
@@ -515,7 +517,7 @@ export default function AdminCreateVoucherPage() {
                   marginBottom: '20px',
                 }}
               >
-                Target Audience
+                {v('Target Audience', 'Đối tượng mục tiêu')}
               </h3>
 
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -529,7 +531,7 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Audience Type *
+                    {v('Audience Type *', 'Loại đối tượng *')}
                   </Label>
                   <Select
                     value={formData.targetAudience}
@@ -547,10 +549,10 @@ export default function AdminCreateVoucherPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Users</SelectItem>
-                      <SelectItem value="new">New Users Only</SelectItem>
-                      <SelectItem value="vip">VIP Members</SelectItem>
-                      <SelectItem value="custom">Custom Segment</SelectItem>
+                      <SelectItem value="all">{v('All Users', 'Tất cả người dùng')}</SelectItem>
+                      <SelectItem value="new">{v('New Users Only', 'Chỉ người dùng mới')}</SelectItem>
+                      <SelectItem value="vip">{v('VIP Members', 'Thành viên VIP')}</SelectItem>
+                      <SelectItem value="custom">{v('Custom Segment', 'Phân khúc tùy chỉnh')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -566,13 +568,13 @@ export default function AdminCreateVoucherPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Auto-apply
+                      {v('Auto-apply', 'Tự động áp dụng')}
                     </p>
                     <p
                       className="text-[#6A7282]"
                       style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      Automatically apply this promotion at checkout
+                      {v('Automatically apply this promotion at checkout', 'Tự động áp dụng khuyến mãi này khi thanh toán')}
                     </p>
                   </div>
                   <Switch
@@ -592,13 +594,13 @@ export default function AdminCreateVoucherPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Stackable
+                      {v('Stackable', 'Có thể kết hợp')}
                     </p>
                     <p
                       className="text-[#6A7282]"
                       style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      Allow combining with other promotions
+                      {v('Allow combining with other promotions', 'Cho phép kết hợp với các khuyến mãi khác')}
                     </p>
                   </div>
                   <Switch
@@ -626,7 +628,7 @@ export default function AdminCreateVoucherPage() {
                   marginBottom: '20px',
                 }}
               >
-                Schedule
+                {v('Schedule', 'Lịch trình')}
               </h3>
 
               <div className="flex flex-col" style={{ gap: '20px' }}>
@@ -640,7 +642,7 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    Start Date *
+                    {v('Start Date *', 'Ngày bắt đầu *')}
                   </Label>
                   <Input
                     required
@@ -667,7 +669,7 @@ export default function AdminCreateVoucherPage() {
                       display: 'block',
                     }}
                   >
-                    End Date *
+                    {v('End Date *', 'Ngày kết thúc *')}
                   </Label>
                   <Input
                     required
@@ -701,7 +703,7 @@ export default function AdminCreateVoucherPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Voucher Preview
+                  {v('Voucher Preview', 'Xem trước Voucher')}
                 </h3>
               </div>
 
@@ -715,13 +717,13 @@ export default function AdminCreateVoucherPage() {
                     marginBottom: '8px',
                   }}
                 >
-                  {formData.code || 'VOUCHER CODE'}
+                  {formData.code || v('VOUCHER CODE', 'MÃ VOUCHER')}
                 </p>
                 <p
                   className="text-white/90"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  {formData.name || 'Voucher Name'}
+                  {formData.name || v('Voucher Name', 'Tên Voucher')}
                 </p>
               </div>
 
@@ -731,7 +733,7 @@ export default function AdminCreateVoucherPage() {
                     className="text-white/80"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Discount
+                    {v('Discount', 'Giảm giá')}
                   </p>
                   <p
                     className="text-white"
@@ -745,7 +747,7 @@ export default function AdminCreateVoucherPage() {
                       ? `${formData.discountValue || '0'}%`
                       : formData.discountType === 'fixed'
                       ? `${parseInt(formData.discountValue || '0').toLocaleString('vi-VN')}đ`
-                      : 'Free Ship'}
+                      : v('Free Ship', 'Miễn phí ship')}
                   </p>
                 </div>
                 {formData.minPurchase && (
@@ -754,7 +756,7 @@ export default function AdminCreateVoucherPage() {
                       className="text-white/80"
                       style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      Min. Purchase
+                      {v('Min. Purchase', 'Đơn tối thiểu')}
                     </p>
                     <p
                       className="text-white"
@@ -788,14 +790,13 @@ export default function AdminCreateVoucherPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Platform Voucher
+                    {v('Platform Voucher', 'Voucher Nền tảng')}
                   </p>
                   <p
                     className="text-[#4A5565]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif', lineHeight: '1.5' }}
                   >
-                    This voucher will be funded by WearWhere, not individual brands. Make sure to
-                    set appropriate limits and conditions.
+                    {v('This voucher will be funded by WearWhere, not individual brands. Make sure to set appropriate limits and conditions.', 'Voucher này sẽ do WearWhere tài trợ, không phải các thương hiệu riêng lẻ. Hãy đảm bảo thiết lập giới hạn và điều kiện phù hợp.')}
                   </p>
                 </div>
               </div>
@@ -815,7 +816,7 @@ export default function AdminCreateVoucherPage() {
                   width: '100%',
                 }}
               >
-                Create Voucher
+                {v('Create Voucher', 'Tạo Voucher')}
               </Button>
               <Link to="/admin/marketing/promotions">
                 <Button
@@ -831,7 +832,7 @@ export default function AdminCreateVoucherPage() {
                     width: '100%',
                   }}
                 >
-                  Cancel
+                  {v('Cancel', 'Hủy')}
                 </Button>
               </Link>
             </div>

@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from '@/app/components/ui/select';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockStyleTags = [
@@ -148,6 +149,15 @@ const mockStyleTags = [
 ];
 
 export default function AdminStyleTagsPage() {
+  const { v } = useLanguage();
+  const categoryLabel = (category: string) =>
+    ({
+      Style: 'Phong Cách',
+      Season: 'Mùa',
+      Occasion: 'Dịp',
+      Color: 'Màu Sắc',
+      Material: 'Chất Liệu',
+    } as Record<string, string>)[category] || category;
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -179,18 +189,18 @@ export default function AdminStyleTagsPage() {
   };
 
   const handleCreate = () => {
-    toast.success('Style tag created successfully');
+    toast.success(v('Style tag created successfully', 'Tạo thẻ phong cách thành công'));
     setCreateModalOpen(false);
     setFormData({ name: '', slug: '', description: '', color: '#0A0A0A', category: 'Style' });
   };
 
   const handleEdit = () => {
-    toast.success('Style tag updated successfully');
+    toast.success(v('Style tag updated successfully', 'Cập nhật thẻ phong cách thành công'));
     setEditModalOpen(false);
   };
 
   const handleDelete = (id: number) => {
-    toast.success('Style tag deleted successfully');
+    toast.success(v('Style tag deleted successfully', 'Xóa thẻ phong cách thành công'));
   };
 
   const openEditModal = (tag: any) => {
@@ -219,7 +229,7 @@ export default function AdminStyleTagsPage() {
               marginBottom: '8px',
             }}
           >
-            Style Tags Management
+            {v('Style Tags Management', 'Quản Lý Thẻ Phong Cách')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -242,7 +252,7 @@ export default function AdminStyleTagsPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Products
+              {v('Back to Products', 'Quay Lại Sản Phẩm')}
             </Button>
           </Link>
           <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
@@ -259,7 +269,7 @@ export default function AdminStyleTagsPage() {
                 }}
               >
                 <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Add Style Tag
+                {v('Add Style Tag', 'Thêm Thẻ Phong Cách')}
               </Button>
             </DialogTrigger>
             <DialogContent style={{ maxWidth: '500px', borderRadius: '14px', padding: '32px' }}>
@@ -272,10 +282,10 @@ export default function AdminStyleTagsPage() {
                     marginBottom: '8px',
                   }}
                 >
-                  Create New Style Tag
+                  {v('Create New Style Tag', 'Tạo Thẻ Phong Cách Mới')}
                 </DialogTitle>
                 <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-                  Add a new style tag for AI recommendations
+                  {v('Add a new style tag for AI recommendations', 'Thêm thẻ phong cách mới cho gợi ý AI')}
                 </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -287,10 +297,10 @@ export default function AdminStyleTagsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Tag Name
+                    {v('Tag Name', 'Tên Thẻ')}
                   </Label>
                   <Input
-                    placeholder="e.g., Minimalist"
+                    placeholder={v('e.g., Minimalist', 'ví dụ: Minimalist')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -310,10 +320,10 @@ export default function AdminStyleTagsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Slug
+                    {v('Slug', 'Đường Dẫn')}
                   </Label>
                   <Input
-                    placeholder="e.g., minimalist"
+                    placeholder={v('e.g., minimalist', 'ví dụ: minimalist')}
                     value={formData.slug}
                     onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -333,7 +343,7 @@ export default function AdminStyleTagsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Category
+                    {v('Category', 'Danh Mục')}
                   </Label>
                   <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                     <SelectTrigger
@@ -348,11 +358,11 @@ export default function AdminStyleTagsPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Style">Style</SelectItem>
-                      <SelectItem value="Season">Season</SelectItem>
-                      <SelectItem value="Occasion">Occasion</SelectItem>
-                      <SelectItem value="Color">Color</SelectItem>
-                      <SelectItem value="Material">Material</SelectItem>
+                      <SelectItem value="Style">{v('Style', 'Phong Cách')}</SelectItem>
+                      <SelectItem value="Season">{v('Season', 'Mùa')}</SelectItem>
+                      <SelectItem value="Occasion">{v('Occasion', 'Dịp')}</SelectItem>
+                      <SelectItem value="Color">{v('Color', 'Màu Sắc')}</SelectItem>
+                      <SelectItem value="Material">{v('Material', 'Chất Liệu')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -364,7 +374,7 @@ export default function AdminStyleTagsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Tag Color
+                    {v('Tag Color', 'Màu Thẻ')}
                   </Label>
                   <div className="flex items-center" style={{ gap: '12px' }}>
                     <Input
@@ -402,10 +412,10 @@ export default function AdminStyleTagsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    Description
+                    {v('Description', 'Mô Tả')}
                   </Label>
                   <Textarea
-                    placeholder="Brief description for AI understanding..."
+                    placeholder={v('Brief description for AI understanding...', 'Mô tả ngắn gọn để AI hiểu...')}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     className="border-[#D1D5DC]"
@@ -431,7 +441,7 @@ export default function AdminStyleTagsPage() {
                     padding: '0 24px',
                   }}
                 >
-                  Cancel
+                  {v('Cancel', 'Hủy')}
                 </Button>
                 <Button
                   onClick={handleCreate}
@@ -445,7 +455,7 @@ export default function AdminStyleTagsPage() {
                     padding: '0 24px',
                   }}
                 >
-                  Create Tag
+                  {v('Create Tag', 'Tạo Thẻ')}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -476,7 +486,7 @@ export default function AdminStyleTagsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Tags
+              {v('Total Tags', 'Tổng Thẻ')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -508,7 +518,7 @@ export default function AdminStyleTagsPage() {
                 marginBottom: '4px',
               }}
             >
-              Trending Tags
+              {v('Trending Tags', 'Thẻ Thịnh Hành')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -540,7 +550,7 @@ export default function AdminStyleTagsPage() {
                 marginBottom: '4px',
               }}
             >
-              Tagged Products
+              {v('Tagged Products', 'Sản Phẩm Gắn Thẻ')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -572,7 +582,7 @@ export default function AdminStyleTagsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Usage
+              {v('Total Usage', 'Tổng Lượt Dùng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -598,7 +608,7 @@ export default function AdminStyleTagsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search tags..."
+                placeholder={v('Search tags...', 'Tìm kiếm thẻ...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -624,15 +634,15 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder={v('Category', 'Danh mục')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="Style">Style</SelectItem>
-                <SelectItem value="Season">Season</SelectItem>
-                <SelectItem value="Occasion">Occasion</SelectItem>
-                <SelectItem value="Color">Color</SelectItem>
-                <SelectItem value="Material">Material</SelectItem>
+                <SelectItem value="all">{v('All Categories', 'Tất cả danh mục')}</SelectItem>
+                <SelectItem value="Style">{v('Style', 'Phong Cách')}</SelectItem>
+                <SelectItem value="Season">{v('Season', 'Mùa')}</SelectItem>
+                <SelectItem value="Occasion">{v('Occasion', 'Dịp')}</SelectItem>
+                <SelectItem value="Color">{v('Color', 'Màu Sắc')}</SelectItem>
+                <SelectItem value="Material">{v('Material', 'Chất Liệu')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -689,7 +699,7 @@ export default function AdminStyleTagsPage() {
                       marginBottom: '8px',
                     }}
                   >
-                    {tag.category}
+                    {categoryLabel(tag.category)}
                   </Badge>
                 </div>
               </div>
@@ -740,7 +750,7 @@ export default function AdminStyleTagsPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '10px', fontFamily: 'Arimo, sans-serif', marginBottom: '2px' }}
                 >
-                  Products
+                  {v('Products', 'Sản Phẩm')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -758,7 +768,7 @@ export default function AdminStyleTagsPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '10px', fontFamily: 'Arimo, sans-serif', marginBottom: '2px' }}
                 >
-                  Usage
+                  {v('Usage', 'Lượt Dùng')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -788,10 +798,10 @@ export default function AdminStyleTagsPage() {
                 marginBottom: '8px',
               }}
             >
-              Edit Style Tag
+              {v('Edit Style Tag', 'Chỉnh Sửa Thẻ Phong Cách')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Update style tag information
+              {v('Update style tag information', 'Cập nhật thông tin thẻ phong cách')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -803,10 +813,10 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Tag Name
+                {v('Tag Name', 'Tên Thẻ')}
               </Label>
               <Input
-                placeholder="e.g., Minimalist"
+                placeholder={v('e.g., Minimalist', 'ví dụ: Minimalist')}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -826,10 +836,10 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Slug
+                {v('Slug', 'Đường Dẫn')}
               </Label>
               <Input
-                placeholder="e.g., minimalist"
+                placeholder={v('e.g., minimalist', 'ví dụ: minimalist')}
                 value={formData.slug}
                 onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -849,7 +859,7 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Category
+                {v('Category', 'Danh Mục')}
               </Label>
               <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                 <SelectTrigger
@@ -864,11 +874,11 @@ export default function AdminStyleTagsPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Style">Style</SelectItem>
-                  <SelectItem value="Season">Season</SelectItem>
-                  <SelectItem value="Occasion">Occasion</SelectItem>
-                  <SelectItem value="Color">Color</SelectItem>
-                  <SelectItem value="Material">Material</SelectItem>
+                  <SelectItem value="Style">{v('Style', 'Phong Cách')}</SelectItem>
+                  <SelectItem value="Season">{v('Season', 'Mùa')}</SelectItem>
+                  <SelectItem value="Occasion">{v('Occasion', 'Dịp')}</SelectItem>
+                  <SelectItem value="Color">{v('Color', 'Màu Sắc')}</SelectItem>
+                  <SelectItem value="Material">{v('Material', 'Chất Liệu')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -880,7 +890,7 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Tag Color
+                {v('Tag Color', 'Màu Thẻ')}
               </Label>
               <div className="flex items-center" style={{ gap: '12px' }}>
                 <Input
@@ -918,10 +928,10 @@ export default function AdminStyleTagsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Description
+                {v('Description', 'Mô Tả')}
               </Label>
               <Textarea
-                placeholder="Brief description for AI understanding..."
+                placeholder={v('Brief description for AI understanding...', 'Mô tả ngắn gọn để AI hiểu...')}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="border-[#D1D5DC]"
@@ -947,7 +957,7 @@ export default function AdminStyleTagsPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleEdit}
@@ -961,7 +971,7 @@ export default function AdminStyleTagsPage() {
                 padding: '0 24px',
               }}
             >
-              Save Changes
+              {v('Save Changes', 'Lưu Thay Đổi')}
             </Button>
           </DialogFooter>
         </DialogContent>

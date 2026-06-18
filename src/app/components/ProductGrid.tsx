@@ -142,7 +142,7 @@ export function ProductGrid() {
   return (
     <div className="mx-auto px-4 lg:px-6 py-5" style={{ maxWidth: 'calc(75% + 320px)', fontFamily: "'Montserrat', sans-serif" }}>
       <div className="mb-8 text-center">
-        <p className="mb-3" style={{ fontSize: '14px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>Collection</p>
+        <p className="mb-3" style={{ fontSize: '14px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{v('Collection', 'Bộ sưu tập')}</p>
         <h3 style={{ fontSize: '32px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase' }}>{v('Explore unique items', 'Khám phá sản phẩm độc đáo')}</h3>
         <p className="mt-2" style={{ fontSize: '15px', color: '#4a4a4a' }}>{v('Curated by our community of sellers', 'Được tuyển chọn bởi cộng đồng người bán của chúng tôi')}</p>
       </div>

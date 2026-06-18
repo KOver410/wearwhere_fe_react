@@ -8,8 +8,10 @@ import { Textarea } from '@/app/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/app/components/ui/tabs';
 import { Facebook, Instagram, Globe, Upload, Save, Languages } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 export function BrandProfilePage() {
+  const { v } = useLanguage();
   const [activeTab, setActiveTab] = useState('general');
   const [lang, setLang] = useState<'en' | 'vi'>('en');
 
@@ -32,71 +34,71 @@ export function BrandProfilePage() {
   const onSubmit = (data: any) => {
     console.log('Profile updated:', data);
     // Simulate API call
-    alert('Brand profile updated successfully!');
+    alert(v('Brand profile updated successfully!', 'Cập nhật hồ sơ thương hiệu thành công!'));
   };
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">Store Profile</h2>
-          <p className="text-[#64748B]">Manage your brand identity, social links, and store policies.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">{v('Store Profile', 'Hồ sơ cửa hàng')}</h2>
+          <p className="text-[#64748B]">{v('Manage your brand identity, social links, and store policies.', 'Quản lý nhận diện thương hiệu, liên kết mạng xã hội và chính sách cửa hàng.')}</p>
         </div>
         <Button onClick={handleSubmit(onSubmit)} className="bg-[#F54900] text-white hover:bg-[#E04400]">
-          <Save className="mr-2 h-4 w-4" /> Save Changes
+          <Save className="mr-2 h-4 w-4" /> {v('Save Changes', 'Lưu thay đổi')}
         </Button>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3 lg:w-[400px]">
-          <TabsTrigger value="general">General Info</TabsTrigger>
-          <TabsTrigger value="social">Social Links</TabsTrigger>
-          <TabsTrigger value="policies">Policies</TabsTrigger>
+          <TabsTrigger value="general">{v('General Info', 'Thông tin chung')}</TabsTrigger>
+          <TabsTrigger value="social">{v('Social Links', 'Mạng xã hội')}</TabsTrigger>
+          <TabsTrigger value="policies">{v('Policies', 'Chính sách')}</TabsTrigger>
         </TabsList>
 
         {/* General Tab */}
         <TabsContent value="general" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Brand Identity</CardTitle>
-              <CardDescription>Basic information about your brand displayed to customers.</CardDescription>
+              <CardTitle>{v('Brand Identity', 'Nhận diện thương hiệu')}</CardTitle>
+              <CardDescription>{v('Basic information about your brand displayed to customers.', 'Thông tin cơ bản về thương hiệu của bạn hiển thị cho khách hàng.')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Images */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <Label>Brand Logo</Label>
+                  <Label>{v('Brand Logo', 'Logo thương hiệu')}</Label>
                   <div className="flex items-center gap-4">
                     <div className="h-24 w-24 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center overflow-hidden">
                        <span className="text-2xl font-bold text-gray-400">B1</span>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => alert('Logo upload functionality coming soon!')}>
-                      <Upload className="mr-2 h-4 w-4" /> Upload Logo
+                    <Button variant="outline" size="sm" onClick={() => alert(v('Logo upload functionality coming soon!', 'Chức năng tải logo sắp ra mắt!'))}>
+                      <Upload className="mr-2 h-4 w-4" /> {v('Upload Logo', 'Tải logo')}
                     </Button>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Cover Image</Label>
+                  <Label>{v('Cover Image', 'Ảnh bìa')}</Label>
                   <div className="h-32 w-full rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center relative overflow-hidden group cursor-pointer">
                     <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button variant="secondary" size="sm">Change Cover</Button>
+                      <Button variant="secondary" size="sm">{v('Change Cover', 'Đổi ảnh bìa')}</Button>
                     </div>
-                    <span className="text-sm text-gray-400">No cover image uploaded</span>
+                    <span className="text-sm text-gray-400">{v('No cover image uploaded', 'Chưa tải ảnh bìa')}</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="brandName">Brand Name</Label>
+                <Label htmlFor="brandName">{v('Brand Name', 'Tên thương hiệu')}</Label>
                 <Input id="brandName" {...register('brandName')} />
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="description">Description</Label>
+                  <Label htmlFor="description">{v('Description', 'Mô tả')}</Label>
                   <Button variant="ghost" size="sm" onClick={() => setLang(lang === 'en' ? 'vi' : 'en')} className="h-6 text-xs">
                     <Languages className="mr-1 h-3 w-3" />
-                    {lang === 'en' ? 'English' : 'Vietnamese'}
+                    {lang === 'en' ? v('English', 'Tiếng Anh') : v('Vietnamese', 'Tiếng Việt')}
                   </Button>
                 </div>
                 {lang === 'en' ? (
@@ -115,12 +117,12 @@ export function BrandProfilePage() {
                   />
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Switch language to edit localized descriptions.
+                  {v('Switch language to edit localized descriptions.', 'Chuyển ngôn ngữ để chỉnh sửa mô tả theo từng ngôn ngữ.')}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="story">Brand Story</Label>
+                <Label htmlFor="story">{v('Brand Story', 'Câu chuyện thương hiệu')}</Label>
                 <Textarea 
                   id="story" 
                   className="min-h-[150px]" 
@@ -135,8 +137,8 @@ export function BrandProfilePage() {
         <TabsContent value="social" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Social Media & Website</CardTitle>
-              <CardDescription>Connect your social profiles to build trust with customers.</CardDescription>
+              <CardTitle>{v('Social Media & Website', 'Mạng xã hội & Website')}</CardTitle>
+              <CardDescription>{v('Connect your social profiles to build trust with customers.', 'Kết nối các trang mạng xã hội để tạo niềm tin với khách hàng.')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4">
@@ -173,20 +175,20 @@ export function BrandProfilePage() {
         <TabsContent value="policies" className="space-y-6 mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Store Policies</CardTitle>
-              <CardDescription>Define clear policies for returns, warranty and shipping.</CardDescription>
+              <CardTitle>{v('Store Policies', 'Chính sách cửa hàng')}</CardTitle>
+              <CardDescription>{v('Define clear policies for returns, warranty and shipping.', 'Xác định rõ ràng chính sách đổi trả, bảo hành và giao hàng.')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="returnPolicy">Return & Refund Policy</Label>
+                <Label htmlFor="returnPolicy">{v('Return & Refund Policy', 'Chính sách đổi trả & hoàn tiền')}</Label>
                 <Textarea id="returnPolicy" className="min-h-[100px]" {...register('returnPolicy')} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="warrantyPolicy">Warranty Policy</Label>
+                <Label htmlFor="warrantyPolicy">{v('Warranty Policy', 'Chính sách bảo hành')}</Label>
                 <Textarea id="warrantyPolicy" className="min-h-[100px]" {...register('warrantyPolicy')} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="shippingPolicy">Shipping Policy</Label>
+                <Label htmlFor="shippingPolicy">{v('Shipping Policy', 'Chính sách giao hàng')}</Label>
                 <Textarea id="shippingPolicy" className="min-h-[100px]" {...register('shippingPolicy')} />
               </div>
             </CardContent>

@@ -32,6 +32,7 @@ import {
 import { Textarea } from '@/app/components/ui/textarea';
 import { Label } from '@/app/components/ui/label';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockReportedProducts = [
@@ -114,6 +115,15 @@ const reasonColors: Record<string, string> = {
 };
 
 export default function AdminReportedProductsPage() {
+  const { v } = useLanguage();
+  const reasonLabel = (reason: string) =>
+    ({
+      'Fake Product': 'Hàng Giả',
+      'Misleading Information': 'Thông Tin Sai Lệch',
+      'Poor Quality': 'Chất Lượng Kém',
+      'Policy Violation': 'Vi Phạm Chính Sách',
+      'Inappropriate Content': 'Nội Dung Không Phù Hợp',
+    } as Record<string, string>)[reason] || reason;
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [reasonFilter, setReasonFilter] = useState('all');
@@ -156,7 +166,16 @@ export default function AdminReportedProductsPage() {
   };
 
   const handleTakeAction = (action: 'suspend' | 'remove' | 'dismiss') => {
-    toast.success(`Product ${action}ed successfully`);
+    toast.success(
+      v(
+        `Product ${action}ed successfully`,
+        ({
+          suspend: 'Đã tạm ngưng sản phẩm thành công',
+          remove: 'Đã gỡ sản phẩm thành công',
+          dismiss: 'Đã bỏ qua báo cáo thành công',
+        } as Record<string, string>)[action]
+      )
+    );
     setReviewModalOpen(false);
     setActionNote('');
   };
@@ -175,7 +194,7 @@ export default function AdminReportedProductsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Reported Products
+              {v('Reported Products', 'Sản Phẩm Bị Báo Cáo')}
             </h1>
             <Badge
               className="bg-[#E7000B]/10 text-[#E7000B]"
@@ -187,7 +206,7 @@ export default function AdminReportedProductsPage() {
                 padding: '6px 16px',
               }}
             >
-              {stats.pending} Pending
+              {v(`${stats.pending} Pending`, `${stats.pending} Đang chờ`)}
             </Badge>
           </div>
           <p
@@ -210,7 +229,7 @@ export default function AdminReportedProductsPage() {
               padding: '0 24px',
             }}
           >
-            Back to Products
+            {v('Back to Products', 'Quay Lại Sản Phẩm')}
           </Button>
         </Link>
       </div>
@@ -238,7 +257,7 @@ export default function AdminReportedProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Review
+              {v('Pending Review', 'Chờ Duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -270,7 +289,7 @@ export default function AdminReportedProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Under Review
+              {v('Under Review', 'Đang Xem Xét')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -302,7 +321,7 @@ export default function AdminReportedProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Resolved
+              {v('Resolved', 'Đã Xử Lý')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -334,7 +353,7 @@ export default function AdminReportedProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Reports
+              {v('Total Reports', 'Tổng Báo Cáo')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -360,7 +379,7 @@ export default function AdminReportedProductsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search products..."
+                placeholder={v('Search products...', 'Tìm kiếm sản phẩm...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -386,14 +405,14 @@ export default function AdminReportedProductsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="under_review">Under Review</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="dismissed">Dismissed</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Review', 'Chờ duyệt')}</SelectItem>
+                <SelectItem value="under_review">{v('Under Review', 'Đang xem xét')}</SelectItem>
+                <SelectItem value="resolved">{v('Resolved', 'Đã xử lý')}</SelectItem>
+                <SelectItem value="dismissed">{v('Dismissed', 'Đã bỏ qua')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -410,15 +429,15 @@ export default function AdminReportedProductsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Report Reason" />
+                <SelectValue placeholder={v('Report Reason', 'Lý do báo cáo')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Reasons</SelectItem>
-                <SelectItem value="Fake Product">Fake Product</SelectItem>
-                <SelectItem value="Misleading Information">Misleading Information</SelectItem>
-                <SelectItem value="Poor Quality">Poor Quality</SelectItem>
-                <SelectItem value="Policy Violation">Policy Violation</SelectItem>
-                <SelectItem value="Inappropriate Content">Inappropriate Content</SelectItem>
+                <SelectItem value="all">{v('All Reasons', 'Tất cả lý do')}</SelectItem>
+                <SelectItem value="Fake Product">{v('Fake Product', 'Hàng Giả')}</SelectItem>
+                <SelectItem value="Misleading Information">{v('Misleading Information', 'Thông Tin Sai Lệch')}</SelectItem>
+                <SelectItem value="Poor Quality">{v('Poor Quality', 'Chất Lượng Kém')}</SelectItem>
+                <SelectItem value="Policy Violation">{v('Policy Violation', 'Vi Phạm Chính Sách')}</SelectItem>
+                <SelectItem value="Inappropriate Content">{v('Inappropriate Content', 'Nội Dung Không Phù Hợp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -475,7 +494,7 @@ export default function AdminReportedProductsPage() {
                           }}
                         >
                           <Flag style={{ width: '12px', height: '12px', marginRight: '4px' }} />
-                          {report.reportCount} reports
+                          {v(`${report.reportCount} reports`, `${report.reportCount} báo cáo`)}
                         </Badge>
                       </div>
                       <div className="flex items-center" style={{ gap: '16px', marginBottom: '12px' }}>
@@ -483,19 +502,19 @@ export default function AdminReportedProductsPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          Brand: <span className="text-[#0A0A0A] font-bold">{report.brand}</span>
+                          {v('Brand:', 'Thương hiệu:')} <span className="text-[#0A0A0A] font-bold">{report.brand}</span>
                         </p>
                         <p
                           className="text-[#6A7282]"
                           style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          Product ID: #{report.productId}
+                          {v('Product ID:', 'Mã sản phẩm:')} #{report.productId}
                         </p>
                         <p
                           className="text-[#6A7282]"
                           style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          Reported: {new Date(report.reportDate).toLocaleDateString('vi-VN')}
+                          {v('Reported:', 'Báo cáo:')} {new Date(report.reportDate).toLocaleDateString('vi-VN')}
                         </p>
                       </div>
                       <p
@@ -521,7 +540,15 @@ export default function AdminReportedProductsPage() {
                       }}
                     >
                       <StatusIcon style={{ width: '14px', height: '14px' }} />
-                      {statusConfig[report.status as keyof typeof statusConfig].label}
+                      {v(
+                        statusConfig[report.status as keyof typeof statusConfig].label,
+                        ({
+                          pending: 'Chờ duyệt',
+                          under_review: 'Đang xem xét',
+                          resolved: 'Đã xử lý',
+                          dismissed: 'Đã bỏ qua',
+                        } as Record<string, string>)[report.status]
+                      )}
                     </Badge>
                   </div>
 
@@ -531,7 +558,7 @@ export default function AdminReportedProductsPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      Reasons:
+                      {v('Reasons:', 'Lý do:')}
                     </span>
                     {report.reportReasons.map((reason: any) => (
                       <Badge
@@ -545,7 +572,7 @@ export default function AdminReportedProductsPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {reason.reason} ({reason.count})
+                        {reasonLabel(reason.reason)} ({reason.count})
                       </Badge>
                     ))}
                   </div>
@@ -565,7 +592,7 @@ export default function AdminReportedProductsPage() {
                           marginBottom: '4px',
                         }}
                       >
-                        Resolution:
+                        {v('Resolution:', 'Hướng xử lý:')}
                       </p>
                       <p
                         className="text-[#0A0A0A]"
@@ -592,7 +619,7 @@ export default function AdminReportedProductsPage() {
                         }}
                       >
                         <Eye style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                        Review & Take Action
+                        {v('Review & Take Action', 'Xem Xét & Xử Lý')}
                       </Button>
                       <Button
                         size="sm"
@@ -605,7 +632,7 @@ export default function AdminReportedProductsPage() {
                           fontFamily: 'Arimo, sans-serif',
                         }}
                       >
-                        View Product Details
+                        {v('View Product Details', 'Xem Chi Tiết Sản Phẩm')}
                       </Button>
                     </div>
                   )}
@@ -626,9 +653,9 @@ export default function AdminReportedProductsPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredReports.length)} of{' '}
-            {filteredReports.length} reports
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredReports.length)} {v('of', 'trong')}{' '}
+            {filteredReports.length} {v('reports', 'báo cáo')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -643,7 +670,7 @@ export default function AdminReportedProductsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -680,7 +707,7 @@ export default function AdminReportedProductsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>
@@ -698,10 +725,10 @@ export default function AdminReportedProductsPage() {
                 marginBottom: '8px',
               }}
             >
-              Review Reported Product
+              {v('Review Reported Product', 'Xem Xét Sản Phẩm Bị Báo Cáo')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Review the report details and take appropriate action
+              {v('Review the report details and take appropriate action', 'Xem xét chi tiết báo cáo và đưa ra hành động phù hợp')}
             </DialogDescription>
           </DialogHeader>
           {selectedReport && (
@@ -739,7 +766,7 @@ export default function AdminReportedProductsPage() {
                       marginBottom: '8px',
                     }}
                   >
-                    Brand: {selectedReport.brand} | Product ID: #{selectedReport.productId}
+                    {v('Brand:', 'Thương hiệu:')} {selectedReport.brand} | {v('Product ID:', 'Mã sản phẩm:')} #{selectedReport.productId}
                   </p>
                   <div className="flex items-center" style={{ gap: '8px' }}>
                     {selectedReport.reportReasons.map((reason: any) => (
@@ -754,7 +781,7 @@ export default function AdminReportedProductsPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {reason.reason} ({reason.count})
+                        {reasonLabel(reason.reason)} ({reason.count})
                       </Badge>
                     ))}
                   </div>
@@ -770,10 +797,10 @@ export default function AdminReportedProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Action Note (Optional)
+                  {v('Action Note (Optional)', 'Ghi Chú Hành Động (Tùy Chọn)')}
                 </Label>
                 <Textarea
-                  placeholder="Add notes about your decision..."
+                  placeholder={v('Add notes about your decision...', 'Thêm ghi chú về quyết định của bạn...')}
                   value={actionNote}
                   onChange={(e) => setActionNote(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -805,14 +832,13 @@ export default function AdminReportedProductsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Important
+                    {v('Important', 'Quan Trọng')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Suspending or removing a product will affect the brand's account. Make sure to
-                    review all evidence carefully.
+                    {v("Suspending or removing a product will affect the brand's account. Make sure to review all evidence carefully.", 'Việc tạm ngưng hoặc gỡ bỏ sản phẩm sẽ ảnh hưởng đến tài khoản của thương hiệu. Hãy chắc chắn xem xét kỹ tất cả bằng chứng.')}
                   </p>
                 </div>
               </div>
@@ -833,7 +859,7 @@ export default function AdminReportedProductsPage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Dismiss Report
+              {v('Dismiss Report', 'Bỏ Qua Báo Cáo')}
             </Button>
             <Button
               onClick={() => handleTakeAction('suspend')}
@@ -848,7 +874,7 @@ export default function AdminReportedProductsPage() {
               }}
             >
               <AlertTriangle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Suspend Product
+              {v('Suspend Product', 'Tạm Ngưng Sản Phẩm')}
             </Button>
             <Button
               onClick={() => handleTakeAction('remove')}
@@ -863,7 +889,7 @@ export default function AdminReportedProductsPage() {
               }}
             >
               <Flag style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Remove Product
+              {v('Remove Product', 'Gỡ Sản Phẩm')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -259,7 +259,7 @@ export function ProductDetailPage() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
                 <label style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                  Color: <span style={{ fontWeight: 400, color: '#4a4a4a' }}>{product.colors[selectedColor].name}</span>
+                  {v('Color:', 'Màu:')} <span style={{ fontWeight: 400, color: '#4a4a4a' }}>{product.colors[selectedColor].name}</span>
                 </label>
               </div>
               <div className="flex gap-3">
@@ -281,7 +281,7 @@ export function ProductDetailPage() {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
                 <label style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                  Size: {selectedSize && <span style={{ fontWeight: 400, color: '#4a4a4a' }}>{selectedSize}</span>}
+                  {v('Size:', 'Cỡ:')} {selectedSize && <span style={{ fontWeight: 400, color: '#4a4a4a' }}>{selectedSize}</span>}
                 </label>
                 <button
                   onClick={() => setShowSizeChart(!showSizeChart)}
@@ -319,7 +319,7 @@ export function ProductDetailPage() {
             {showSizeChart && (
               <div className="mb-6 p-4" style={{ borderRadius: '10px', backgroundColor: '#fff9f2' }}>
                 <h3 style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', marginBottom: '12px' }}>
-                  Size Chart (inches)
+                  {v('Size Chart (inches)', 'Bảng size (inch)')}
                 </h3>
                 <div className="overflow-x-auto">
                   <table className="w-full text-left" style={{ fontSize: '14px' }}>
@@ -508,7 +508,7 @@ export function ProductDetailPage() {
             <Tabs.Content value="size-guide">
               <div className="max-w-3xl">
                 <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0d0d0d', marginBottom: '16px' }}>
-                  How to Measure
+                  {v('How to Measure', 'Cách đo')}
                 </h3>
                 <div className="space-y-3 mb-6">
                   <p style={{ fontSize: '14px', color: '#4a4a4a' }}>
@@ -550,7 +550,7 @@ export function ProductDetailPage() {
               <div className="max-w-3xl space-y-4">
                 <div>
                   <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px' }}>
-                    Shipping Information
+                    {v('Shipping Information', 'Thông tin vận chuyển')}
                   </h3>
                   <p style={{ fontSize: '14px', color: '#4a4a4a', lineHeight: '1.6' }}>
                     {v('We offer free standard shipping on all orders over $100. Orders are processed within 1-2 business days and typically arrive within 5-7 business days.', 'Chúng tôi miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên $100. Đơn hàng được xử lý trong 1-2 ngày làm việc và thường giao trong 5-7 ngày làm việc.')}
@@ -558,7 +558,7 @@ export function ProductDetailPage() {
                 </div>
                 <div>
                   <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0d0d0d', marginBottom: '8px' }}>
-                    Returns & Exchanges
+                    {v('Returns & Exchanges', 'Đổi trả')}
                   </h3>
                   <p style={{ fontSize: '14px', color: '#4a4a4a', lineHeight: '1.6' }}>
                     {v('We accept returns within 30 days of delivery. Items must be unworn, unwashed, and in original condition with tags attached. Return shipping is free for exchanges.', 'Chúng tôi chấp nhận đổi trả trong 30 ngày kể từ ngày giao. Sản phẩm phải chưa sử dụng, chưa giặt, còn nguyên tem mác. Miễn phí vận chuyển đổi hàng.')}
@@ -647,7 +647,7 @@ export function ProductDetailPage() {
                             fontSize: '12px',
                           }}
                         >
-                          Verified Purchase
+                          {v('Verified Purchase', 'Đã mua hàng')}
                         </span>
                       )}
                     </div>

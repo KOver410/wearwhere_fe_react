@@ -32,6 +32,7 @@ import {
   Eye,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockCampaigns = [
@@ -58,6 +59,7 @@ const typeConfig = {
 };
 
 export default function AdminEmailCampaignsPage() {
+  const { v } = useLanguage();
   const [campaigns, setCampaigns] = useState(mockCampaigns);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -66,6 +68,19 @@ export default function AdminEmailCampaignsPage() {
   const [selectedCampaign, setSelectedCampaign] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+
+  const statusLabels: Record<string, string> = {
+    active: v('Active', 'Đang hoạt động'),
+    sent: v('Sent', 'Đã gửi'),
+    scheduled: v('Scheduled', 'Đã lên lịch'),
+    draft: v('Draft', 'Bản nháp'),
+    paused: v('Paused', 'Tạm dừng'),
+  };
+
+  const typeLabels: Record<string, string> = {
+    automated: v('Automated', 'Tự động'),
+    promotional: v('Promotional', 'Khuyến mãi'),
+  };
 
   // Filter campaigns
   const filteredCampaigns = campaigns.filter((campaign) => {
@@ -99,7 +114,7 @@ export default function AdminEmailCampaignsPage() {
     setCampaigns(campaigns.filter((c) => c.id !== selectedCampaign?.id));
     setDeleteModalOpen(false);
     setSelectedCampaign(null);
-    toast.success('Campaign deleted');
+    toast.success(v('Campaign deleted', 'Đã xóa chiến dịch'));
   };
 
   const handleDuplicate = (campaign: any) => {
@@ -115,7 +130,7 @@ export default function AdminEmailCampaignsPage() {
       sentAt: null,
     };
     setCampaigns([newCampaign, ...campaigns]);
-    toast.success('Campaign duplicated');
+    toast.success(v('Campaign duplicated', 'Đã nhân bản chiến dịch'));
   };
 
   return (
@@ -132,7 +147,7 @@ export default function AdminEmailCampaignsPage() {
               marginBottom: '8px',
             }}
           >
-            Email Campaigns
+            {v('Email Campaigns', 'Chiến dịch Email')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -155,7 +170,7 @@ export default function AdminEmailCampaignsPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Marketing
+              {v('Back to Marketing', 'Quay lại Marketing')}
             </Button>
           </Link>
           <Button
@@ -170,7 +185,7 @@ export default function AdminEmailCampaignsPage() {
             }}
           >
             <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Create Campaign
+            {v('Create Campaign', 'Tạo chiến dịch')}
           </Button>
         </div>
       </div>
@@ -198,7 +213,7 @@ export default function AdminEmailCampaignsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Campaigns
+              {v('Total Campaigns', 'Tổng chiến dịch')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -230,7 +245,7 @@ export default function AdminEmailCampaignsPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Campaigns
+              {v('Active Campaigns', 'Chiến dịch đang hoạt động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -262,7 +277,7 @@ export default function AdminEmailCampaignsPage() {
                 marginBottom: '4px',
               }}
             >
-              Avg. Open Rate
+              {v('Avg. Open Rate', 'Tỷ lệ mở trung bình')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -294,7 +309,7 @@ export default function AdminEmailCampaignsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Revenue
+              {v('Total Revenue', 'Tổng doanh thu')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -320,7 +335,7 @@ export default function AdminEmailCampaignsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search campaigns..."
+                placeholder={v('Search campaigns...', 'Tìm kiếm chiến dịch...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -346,12 +361,12 @@ export default function AdminEmailCampaignsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Type" />
+                <SelectValue placeholder={v('Type', 'Loại')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="automated">Automated</SelectItem>
-                <SelectItem value="promotional">Promotional</SelectItem>
+                <SelectItem value="all">{v('All Types', 'Tất cả loại')}</SelectItem>
+                <SelectItem value="automated">{v('Automated', 'Tự động')}</SelectItem>
+                <SelectItem value="promotional">{v('Promotional', 'Khuyến mãi')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -368,15 +383,15 @@ export default function AdminEmailCampaignsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="sent">Sent</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="paused">Paused</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="active">{v('Active', 'Đang hoạt động')}</SelectItem>
+                <SelectItem value="sent">{v('Sent', 'Đã gửi')}</SelectItem>
+                <SelectItem value="scheduled">{v('Scheduled', 'Đã lên lịch')}</SelectItem>
+                <SelectItem value="draft">{v('Draft', 'Bản nháp')}</SelectItem>
+                <SelectItem value="paused">{v('Paused', 'Tạm dừng')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -414,7 +429,7 @@ export default function AdminEmailCampaignsPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {typeConfig[campaign.type as keyof typeof typeConfig].label}
+                    {typeLabels[campaign.type]}
                   </Badge>
                   <Badge
                     className={statusConfig[campaign.status as keyof typeof statusConfig].color}
@@ -426,7 +441,7 @@ export default function AdminEmailCampaignsPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {statusConfig[campaign.status as keyof typeof statusConfig].label}
+                    {statusLabels[campaign.status]}
                   </Badge>
                 </div>
 
@@ -438,7 +453,7 @@ export default function AdminEmailCampaignsPage() {
                     marginBottom: '16px',
                   }}
                 >
-                  Subject: {campaign.subject}
+                  {v('Subject:', 'Tiêu đề:')} {campaign.subject}
                 </p>
 
                 <div className="grid grid-cols-6" style={{ gap: '24px' }}>
@@ -451,7 +466,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Audience
+                      {v('Audience', 'Đối tượng')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -469,7 +484,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Sent
+                      {v('Sent', 'Đã gửi')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -491,7 +506,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Opened
+                      {v('Opened', 'Đã mở')}
                     </p>
                     <p
                       className="text-[#3B82F6]"
@@ -513,7 +528,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Clicked
+                      {v('Clicked', 'Đã nhấp')}
                     </p>
                     <p
                       className="text-[#F54900]"
@@ -535,7 +550,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Revenue
+                      {v('Revenue', 'Doanh thu')}
                     </p>
                     <p
                       className="text-[#10B981]"
@@ -557,7 +572,7 @@ export default function AdminEmailCampaignsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      {campaign.status === 'scheduled' ? 'Scheduled' : campaign.status === 'draft' ? 'Created' : 'Sent At'}
+                      {campaign.status === 'scheduled' ? v('Scheduled', 'Đã lên lịch') : campaign.status === 'draft' ? v('Created', 'Đã tạo') : v('Sent At', 'Gửi lúc')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -626,7 +641,7 @@ export default function AdminEmailCampaignsPage() {
               fontFamily: 'Arimo, sans-serif',
             }}
           >
-            Previous
+            {v('Previous', 'Trước')}
           </Button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <Button
@@ -663,7 +678,7 @@ export default function AdminEmailCampaignsPage() {
               fontFamily: 'Arimo, sans-serif',
             }}
           >
-            Next
+            {v('Next', 'Tiếp')}
           </Button>
         </div>
       )}
@@ -680,11 +695,10 @@ export default function AdminEmailCampaignsPage() {
                 marginBottom: '8px',
               }}
             >
-              Delete Campaign
+              {v('Delete Campaign', 'Xóa chiến dịch')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Are you sure you want to delete "{selectedCampaign?.name}"? This action cannot be
-              undone.
+              {v('Are you sure you want to delete', 'Bạn có chắc chắn muốn xóa')} "{selectedCampaign?.name}"? {v('This action cannot be undone.', 'Hành động này không thể hoàn tác.')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter style={{ marginTop: '24px' }}>
@@ -703,7 +717,7 @@ export default function AdminEmailCampaignsPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleDelete}
@@ -718,7 +732,7 @@ export default function AdminEmailCampaignsPage() {
               }}
             >
               <Trash2 style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Delete
+              {v('Delete', 'Xóa')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -5,7 +5,7 @@ import { Sparkles, Check, ShoppingBag } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function SmartWardrobe() {
-  const { t, lang } = useLanguage();
+  const { t, lang, v } = useLanguage();
 
   const formatPrice = (price: number) => {
     if (lang === 'vi') return `${price.toLocaleString('vi-VN')}d`;
@@ -44,7 +44,7 @@ export function SmartWardrobe() {
       <div className="mx-auto px-4 lg:px-6" style={{ maxWidth: 'calc(75% + 320px)' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
           <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-            <Sparkles className="w-3.5 h-3.5 inline-block mr-2 -mt-0.5" />AI-POWERED STYLING
+            <Sparkles className="w-3.5 h-3.5 inline-block mr-2 -mt-0.5" />{v('AI-POWERED STYLING', 'PHỐI ĐỒ BẰNG AI')}
           </span>
           <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#fff9f2', lineHeight: 0.95 }}>
             {t('smartWardrobe.title')}
@@ -66,7 +66,7 @@ export function SmartWardrobe() {
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, #0d0d0d 0%, transparent 50%)' }} />
                   <div className="absolute top-4 right-4 px-3 py-1.5" style={{ backgroundColor: '#d41c1c' }}>
                     <span style={{ fontSize: '12px', fontWeight: 800, color: '#fff9f2', fontFamily: "'Oswald', sans-serif", letterSpacing: '0.1em' }}>
-                      {outfit.matchScore}% MATCH
+                      {outfit.matchScore}% {v('MATCH', 'PHÙ HỢP')}
                     </span>
                   </div>
                   <div className="absolute bottom-4 left-4">

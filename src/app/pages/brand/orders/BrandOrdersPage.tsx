@@ -41,6 +41,7 @@ import { Calendar } from "@/app/components/ui/calendar";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock Data
 const MOCK_ORDERS = [
@@ -126,6 +127,7 @@ const ORDER_STATUSES = [
 ];
 
 export default function BrandOrdersPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,6 +141,21 @@ export default function BrandOrdersPage() {
       case 'delivered': return 'bg-green-100 text-green-800 border-green-200';
       case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'all': return v('All Orders', 'Tất cả đơn');
+      case 'pending': return v('Pending', 'Chờ xử lý');
+      case 'confirmed': return v('Confirmed', 'Đã xác nhận');
+      case 'shipped': return v('Shipped', 'Đã giao');
+      case 'delivered': return v('Delivered', 'Đã nhận');
+      case 'cancelled': return v('Cancelled', 'Đã hủy');
+      case 'paid': return v('Paid', 'Đã thanh toán');
+      case 'refunded': return v('Refunded', 'Đã hoàn tiền');
+      case 'failed': return v('Failed', 'Thất bại');
+      default: return status.charAt(0).toUpperCase() + status.slice(1);
     }
   };
 
@@ -169,17 +186,17 @@ export default function BrandOrdersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Orders</h1>
-          <p className="text-[#64748B] text-sm mt-1">Manage and track your customer orders.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">{v('Orders', 'Đơn hàng')}</h1>
+          <p className="text-[#64748B] text-sm mt-1">{v('Manage and track your customer orders.', 'Quản lý và theo dõi đơn hàng của khách.')}</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="gap-2" onClick={() => alert('Orders exported to CSV!')}>
+          <Button variant="outline" className="gap-2" onClick={() => alert(v('Orders exported to CSV!', 'Đã xuất đơn hàng ra CSV!'))}>
             <Download className="h-4 w-4" />
-            Export
+            {v('Export', 'Xuất file')}
           </Button>
-          <Button className="gap-2 bg-[#F54900] text-white hover:bg-[#E04400]" onClick={() => alert('Printing shipping labels for pending orders...')}>
+          <Button className="gap-2 bg-[#F54900] text-white hover:bg-[#E04400]" onClick={() => alert(v('Printing shipping labels for pending orders...', 'Đang in nhãn vận chuyển cho các đơn hàng chờ xử lý...'))}>
             <CalendarIcon className="h-4 w-4" />
-            Print Shipping Labels
+            {v('Print Shipping Labels', 'In nhãn vận chuyển')}
           </Button>
         </div>
       </div>
@@ -188,7 +205,7 @@ export default function BrandOrdersPage() {
         <div className="relative w-full sm:w-96">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input 
-            placeholder="Search order ID, customer..." 
+            placeholder={v('Search order ID, customer...', 'Tìm mã đơn, khách hàng...')}
             className="pl-9 bg-gray-50 border-gray-200 focus-visible:ring-[#F54900]"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -205,7 +222,7 @@ export default function BrandOrdersPage() {
                 )}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                {date ? format(date, "PPP") : <span>{v('Pick a date', 'Chọn ngày')}</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="end">
@@ -217,7 +234,7 @@ export default function BrandOrdersPage() {
               />
             </PopoverContent>
           </Popover>
-          <Button variant="outline" size="icon" onClick={() => alert('Advanced filters coming soon')}>
+          <Button variant="outline" size="icon" onClick={() => alert(v('Advanced filters coming soon', 'Bộ lọc nâng cao sắp ra mắt'))}>
             <Filter className="h-4 w-4" />
           </Button>
         </div>
@@ -231,7 +248,7 @@ export default function BrandOrdersPage() {
               value={status.value}
               className="rounded-none border-b-2 border-transparent data-[state=active]:border-[#F54900] data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 px-4 text-gray-500 data-[state=active]:text-[#F54900]"
             >
-              {status.label}
+              {getStatusLabel(status.value)}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -244,20 +261,20 @@ export default function BrandOrdersPage() {
                   <TableHead className="w-[40px]">
                     <Checkbox />
                   </TableHead>
-                  <TableHead className="w-[180px]">Order ID</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Payment</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[180px]">{v('Order ID', 'Mã đơn')}</TableHead>
+                  <TableHead>{v('Customer', 'Khách hàng')}</TableHead>
+                  <TableHead>{v('Date', 'Ngày')}</TableHead>
+                  <TableHead>{v('Total', 'Tổng tiền')}</TableHead>
+                  <TableHead>{v('Status', 'Trạng thái')}</TableHead>
+                  <TableHead>{v('Payment', 'Thanh toán')}</TableHead>
+                  <TableHead className="text-right">{v('Actions', 'Thao tác')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredOrders.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="h-24 text-center text-gray-500">
-                      No orders found matching your criteria.
+                      {v('No orders found matching your criteria.', 'Không tìm thấy đơn hàng nào phù hợp.')}
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -293,45 +310,45 @@ export default function BrandOrdersPage() {
                       <TableCell className="font-medium">${order.total.toFixed(2)}</TableCell>
                       <TableCell>
                         <Badge variant="secondary" className={cn("font-medium border", getStatusColor(order.status))}>
-                          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                          {getStatusLabel(order.status)}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <div className={cn("inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border", getPaymentStatusColor(order.paymentStatus))}>
-                          {order.paymentStatus.charAt(0).toUpperCase() + order.paymentStatus.slice(1)}
+                          {getStatusLabel(order.paymentStatus)}
                         </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
+                              <span className="sr-only">{v('Open menu', 'Mở menu')}</span>
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>{v('Actions', 'Thao tác')}</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => navigate(`/brand/orders/${order.id}`)}>
                               <Eye className="mr-2 h-4 w-4" />
-                              View Details
+                              {v('View Details', 'Xem chi tiết')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             {order.status === 'pending' && (
                               <DropdownMenuItem>
                                 <CheckCircle2 className="mr-2 h-4 w-4" />
-                                Confirm Order
+                                {v('Confirm Order', 'Xác nhận đơn')}
                               </DropdownMenuItem>
                             )}
                             {order.status === 'confirmed' && (
                               <DropdownMenuItem>
                                 <Truck className="mr-2 h-4 w-4" />
-                                Ship Order
+                                {v('Ship Order', 'Giao đơn')}
                               </DropdownMenuItem>
                             )}
                             {(order.status === 'pending' || order.status === 'confirmed') && (
                                <DropdownMenuItem className="text-red-600">
                                 <XCircle className="mr-2 h-4 w-4" />
-                                Cancel Order
+                                {v('Cancel Order', 'Hủy đơn')}
                               </DropdownMenuItem>
                             )}
                           </DropdownMenuContent>

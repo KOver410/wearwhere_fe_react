@@ -21,7 +21,7 @@ export function OOTDDetailPage() {
     const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: `OOTD by ${post?.user.username}`, text: post?.caption || '', url });
+        await navigator.share({ title: v(`OOTD by ${post?.user.username}`, `OOTD của ${post?.user.username}`), text: post?.caption || '', url });
       } catch { /* user cancelled */ }
     } else {
       await copyToClipboard(url);

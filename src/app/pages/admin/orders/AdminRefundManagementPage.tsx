@@ -31,6 +31,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockRefunds = [
@@ -58,6 +59,18 @@ const methodConfig = {
 };
 
 export default function AdminRefundManagementPage() {
+  const { v } = useLanguage();
+  const statusLabels: Record<string, string> = {
+    pending: v('Pending Approval', 'Chờ duyệt'),
+    processing: v('Processing', 'Đang xử lý'),
+    completed: v('Completed', 'Hoàn tất'),
+    rejected: v('Rejected', 'Đã từ chối'),
+  };
+  const methodLabels: Record<string, string> = {
+    original: v('Original Payment Method', 'Phương thức thanh toán gốc'),
+    bank: v('Bank Transfer', 'Chuyển khoản ngân hàng'),
+    wallet: v('Platform Wallet', 'Ví nền tảng'),
+  };
   const [refunds, setRefunds] = useState(mockRefunds);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -103,7 +116,7 @@ export default function AdminRefundManagementPage() {
     );
     setApproveModalOpen(false);
     setSelectedRefund(null);
-    toast.success('Refund approved and processing');
+    toast.success(v('Refund approved and processing', 'Đã duyệt và đang xử lý hoàn tiền'));
   };
 
   const handleReject = () => {
@@ -114,7 +127,7 @@ export default function AdminRefundManagementPage() {
     );
     setRejectModalOpen(false);
     setSelectedRefund(null);
-    toast.success('Refund rejected');
+    toast.success(v('Refund rejected', 'Đã từ chối hoàn tiền'));
   };
 
   const handleExport = () => {
@@ -127,7 +140,7 @@ export default function AdminRefundManagementPage() {
     a.href = url;
     a.download = 'refunds.csv';
     a.click();
-    toast.success('Refunds exported');
+    toast.success(v('Refunds exported', 'Đã xuất hoàn tiền'));
   };
 
   return (
@@ -144,13 +157,13 @@ export default function AdminRefundManagementPage() {
               marginBottom: '8px',
             }}
           >
-            Refund Management
+            {v('Refund Management', 'Quản lý hoàn tiền')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý và theo dõi refunds
+            {v('Quản lý và theo dõi refunds', 'Quản lý và theo dõi hoàn tiền')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -167,7 +180,7 @@ export default function AdminRefundManagementPage() {
                 padding: '0 24px',
               }}
             >
-              View Disputes
+              {v('View Disputes', 'Xem tranh chấp')}
             </Button>
           </Link>
           <Link to="/admin/orders">
@@ -183,7 +196,7 @@ export default function AdminRefundManagementPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Orders
+              {v('Back to Orders', 'Quay lại đơn hàng')}
             </Button>
           </Link>
         </div>
@@ -212,7 +225,7 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Refunds
+              {v('Total Refunds', 'Tổng hoàn tiền')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -244,7 +257,7 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Approval
+              {v('Pending Approval', 'Chờ duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -276,7 +289,7 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '4px',
               }}
             >
-              Processing
+              {v('Processing', 'Đang xử lý')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -308,7 +321,7 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Refunded
+              {v('Total Refunded', 'Tổng đã hoàn')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -334,7 +347,7 @@ export default function AdminRefundManagementPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search by refund ID, order ID, customer..."
+                placeholder={v('Search by refund ID, order ID, customer...', 'Tìm theo mã hoàn tiền, mã đơn, khách hàng...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -360,14 +373,14 @@ export default function AdminRefundManagementPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending Approval</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Approval', 'Chờ duyệt')}</SelectItem>
+                <SelectItem value="processing">{v('Processing', 'Đang xử lý')}</SelectItem>
+                <SelectItem value="completed">{v('Completed', 'Hoàn tất')}</SelectItem>
+                <SelectItem value="rejected">{v('Rejected', 'Đã từ chối')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -387,7 +400,7 @@ export default function AdminRefundManagementPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export CSV
+            {v('Export CSV', 'Xuất CSV')}
           </Button>
         </div>
       </Card>
@@ -415,7 +428,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Refund ID
+                  {v('Refund ID', 'Mã hoàn tiền')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -426,7 +439,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Order ID
+                  {v('Order ID', 'Mã đơn hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -437,7 +450,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Customer
+                  {v('Customer', 'Khách hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -448,7 +461,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -459,7 +472,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Amount
+                  {v('Amount', 'Số tiền')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -470,7 +483,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Reason
+                  {v('Reason', 'Lý do')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -481,7 +494,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Method
+                  {v('Method', 'Phương thức')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -492,7 +505,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -503,7 +516,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Request Date
+                  {v('Request Date', 'Ngày yêu cầu')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -514,7 +527,7 @@ export default function AdminRefundManagementPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -584,7 +597,7 @@ export default function AdminRefundManagementPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {methodConfig[refund.method as keyof typeof methodConfig]}
+                      {methodLabels[refund.method]}
                     </p>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -598,7 +611,7 @@ export default function AdminRefundManagementPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {statusConfig[refund.status as keyof typeof statusConfig].label}
+                      {statusLabels[refund.status]}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -681,9 +694,9 @@ export default function AdminRefundManagementPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredRefunds.length)} of{' '}
-            {filteredRefunds.length} refunds
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredRefunds.length)} {v('of', 'trong')}{' '}
+            {filteredRefunds.length} {v('refunds', 'hoàn tiền')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -698,7 +711,7 @@ export default function AdminRefundManagementPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -735,7 +748,7 @@ export default function AdminRefundManagementPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Tiếp')}
             </Button>
           </div>
         </div>
@@ -753,10 +766,10 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '8px',
               }}
             >
-              Approve Refund
+              {v('Approve Refund', 'Duyệt hoàn tiền')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Approve this refund and start processing
+              {v('Approve this refund and start processing', 'Duyệt hoàn tiền này và bắt đầu xử lý')}
             </DialogDescription>
           </DialogHeader>
           {selectedRefund && (
@@ -767,7 +780,7 @@ export default function AdminRefundManagementPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Refund ID
+                    {v('Refund ID', 'Mã hoàn tiền')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -785,7 +798,7 @@ export default function AdminRefundManagementPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Customer
+                    {v('Customer', 'Khách hàng')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -799,7 +812,7 @@ export default function AdminRefundManagementPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Amount
+                    {v('Amount', 'Số tiền')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -817,8 +830,8 @@ export default function AdminRefundManagementPage() {
                 className="text-[#6A7282]"
                 style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
               >
-                This refund will be processed to the customer's{' '}
-                {methodConfig[selectedRefund.method as keyof typeof methodConfig].toLowerCase()}.
+                {v("This refund will be processed to the customer's", 'Khoản hoàn tiền này sẽ được xử lý qua')}{' '}
+                {methodLabels[selectedRefund.method].toLowerCase()}.
               </p>
             </div>
           )}
@@ -838,7 +851,7 @@ export default function AdminRefundManagementPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleApprove}
@@ -853,7 +866,7 @@ export default function AdminRefundManagementPage() {
               }}
             >
               <CheckCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Approve & Process
+              {v('Approve & Process', 'Duyệt & Xử lý')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -871,10 +884,10 @@ export default function AdminRefundManagementPage() {
                 marginBottom: '8px',
               }}
             >
-              Reject Refund
+              {v('Reject Refund', 'Từ chối hoàn tiền')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Reject this refund request
+              {v('Reject this refund request', 'Từ chối yêu cầu hoàn tiền này')}
             </DialogDescription>
           </DialogHeader>
           {selectedRefund && (
@@ -885,7 +898,7 @@ export default function AdminRefundManagementPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Refund ID
+                    {v('Refund ID', 'Mã hoàn tiền')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -903,7 +916,7 @@ export default function AdminRefundManagementPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Customer
+                    {v('Customer', 'Khách hàng')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -917,7 +930,7 @@ export default function AdminRefundManagementPage() {
                 className="text-[#6A7282]"
                 style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
               >
-                The customer will be notified that their refund request has been rejected.
+                {v('The customer will be notified that their refund request has been rejected.', 'Khách hàng sẽ được thông báo rằng yêu cầu hoàn tiền của họ đã bị từ chối.')}
               </p>
             </div>
           )}
@@ -937,7 +950,7 @@ export default function AdminRefundManagementPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleReject}
@@ -952,7 +965,7 @@ export default function AdminRefundManagementPage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Reject Refund
+              {v('Reject Refund', 'Từ chối hoàn tiền')}
             </Button>
           </DialogFooter>
         </DialogContent>

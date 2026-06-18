@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import {
   Activity,
   Users,
@@ -39,6 +40,7 @@ const generateRealtimeData = () => {
 };
 
 export default function AdminMonitorPage() {
+  const { v } = useLanguage();
   const [realtimeData, setRealtimeData] = useState<any[]>([]);
   const [currentStats, setCurrentStats] = useState({
     activeUsers: 2543,
@@ -104,7 +106,7 @@ export default function AdminMonitorPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-[#0A0A0A]" style={{ fontSize: '36px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '8px' }}>
-            Real-time Monitor
+            {v('Real-time Monitor', 'Giám sát thời gian thực')}
           </h1>
           <p className="text-[#4A5565]" style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}>
             Giám sát hoạt động hệ thống theo thời gian thực
@@ -115,7 +117,7 @@ export default function AdminMonitorPage() {
           style={{ borderRadius: '9999px', fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '8px 16px', gap: '8px' }}
         >
           <Activity style={{ width: '16px', height: '16px' }} className="animate-pulse" />
-          Live
+          {v('Live', 'Trực tiếp')}
         </Badge>
       </div>
 
@@ -127,12 +129,12 @@ export default function AdminMonitorPage() {
               <Users className="text-[#10B981]" style={{ width: '24px', height: '24px' }} />
             </div>
             <Badge className="bg-[#10B981]/10 text-[#10B981]" style={{ borderRadius: '9999px', fontSize: '10px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 8px' }}>
-              Online
+              {v('Online', 'Trực tuyến')}
             </Badge>
           </div>
           <div>
             <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-              Active Users
+              {v('Active Users', 'Người dùng đang hoạt động')}
             </p>
             <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
               {currentStats.activeUsers.toLocaleString('vi-VN')}
@@ -146,12 +148,12 @@ export default function AdminMonitorPage() {
               <ShoppingCart className="text-[#F54900]" style={{ width: '24px', height: '24px' }} />
             </div>
             <Badge className="bg-[#F54900]/10 text-[#F54900]" style={{ borderRadius: '9999px', fontSize: '10px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 8px' }}>
-              Processing
+              {v('Processing', 'Đang xử lý')}
             </Badge>
           </div>
           <div>
             <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-              Current Orders
+              {v('Current Orders', 'Đơn hàng hiện tại')}
             </p>
             <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
               {currentStats.currentOrders.toLocaleString('vi-VN')}
@@ -165,12 +167,12 @@ export default function AdminMonitorPage() {
               <Wifi className="text-[#3B82F6]" style={{ width: '24px', height: '24px' }} />
             </div>
             <Badge className="bg-[#10B981]/10 text-[#10B981]" style={{ borderRadius: '9999px', fontSize: '10px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 8px' }}>
-              Stable
+              {v('Stable', 'Ổn định')}
             </Badge>
           </div>
           <div>
             <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-              Active Connections
+              {v('Active Connections', 'Kết nối đang hoạt động')}
             </p>
             <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
               {currentStats.activeConnections.toLocaleString('vi-VN')}
@@ -184,12 +186,12 @@ export default function AdminMonitorPage() {
               <Package className="text-[#8B5CF6]" style={{ width: '24px', height: '24px' }} />
             </div>
             <Badge className="bg-[#F54900]/10 text-[#F54900]" style={{ borderRadius: '9999px', fontSize: '10px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 8px' }}>
-              Pending
+              {v('Pending', 'Đang chờ')}
             </Badge>
           </div>
           <div>
             <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-              Pending Orders
+              {v('Pending Orders', 'Đơn hàng đang chờ')}
             </p>
             <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
               {currentStats.pendingOrders.toLocaleString('vi-VN')}
@@ -204,11 +206,11 @@ export default function AdminMonitorPage() {
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
             <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-              Active Users (Live)
+              {v('Active Users (Live)', 'Người dùng hoạt động (Trực tiếp)')}
             </h2>
             <Badge className="bg-[#10B981]/10 text-[#10B981]" style={{ borderRadius: '9999px', fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 12px', gap: '4px' }}>
               <Activity style={{ width: '12px', height: '12px' }} className="animate-pulse" />
-              Updating
+              {v('Updating', 'Đang cập nhật')}
             </Badge>
           </div>
           <ResponsiveContainer width="100%" height={250}>
@@ -234,11 +236,11 @@ export default function AdminMonitorPage() {
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
             <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-              Current Orders (Live)
+              {v('Current Orders (Live)', 'Đơn hàng hiện tại (Trực tiếp)')}
             </h2>
             <Badge className="bg-[#F54900]/10 text-[#F54900]" style={{ borderRadius: '9999px', fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 12px', gap: '4px' }}>
               <TrendingUp style={{ width: '12px', height: '12px' }} />
-              Active
+              {v('Active', 'Hoạt động')}
             </Badge>
           </div>
           <ResponsiveContainer width="100%" height={250}>
@@ -264,7 +266,7 @@ export default function AdminMonitorPage() {
       {/* Server Status */}
       <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
         <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '24px' }}>
-          Server Status
+          {v('Server Status', 'Trạng thái máy chủ')}
         </h2>
         <div className="grid grid-cols-4" style={{ gap: '24px' }}>
           {/* Web Server */}
@@ -273,18 +275,18 @@ export default function AdminMonitorPage() {
               <div className="flex items-center" style={{ gap: '12px' }}>
                 <Server className="text-[#0A0A0A]" style={{ width: '20px', height: '20px' }} />
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-                  Web Server
+                  {v('Web Server', 'Máy chủ web')}
                 </span>
               </div>
               <CheckCircle className="text-[#10B981]" style={{ width: '16px', height: '16px' }} />
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Response</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Response', 'Phản hồi')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.webServer.responseTime}ms</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Uptime</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Uptime', 'Thời gian hoạt động')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.webServer.uptime}%</span>
               </div>
             </div>
@@ -296,18 +298,18 @@ export default function AdminMonitorPage() {
               <div className="flex items-center" style={{ gap: '12px' }}>
                 <HardDrive className="text-[#0A0A0A]" style={{ width: '20px', height: '20px' }} />
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-                  Database
+                  {v('Database', 'Cơ sở dữ liệu')}
                 </span>
               </div>
               <CheckCircle className="text-[#10B981]" style={{ width: '16px', height: '16px' }} />
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Response</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Response', 'Phản hồi')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.database.responseTime}ms</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Uptime</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Uptime', 'Thời gian hoạt động')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.database.uptime}%</span>
               </div>
             </div>
@@ -319,18 +321,18 @@ export default function AdminMonitorPage() {
               <div className="flex items-center" style={{ gap: '12px' }}>
                 <Cpu className="text-[#0A0A0A]" style={{ width: '20px', height: '20px' }} />
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-                  Cache
+                  {v('Cache', 'Bộ nhớ đệm')}
                 </span>
               </div>
               <CheckCircle className="text-[#10B981]" style={{ width: '16px', height: '16px' }} />
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Response</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Response', 'Phản hồi')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.cache.responseTime}ms</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Uptime</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Uptime', 'Thời gian hoạt động')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.cache.uptime}%</span>
               </div>
             </div>
@@ -349,11 +351,11 @@ export default function AdminMonitorPage() {
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Response</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Response', 'Phản hồi')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.cdn.responseTime}ms</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>Uptime</span>
+                <span className="text-[#6A7282]" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}>{v('Uptime', 'Thời gian hoạt động')}</span>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{serverStatus.cdn.uptime}%</span>
               </div>
             </div>
@@ -366,7 +368,7 @@ export default function AdminMonitorPage() {
         {/* System Metrics */}
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '24px' }}>
-            System Metrics
+            {v('System Metrics', 'Chỉ số hệ thống')}
           </h2>
           <div className="flex flex-col" style={{ gap: '20px' }}>
             {/* CPU */}
@@ -391,7 +393,7 @@ export default function AdminMonitorPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center" style={{ gap: '8px' }}>
                   <Server className="text-[#0A0A0A]" style={{ width: '16px', height: '16px' }} />
-                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>Memory</span>
+                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{v('Memory', 'Bộ nhớ')}</span>
                 </div>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{systemMetrics.memory}%</span>
               </div>
@@ -408,7 +410,7 @@ export default function AdminMonitorPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center" style={{ gap: '8px' }}>
                   <HardDrive className="text-[#0A0A0A]" style={{ width: '16px', height: '16px' }} />
-                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>Disk</span>
+                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{v('Disk', 'Ổ đĩa')}</span>
                 </div>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{systemMetrics.disk}%</span>
               </div>
@@ -425,7 +427,7 @@ export default function AdminMonitorPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center" style={{ gap: '8px' }}>
                   <Wifi className="text-[#0A0A0A]" style={{ width: '16px', height: '16px' }} />
-                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>Network</span>
+                  <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{v('Network', 'Mạng')}</span>
                 </div>
                 <span className="text-[#0A0A0A]" style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>{systemMetrics.network}%</span>
               </div>
@@ -443,11 +445,11 @@ export default function AdminMonitorPage() {
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <div className="flex items-center justify-between" style={{ marginBottom: '24px' }}>
             <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-              Recent Activity
+              {v('Recent Activity', 'Hoạt động gần đây')}
             </h2>
             <Badge className="bg-[#10B981]/10 text-[#10B981]" style={{ borderRadius: '9999px', fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 12px', gap: '4px' }}>
               <Clock style={{ width: '12px', height: '12px' }} />
-              Live
+              {v('Live', 'Trực tiếp')}
             </Badge>
           </div>
           <div className="flex flex-col" style={{ gap: '12px' }}>

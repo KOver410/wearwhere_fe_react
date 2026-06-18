@@ -30,6 +30,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockBrand = {
@@ -124,6 +125,7 @@ const mockTopProducts = [
 ];
 
 export default function AdminBrandDetailPage() {
+  const { v } = useLanguage();
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -181,14 +183,14 @@ export default function AdminBrandDetailPage() {
                     padding: '6px 16px',
                   }}
                 >
-                  Active
+                  {v('Active', 'Hoạt động')}
                 </Badge>
               </div>
               <p
                 className="text-[#4A5565]"
                 style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Member since {new Date(mockBrand.joinDate).toLocaleDateString('vi-VN')}
+                {v('Member since', 'Thành viên từ')} {new Date(mockBrand.joinDate).toLocaleDateString('vi-VN')}
               </p>
             </div>
           </div>
@@ -208,7 +210,7 @@ export default function AdminBrandDetailPage() {
               }}
             >
               <Shield style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Verify Badge
+              {v('Verify Badge', 'Cấp huy hiệu xác minh')}
             </Button>
           </Link>
           <Link to={`/admin/brands/${id}/suspend`}>
@@ -225,7 +227,7 @@ export default function AdminBrandDetailPage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Suspend Brand
+              {v('Suspend Brand', 'Tạm khóa thương hiệu')}
             </Button>
           </Link>
         </div>
@@ -254,7 +256,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '4px',
               }}
             >
-              Stores
+              {v('Stores', 'Cửa hàng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -286,7 +288,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '4px',
               }}
             >
-              Products
+              {v('Products', 'Sản phẩm')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -318,7 +320,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '4px',
               }}
             >
-              Monthly Revenue
+              {v('Monthly Revenue', 'Doanh thu tháng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -350,7 +352,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '4px',
               }}
             >
-              Rating
+              {v('Rating', 'Đánh giá')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -379,7 +381,7 @@ export default function AdminBrandDetailPage() {
               borderRadius: '0',
             }}
           >
-            Overview
+            {v('Overview', 'Tổng quan')}
           </TabsTrigger>
           <TabsTrigger
             value="stores"
@@ -392,7 +394,7 @@ export default function AdminBrandDetailPage() {
               borderRadius: '0',
             }}
           >
-            Stores
+            {v('Stores', 'Cửa hàng')}
           </TabsTrigger>
           <TabsTrigger
             value="performance"
@@ -405,7 +407,7 @@ export default function AdminBrandDetailPage() {
               borderRadius: '0',
             }}
           >
-            Performance
+            {v('Performance', 'Hiệu suất')}
           </TabsTrigger>
           <TabsTrigger
             value="subscription"
@@ -418,7 +420,7 @@ export default function AdminBrandDetailPage() {
               borderRadius: '0',
             }}
           >
-            Subscription
+            {v('Subscription', 'Gói đăng ký')}
           </TabsTrigger>
         </TabsList>
 
@@ -440,7 +442,7 @@ export default function AdminBrandDetailPage() {
                     marginBottom: '20px',
                   }}
                 >
-                  Brand Information
+                  {v('Brand Information', 'Thông tin thương hiệu')}
                 </h3>
                 <p
                   className="text-[#0A0A0A]"
@@ -463,7 +465,7 @@ export default function AdminBrandDetailPage() {
                         marginBottom: '6px',
                       }}
                     >
-                      Email
+                      {v('Email', 'Email')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -485,7 +487,7 @@ export default function AdminBrandDetailPage() {
                         marginBottom: '6px',
                       }}
                     >
-                      Phone
+                      {v('Phone', 'Số điện thoại')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -507,7 +509,7 @@ export default function AdminBrandDetailPage() {
                         marginBottom: '6px',
                       }}
                     >
-                      Address
+                      {v('Address', 'Địa chỉ')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -529,7 +531,7 @@ export default function AdminBrandDetailPage() {
                         marginBottom: '6px',
                       }}
                     >
-                      Website
+                      {v('Website', 'Website')}
                     </p>
                     <a
                       href={mockBrand.website}
@@ -563,7 +565,7 @@ export default function AdminBrandDetailPage() {
                     marginBottom: '20px',
                   }}
                 >
-                  Top Products
+                  {v('Top Products', 'Sản phẩm bán chạy')}
                 </h3>
                 <div className="flex flex-col" style={{ gap: '12px' }}>
                   {mockTopProducts.map((product) => (
@@ -599,7 +601,7 @@ export default function AdminBrandDetailPage() {
                             className="text-[#6A7282]"
                             style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                           >
-                            {product.sales} sales
+                            {product.sales} {v('sales', 'lượt bán')}
                           </p>
                         </div>
                       </div>
@@ -634,7 +636,7 @@ export default function AdminBrandDetailPage() {
                     marginBottom: '20px',
                   }}
                 >
-                  Quick Stats
+                  {v('Quick Stats', 'Thống kê nhanh')}
                 </h3>
                 <div className="flex flex-col" style={{ gap: '16px' }}>
                   <div className="flex items-center justify-between">
@@ -647,7 +649,7 @@ export default function AdminBrandDetailPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Total Orders
+                        {v('Total Orders', 'Tổng đơn hàng')}
                       </span>
                     </div>
                     <span
@@ -668,7 +670,7 @@ export default function AdminBrandDetailPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Customers
+                        {v('Customers', 'Khách hàng')}
                       </span>
                     </div>
                     <span
@@ -689,7 +691,7 @@ export default function AdminBrandDetailPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Reviews
+                        {v('Reviews', 'Đánh giá')}
                       </span>
                     </div>
                     <span
@@ -713,7 +715,7 @@ export default function AdminBrandDetailPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Total Revenue
+                        {v('Total Revenue', 'Tổng doanh thu')}
                       </span>
                     </div>
                     <span
@@ -743,7 +745,7 @@ export default function AdminBrandDetailPage() {
                     marginBottom: '20px',
                   }}
                 >
-                  Subscription
+                  {v('Subscription', 'Gói đăng ký')}
                 </h3>
                 <Badge
                   className="bg-[#F54900]/10 text-[#F54900]"
@@ -757,7 +759,7 @@ export default function AdminBrandDetailPage() {
                   }}
                 >
                   <Crown style={{ width: '16px', height: '16px', marginRight: '6px' }} />
-                  Premium
+                  {v('Premium', 'Cao cấp')}
                 </Badge>
                 <Link to={`/admin/brands/${id}/subscription`}>
                   <Button
@@ -771,7 +773,7 @@ export default function AdminBrandDetailPage() {
                     }}
                   >
                     <Edit style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                    Change Tier
+                    {v('Change Tier', 'Đổi gói')}
                   </Button>
                 </Link>
               </Card>
@@ -794,7 +796,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '20px',
               }}
             >
-              Store Locations
+              {v('Store Locations', 'Địa điểm cửa hàng')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {mockStores.map((store) => (
@@ -852,7 +854,7 @@ export default function AdminBrandDetailPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    Active
+                    {v('Active', 'Hoạt động')}
                   </Badge>
                 </div>
               ))}
@@ -876,7 +878,7 @@ export default function AdminBrandDetailPage() {
                   marginBottom: '20px',
                 }}
               >
-                Revenue Trend (6 months)
+                {v('Revenue Trend (6 months)', 'Xu hướng doanh thu (6 tháng)')}
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={mockBrand.revenueData}>
@@ -908,7 +910,7 @@ export default function AdminBrandDetailPage() {
                   marginBottom: '20px',
                 }}
               >
-                Orders Trend (6 months)
+                {v('Orders Trend (6 months)', 'Xu hướng đơn hàng (6 tháng)')}
               </h3>
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={mockBrand.ordersData}>
@@ -938,7 +940,7 @@ export default function AdminBrandDetailPage() {
                 marginBottom: '20px',
               }}
             >
-              Current Subscription
+              {v('Current Subscription', 'Gói đăng ký hiện tại')}
             </h3>
             <div className="flex items-center justify-between">
               <div className="flex items-center" style={{ gap: '16px' }}>
@@ -958,13 +960,13 @@ export default function AdminBrandDetailPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Premium Tier
+                    {v('Premium Tier', 'Gói Cao cấp')}
                   </h4>
                   <p
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Full access to all features
+                    {v('Full access to all features', 'Toàn quyền truy cập mọi tính năng')}
                   </p>
                 </div>
               </div>
@@ -981,7 +983,7 @@ export default function AdminBrandDetailPage() {
                   }}
                 >
                   <Edit style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                  Change Subscription
+                  {v('Change Subscription', 'Đổi gói đăng ký')}
                 </Button>
               </Link>
             </div>

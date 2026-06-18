@@ -110,7 +110,7 @@ export function WardrobeAddPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {item.color} · Size {item.size}</p>
+                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {item.color} · {v('Size', 'Size')} {item.size}</p>
                           <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>
                             {v('Order', 'Đơn hàng')} {item.orderNumber} · {new Date(item.orderDate).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { month: 'short', day: 'numeric' })}
                           </p>
@@ -167,7 +167,7 @@ export function WardrobeAddPage() {
                   className="w-full px-4 py-2.5 border border-[#e0d8cf] bg-[#fff9f2] focus:border-[#d41c1c] focus:outline-none transition-colors appearance-none cursor-pointer capitalize"
                   style={{ borderRadius: '10px', fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  <option value="">{v('Select category', 'Chn danh mục')}</option>
+                  <option value="">{v('Select category', 'Chọn danh mục')}</option>
                   {CATEGORIES.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
                 </select>
               </div>
@@ -194,12 +194,12 @@ export function WardrobeAddPage() {
                 />
               </div>
               <div>
-                <label style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px', display: 'block' }}>Size</label>
+                <label style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px', display: 'block' }}>{v('Size', 'Size')}</label>
                 <input
                   type="text"
                   value={manualForm.size}
                   onChange={e => setManualForm({ ...manualForm, size: e.target.value })}
-                  placeholder="e.g. M"
+                  placeholder={v('e.g. M', 'VD: M')}
                   className="w-full px-4 py-2.5 border border-[#e0d8cf] focus:border-[#d41c1c] focus:outline-none transition-colors"
                   style={{ borderRadius: '10px', fontSize: '14px', backgroundColor: '#fff9f2', fontFamily: "'Montserrat', sans-serif" }}
                 />

@@ -31,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import { toast } from 'sonner';
 
 // Mock data
@@ -130,6 +131,19 @@ const tierConfig = {
 };
 
 export default function AdminBrandsPage() {
+  const { v } = useLanguage();
+  const statusLabel = (status: keyof typeof statusConfig) =>
+    ({
+      active: v('Active', 'Hoạt động'),
+      pending: v('Pending', 'Đang chờ'),
+      suspended: v('Suspended', 'Tạm khóa'),
+    })[status];
+  const tierLabel = (tier: keyof typeof tierConfig) =>
+    ({
+      starter: v('Starter', 'Khởi đầu'),
+      business: v('Business', 'Doanh nghiệp'),
+      premium: v('Premium', 'Cao cấp'),
+    })[tier];
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [verifiedFilter, setVerifiedFilter] = useState('all');
@@ -180,13 +194,13 @@ export default function AdminBrandsPage() {
               marginBottom: '8px',
             }}
           >
-            Brand Management
+            {v('Brand Management', 'Quản lý thương hiệu')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý tất cả brands trên nền tảng
+            {v('Manage all brands on the platform', 'Quản lý tất cả brands trên nền tảng')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -204,7 +218,7 @@ export default function AdminBrandsPage() {
               }}
             >
               <AlertCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Applications
+              {v('Applications', 'Đơn đăng ký')}
             </Button>
           </Link>
           <Link to="/admin/brands/subscriptions">
@@ -221,7 +235,7 @@ export default function AdminBrandsPage() {
               }}
             >
               <Crown style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Subscriptions
+              {v('Subscriptions', 'Gói đăng ký')}
             </Button>
           </Link>
         </div>
@@ -250,7 +264,7 @@ export default function AdminBrandsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Brands
+              {v('Total Brands', 'Tổng thương hiệu')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -282,7 +296,7 @@ export default function AdminBrandsPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Brands
+              {v('Active Brands', 'Thương hiệu hoạt động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -314,7 +328,7 @@ export default function AdminBrandsPage() {
                 marginBottom: '4px',
               }}
             >
-              Verified Brands
+              {v('Verified Brands', 'Thương hiệu đã xác minh')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -346,7 +360,7 @@ export default function AdminBrandsPage() {
                 marginBottom: '4px',
               }}
             >
-              Monthly Revenue
+              {v('Monthly Revenue', 'Doanh thu hàng tháng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -372,7 +386,7 @@ export default function AdminBrandsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search brands..."
+                placeholder={v('Search brands...', 'Tìm kiếm thương hiệu...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -398,13 +412,13 @@ export default function AdminBrandsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="suspended">Suspended</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="active">{v('Active', 'Hoạt động')}</SelectItem>
+                <SelectItem value="pending">{v('Pending', 'Đang chờ')}</SelectItem>
+                <SelectItem value="suspended">{v('Suspended', 'Tạm khóa')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -421,12 +435,12 @@ export default function AdminBrandsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Verification" />
+                <SelectValue placeholder={v('Verification', 'Xác minh')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Brands</SelectItem>
-                <SelectItem value="verified">Verified</SelectItem>
-                <SelectItem value="unverified">Unverified</SelectItem>
+                <SelectItem value="all">{v('All Brands', 'Tất cả thương hiệu')}</SelectItem>
+                <SelectItem value="verified">{v('Verified', 'Đã xác minh')}</SelectItem>
+                <SelectItem value="unverified">{v('Unverified', 'Chưa xác minh')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -443,13 +457,13 @@ export default function AdminBrandsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Subscription Tier" />
+                <SelectValue placeholder={v('Subscription Tier', 'Gói đăng ký')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Tiers</SelectItem>
-                <SelectItem value="starter">Starter</SelectItem>
-                <SelectItem value="business">Business</SelectItem>
-                <SelectItem value="premium">Premium</SelectItem>
+                <SelectItem value="all">{v('All Tiers', 'Tất cả gói')}</SelectItem>
+                <SelectItem value="starter">{v('Starter', 'Khởi đầu')}</SelectItem>
+                <SelectItem value="business">{v('Business', 'Doanh nghiệp')}</SelectItem>
+                <SelectItem value="premium">{v('Premium', 'Cao cấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -479,7 +493,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -490,7 +504,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Subscription
+                  {v('Subscription', 'Gói đăng ký')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -501,7 +515,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Stores & Products
+                  {v('Stores & Products', 'Cửa hàng & Sản phẩm')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -512,7 +526,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Performance
+                  {v('Performance', 'Hiệu suất')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -523,7 +537,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Revenue
+                  {v('Revenue', 'Doanh thu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -534,7 +548,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -545,7 +559,7 @@ export default function AdminBrandsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -606,7 +620,7 @@ export default function AdminBrandsPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {tierConfig[brand.subscriptionTier as keyof typeof tierConfig].label}
+                        {tierLabel(brand.subscriptionTier as keyof typeof tierConfig)}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -619,13 +633,13 @@ export default function AdminBrandsPage() {
                             fontFamily: 'Arimo, sans-serif',
                           }}
                         >
-                          🏪 {brand.stores} stores
+                          🏪 {brand.stores} {v('stores', 'cửa hàng')}
                         </p>
                         <p
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          📦 {brand.products.toLocaleString('vi-VN')} products
+                          📦 {brand.products.toLocaleString('vi-VN')} {v('products', 'sản phẩm')}
                         </p>
                       </div>
                     </td>
@@ -645,7 +659,7 @@ export default function AdminBrandsPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          📈 {brand.orders.toLocaleString('vi-VN')} orders
+                          📈 {brand.orders.toLocaleString('vi-VN')} {v('orders', 'đơn hàng')}
                         </p>
                       </div>
                     </td>
@@ -665,7 +679,7 @@ export default function AdminBrandsPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          Total: {(brand.totalRevenue / 1000000000).toFixed(1)}B
+                          {v('Total', 'Tổng')}: {(brand.totalRevenue / 1000000000).toFixed(1)}B
                         </p>
                       </div>
                     </td>
@@ -682,7 +696,7 @@ export default function AdminBrandsPage() {
                         }}
                       >
                         <StatusIcon style={{ width: '14px', height: '14px' }} />
-                        {statusConfig[brand.status as keyof typeof statusConfig].label}
+                        {statusLabel(brand.status as keyof typeof statusConfig)}
                       </Badge>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -717,19 +731,19 @@ export default function AdminBrandsPage() {
                               <Shield
                                 style={{ width: '14px', height: '14px', marginRight: '8px' }}
                               />
-                              {brand.verified ? 'Remove Verification' : 'Verify Brand'}
+                              {brand.verified ? v('Remove Verification', 'Gỡ xác minh') : v('Verify Brand', 'Xác minh thương hiệu')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Crown
                                 style={{ width: '14px', height: '14px', marginRight: '8px' }}
                               />
-                              Change Subscription
+                              {v('Change Subscription', 'Đổi gói đăng ký')}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-[#E7000B]">
                               <XCircle
                                 style={{ width: '14px', height: '14px', marginRight: '8px' }}
                               />
-                              Suspend Brand
+                              {v('Suspend Brand', 'Tạm khóa thương hiệu')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -751,9 +765,9 @@ export default function AdminBrandsPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredBrands.length)} of{' '}
-            {filteredBrands.length} brands
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredBrands.length)} {v('of', 'trong')}{' '}
+            {filteredBrands.length} {v('brands', 'thương hiệu')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -768,7 +782,7 @@ export default function AdminBrandsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -805,7 +819,7 @@ export default function AdminBrandsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>

@@ -26,6 +26,7 @@ import {
   DollarSign,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 const mockDispute = {
   id: 'DIS-001',
@@ -71,6 +72,12 @@ const priorityConfig = {
 };
 
 export default function AdminResolveDisputePage() {
+  const { v } = useLanguage();
+  const priorityLabels: Record<string, string> = {
+    high: v('High', 'Cao'),
+    medium: v('Medium', 'Trung bình'),
+    low: v('Low', 'Thấp'),
+  };
   const { id } = useParams();
   const [dispute, setDispute] = useState(mockDispute);
   const [resolveModalOpen, setResolveModalOpen] = useState(false);
@@ -82,13 +89,13 @@ export default function AdminResolveDisputePage() {
   const handleResolve = () => {
     setDispute({ ...dispute, status: 'resolved' });
     setResolveModalOpen(false);
-    toast.success('Dispute resolved in favor of customer');
+    toast.success(v('Dispute resolved in favor of customer', 'Đã xử lý tranh chấp nghiêng về khách hàng'));
   };
 
   const handleReject = () => {
     setDispute({ ...dispute, status: 'rejected' });
     setRejectModalOpen(false);
-    toast.success('Dispute rejected');
+    toast.success(v('Dispute rejected', 'Đã từ chối tranh chấp'));
   };
 
   return (
@@ -120,13 +127,13 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '8px',
               }}
             >
-              Dispute {dispute.id}
+              {v('Dispute', 'Tranh chấp')} {dispute.id}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Order {dispute.orderId} • Created {new Date(dispute.created).toLocaleDateString('vi-VN')}
+              {v('Order', 'Đơn hàng')} {dispute.orderId} • {v('Created', 'Tạo ngày')} {new Date(dispute.created).toLocaleDateString('vi-VN')}
             </p>
           </div>
         </div>
@@ -141,7 +148,7 @@ export default function AdminResolveDisputePage() {
               padding: '8px 16px',
             }}
           >
-            {priorityConfig[dispute.priority as keyof typeof priorityConfig].label} Priority
+            {v('Priority', 'Ưu tiên')}: {priorityLabels[dispute.priority]}
           </Badge>
           {dispute.status === 'pending' && (
             <>
@@ -159,7 +166,7 @@ export default function AdminResolveDisputePage() {
                 }}
               >
                 <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Reject Dispute
+                {v('Reject Dispute', 'Từ chối tranh chấp')}
               </Button>
               <Button
                 onClick={() => setResolveModalOpen(true)}
@@ -174,7 +181,7 @@ export default function AdminResolveDisputePage() {
                 }}
               >
                 <CheckCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Resolve Dispute
+                {v('Resolve Dispute', 'Xử lý tranh chấp')}
               </Button>
             </>
           )}
@@ -195,7 +202,7 @@ export default function AdminResolveDisputePage() {
             marginBottom: '16px',
           }}
         >
-          Order Details
+          {v('Order Details', 'Chi tiết đơn hàng')}
         </h3>
         <div className="grid grid-cols-4" style={{ gap: '24px' }}>
           <div>
@@ -207,7 +214,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '4px',
               }}
             >
-              Order ID
+              {v('Order ID', 'Mã đơn hàng')}
             </p>
             <Link to={`/admin/orders/${dispute.orderId}`}>
               <p
@@ -231,7 +238,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '4px',
               }}
             >
-              Order Date
+              {v('Order Date', 'Ngày đặt hàng')}
             </p>
             <p
               className="text-[#0A0A0A]"
@@ -249,7 +256,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '4px',
               }}
             >
-              Delivered
+              {v('Delivered', 'Đã giao')}
             </p>
             <p
               className="text-[#0A0A0A]"
@@ -267,7 +274,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '4px',
               }}
             >
-              Amount
+              {v('Amount', 'Số tiền')}
             </p>
             <p
               className="text-[#0A0A0A]"
@@ -290,7 +297,7 @@ export default function AdminResolveDisputePage() {
               marginBottom: '8px',
             }}
           >
-            Items
+            {v('Items', 'Sản phẩm')}
           </p>
           {dispute.orderDetails.items.map((item, idx) => (
             <div key={idx} className="flex justify-between items-center">
@@ -309,7 +316,7 @@ export default function AdminResolveDisputePage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  SKU: {item.sku} • Qty: {item.quantity}
+                  {v('SKU', 'Mã SKU')}: {item.sku} • {v('Qty', 'SL')}: {item.quantity}
                 </p>
               </div>
               <p
@@ -349,7 +356,7 @@ export default function AdminResolveDisputePage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Customer Claim
+                {v('Customer Claim', 'Khiếu nại của khách hàng')}
               </h3>
               <p
                 className="text-[#6A7282]"
@@ -369,7 +376,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '4px',
               }}
             >
-              Reason
+              {v('Reason', 'Lý do')}
             </p>
             <p
               className="text-[#0A0A0A]"
@@ -397,7 +404,7 @@ export default function AdminResolveDisputePage() {
                 className="text-[#6A7282]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Evidence ({dispute.customer.evidence.length})
+                {v('Evidence', 'Bằng chứng')} ({dispute.customer.evidence.length})
               </p>
             </div>
             <div className="grid grid-cols-2" style={{ gap: '12px' }}>
@@ -433,7 +440,7 @@ export default function AdminResolveDisputePage() {
               className="text-[#6A7282]"
               style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Submitted at {dispute.customer.submittedAt}
+              {v('Submitted at', 'Gửi lúc')} {dispute.customer.submittedAt}
             </p>
           </div>
         </Card>
@@ -459,7 +466,7 @@ export default function AdminResolveDisputePage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Brand Response
+                {v('Brand Response', 'Phản hồi của thương hiệu')}
               </h3>
               <p
                 className="text-[#6A7282]"
@@ -479,7 +486,7 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '8px',
               }}
             >
-              Response
+              {v('Response', 'Phản hồi')}
             </p>
             <p
               className="text-[#0A0A0A]"
@@ -496,7 +503,7 @@ export default function AdminResolveDisputePage() {
                 className="text-[#6A7282]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Evidence ({dispute.brand.evidence.length})
+                {v('Evidence', 'Bằng chứng')} ({dispute.brand.evidence.length})
               </p>
             </div>
             <div className="grid grid-cols-2" style={{ gap: '12px' }}>
@@ -532,7 +539,7 @@ export default function AdminResolveDisputePage() {
               className="text-[#6A7282]"
               style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Responded at {dispute.brand.respondedAt}
+              {v('Responded at', 'Phản hồi lúc')} {dispute.brand.respondedAt}
             </p>
           </div>
         </Card>
@@ -550,10 +557,10 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '8px',
               }}
             >
-              Resolve Dispute
+              {v('Resolve Dispute', 'Xử lý tranh chấp')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Resolve this dispute in favor of the customer
+              {v('Resolve this dispute in favor of the customer', 'Xử lý tranh chấp này nghiêng về khách hàng')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -567,7 +574,7 @@ export default function AdminResolveDisputePage() {
                   display: 'block',
                 }}
               >
-                Refund Amount *
+                {v('Refund Amount', 'Số tiền hoàn')} *
               </Label>
               <Input
                 type="number"
@@ -589,7 +596,7 @@ export default function AdminResolveDisputePage() {
                   marginTop: '6px',
                 }}
               >
-                Original amount: {dispute.amount.toLocaleString('vi-VN')}đ
+                {v('Original amount', 'Số tiền gốc')}: {dispute.amount.toLocaleString('vi-VN')}đ
               </p>
             </div>
             <div>
@@ -602,10 +609,10 @@ export default function AdminResolveDisputePage() {
                   display: 'block',
                 }}
               >
-                Decision Summary *
+                {v('Decision Summary', 'Tóm tắt quyết định')} *
               </Label>
               <Textarea
-                placeholder="Explain your decision..."
+                placeholder={v('Explain your decision...', 'Giải thích quyết định của bạn...')}
                 value={decision}
                 onChange={(e) => setDecision(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -627,10 +634,10 @@ export default function AdminResolveDisputePage() {
                   display: 'block',
                 }}
               >
-                Admin Notes (Internal)
+                {v('Admin Notes (Internal)', 'Ghi chú quản trị (Nội bộ)')}
               </Label>
               <Textarea
-                placeholder="Internal notes..."
+                placeholder={v('Internal notes...', 'Ghi chú nội bộ...')}
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -656,7 +663,7 @@ export default function AdminResolveDisputePage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleResolve}
@@ -671,7 +678,7 @@ export default function AdminResolveDisputePage() {
               }}
             >
               <CheckCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Resolve & Refund
+              {v('Resolve & Refund', 'Xử lý & Hoàn tiền')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -689,10 +696,10 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '8px',
               }}
             >
-              Reject Dispute
+              {v('Reject Dispute', 'Từ chối tranh chấp')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Reject this dispute in favor of the brand
+              {v('Reject this dispute in favor of the brand', 'Từ chối tranh chấp này nghiêng về thương hiệu')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col" style={{ gap: '20px', marginTop: '24px' }}>
@@ -706,10 +713,10 @@ export default function AdminResolveDisputePage() {
                   display: 'block',
                 }}
               >
-                Decision Summary *
+                {v('Decision Summary', 'Tóm tắt quyết định')} *
               </Label>
               <Textarea
-                placeholder="Explain why you're rejecting this dispute..."
+                placeholder={v("Explain why you're rejecting this dispute...", 'Giải thích lý do bạn từ chối tranh chấp này...')}
                 value={decision}
                 onChange={(e) => setDecision(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -731,10 +738,10 @@ export default function AdminResolveDisputePage() {
                   display: 'block',
                 }}
               >
-                Admin Notes (Internal)
+                {v('Admin Notes (Internal)', 'Ghi chú quản trị (Nội bộ)')}
               </Label>
               <Textarea
-                placeholder="Internal notes..."
+                placeholder={v('Internal notes...', 'Ghi chú nội bộ...')}
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
                 className="border-[#D1D5DC]"
@@ -760,7 +767,7 @@ export default function AdminResolveDisputePage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleReject}
@@ -775,7 +782,7 @@ export default function AdminResolveDisputePage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Reject Dispute
+              {v('Reject Dispute', 'Từ chối tranh chấp')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -56,7 +56,7 @@ export function OOTDFeedPage() {
         {/* Header row */}
         <div className="flex items-center justify-between mb-6">
           <h1 style={{ fontSize: 'clamp(28px, 4vw, 36px)', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            {v('STYLE DISCOVERY', 'KHÁM PHÁT PHONG CÁCH')}
+            {v('STYLE DISCOVERY', 'KHÁM PHÁ PHONG CÁCH')}
           </h1>
           <Link
             to="/ootd/create"

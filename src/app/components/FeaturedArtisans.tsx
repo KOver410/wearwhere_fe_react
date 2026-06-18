@@ -47,7 +47,7 @@ export function FeaturedArtisans() {
         >
           <div>
             <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-              FEATURED
+              {lang === 'vi' ? 'NỔI BẬT' : 'FEATURED'}
             </span>
             <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#0d0d0d', lineHeight: 0.95 }}>
               {lang === 'vi' ? 'THƯƠNG HIỆU NỔI BẬT' : 'TRUSTED BRANDS'}

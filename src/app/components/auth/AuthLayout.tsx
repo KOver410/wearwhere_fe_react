@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Link } from 'react-router';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import logoImage from 'figma:asset/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
 
 interface AuthLayoutProps {
@@ -15,13 +16,14 @@ export function AuthLayout({
   title,
   subtitle
 }: AuthLayoutProps) {
+  const { v } = useLanguage();
   return (
     <div className="min-h-screen flex w-full" style={{ backgroundColor: '#fff9f2', fontFamily: "'Montserrat', sans-serif" }}>
       {/* Left Side - Image */}
       <div className="hidden lg:block w-1/2 relative" style={{ backgroundColor: '#F3F4F6' }}>
         <img 
           src={imageSrc} 
-          alt="Fashion" 
+          alt={v('Fashion', 'Thời trang')}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(13,13,13,0.4) 0%, transparent 40%, rgba(13,13,13,0.3) 100%)' }} />

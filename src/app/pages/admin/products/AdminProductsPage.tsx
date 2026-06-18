@@ -31,6 +31,7 @@ import {
 } from '@/app/components/ui/dropdown-menu';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockProducts = [
@@ -119,6 +120,7 @@ const statusConfig = {
 };
 
 export default function AdminProductsPage() {
+  const { v } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -173,7 +175,7 @@ export default function AdminProductsPage() {
 
   // Bulk actions
   const handleBulkAction = (action: string) => {
-    toast.success(`${action} applied to ${selectedProducts.length} products`);
+    toast.success(v(`${action} applied to ${selectedProducts.length} products`, `Đã áp dụng "${action}" cho ${selectedProducts.length} sản phẩm`));
     setSelectedProducts([]);
   };
 
@@ -191,7 +193,7 @@ export default function AdminProductsPage() {
               marginBottom: '8px',
             }}
           >
-            Product Management
+            {v('Product Management', 'Quản Lý Sản Phẩm')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -214,7 +216,7 @@ export default function AdminProductsPage() {
                 padding: '0 24px',
               }}
             >
-              Categories
+              {v('Categories', 'Danh Mục')}
             </Button>
           </Link>
           <Link to="/admin/products/style-tags">
@@ -230,7 +232,7 @@ export default function AdminProductsPage() {
                 padding: '0 24px',
               }}
             >
-              Style Tags
+              {v('Style Tags', 'Thẻ Phong Cách')}
             </Button>
           </Link>
           <Link to="/admin/products/reported">
@@ -247,7 +249,7 @@ export default function AdminProductsPage() {
               }}
             >
               <AlertTriangle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Reported
+              {v('Reported', 'Bị Báo Cáo')}
             </Button>
           </Link>
           <Button
@@ -263,7 +265,7 @@ export default function AdminProductsPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export
+            {v('Export', 'Xuất Dữ Liệu')}
           </Button>
         </div>
       </div>
@@ -291,7 +293,7 @@ export default function AdminProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Products
+              {v('Total Products', 'Tổng Sản Phẩm')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -323,7 +325,7 @@ export default function AdminProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Products
+              {v('Active Products', 'Sản Phẩm Hoạt Động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -355,7 +357,7 @@ export default function AdminProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Review
+              {v('Pending Review', 'Chờ Duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -387,7 +389,7 @@ export default function AdminProductsPage() {
                 marginBottom: '4px',
               }}
             >
-              Reported Products
+              {v('Reported Products', 'Sản Phẩm Bị Báo Cáo')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -413,7 +415,7 @@ export default function AdminProductsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search products..."
+                placeholder={v('Search products...', 'Tìm kiếm sản phẩm...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -439,10 +441,10 @@ export default function AdminProductsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder={v('Category', 'Danh mục')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{v('All Categories', 'Tất cả danh mục')}</SelectItem>
                 <SelectItem value="Áo">Áo</SelectItem>
                 <SelectItem value="Quần">Quần</SelectItem>
                 <SelectItem value="Váy">Váy</SelectItem>
@@ -463,13 +465,13 @@ export default function AdminProductsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="suspended">Suspended</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="active">{v('Active', 'Đang hoạt động')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Review', 'Chờ duyệt')}</SelectItem>
+                <SelectItem value="suspended">{v('Suspended', 'Tạm ngưng')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -486,10 +488,10 @@ export default function AdminProductsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Brand" />
+                <SelectValue placeholder={v('Brand', 'Thương hiệu')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Brands</SelectItem>
+                <SelectItem value="all">{v('All Brands', 'Tất cả thương hiệu')}</SelectItem>
                 <SelectItem value="Zara">Zara</SelectItem>
                 <SelectItem value="H&M">H&M</SelectItem>
                 <SelectItem value="Mango">Mango</SelectItem>
@@ -512,7 +514,7 @@ export default function AdminProductsPage() {
               className="text-[#0A0A0A]"
               style={{ fontSize: '14px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}
             >
-              {selectedProducts.length} products selected
+              {v(`${selectedProducts.length} products selected`, `Đã chọn ${selectedProducts.length} sản phẩm`)}
             </p>
             <div className="flex items-center" style={{ gap: '12px' }}>
               <Button
@@ -528,7 +530,7 @@ export default function AdminProductsPage() {
                 }}
               >
                 <CheckCircle style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                Approve
+                {v('Approve', 'Duyệt')}
               </Button>
               <Button
                 size="sm"
@@ -543,7 +545,7 @@ export default function AdminProductsPage() {
                 }}
               >
                 <XCircle style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                Suspend
+                {v('Suspend', 'Tạm Ngưng')}
               </Button>
               <Button
                 size="sm"
@@ -558,7 +560,7 @@ export default function AdminProductsPage() {
                 }}
               >
                 <Trash2 style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                Delete
+                {v('Delete', 'Xóa')}
               </Button>
             </div>
           </div>
@@ -597,7 +599,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Product
+                  {v('Product', 'Sản Phẩm')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -608,7 +610,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương Hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -619,7 +621,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Category
+                  {v('Category', 'Danh Mục')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -630,7 +632,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Price
+                  {v('Price', 'Giá')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -641,7 +643,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Stock
+                  {v('Stock', 'Tồn Kho')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -652,7 +654,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Performance
+                  {v('Performance', 'Hiệu Suất')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -663,7 +665,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng Thái')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -674,7 +676,7 @@ export default function AdminProductsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao Tác')}
                 </th>
               </tr>
             </thead>
@@ -781,7 +783,7 @@ export default function AdminProductsPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          📦 {product.sales} sales
+                          📦 {product.sales} {v('sales', 'lượt bán')}
                         </span>
                       </div>
                     </div>
@@ -798,7 +800,15 @@ export default function AdminProductsPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {statusConfig[product.status as keyof typeof statusConfig].label}
+                        {v(
+                          statusConfig[product.status as keyof typeof statusConfig].label,
+                          ({
+                            active: 'Đang hoạt động',
+                            pending: 'Chờ duyệt',
+                            suspended: 'Tạm ngưng',
+                            outofstock: 'Hết hàng',
+                          } as Record<string, string>)[product.status]
+                        )}
                       </Badge>
                       {product.reported > 0 && (
                         <Badge
@@ -811,7 +821,7 @@ export default function AdminProductsPage() {
                             padding: '4px 12px',
                           }}
                         >
-                          {product.reported} reports
+                          {v(`${product.reported} reports`, `${product.reported} báo cáo`)}
                         </Badge>
                       )}
                     </div>
@@ -846,15 +856,15 @@ export default function AdminProductsPage() {
                             <CheckCircle
                               style={{ width: '14px', height: '14px', marginRight: '8px' }}
                             />
-                            Approve
+                            {v('Approve', 'Duyệt')}
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <XCircle style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                            Suspend
+                            {v('Suspend', 'Tạm Ngưng')}
                           </DropdownMenuItem>
                           <DropdownMenuItem className="text-[#E7000B]">
                             <Trash2 style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                            Delete
+                            {v('Delete', 'Xóa')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -875,9 +885,9 @@ export default function AdminProductsPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredProducts.length)} of{' '}
-            {filteredProducts.length} products
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredProducts.length)} {v('of', 'trong')}{' '}
+            {filteredProducts.length} {v('products', 'sản phẩm')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -892,7 +902,7 @@ export default function AdminProductsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -929,7 +939,7 @@ export default function AdminProductsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>

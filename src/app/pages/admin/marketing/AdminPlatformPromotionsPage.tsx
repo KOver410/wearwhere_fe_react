@@ -34,6 +34,7 @@ import {
   Pause,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockPromotions = [
@@ -60,6 +61,7 @@ const typeConfig = {
 };
 
 export default function AdminPlatformPromotionsPage() {
+  const { v } = useLanguage();
   const [promotions, setPromotions] = useState(mockPromotions);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -96,19 +98,19 @@ export default function AdminPlatformPromotionsPage() {
 
   const handlePause = (id: string) => {
     setPromotions(promotions.map((p) => (p.id === id ? { ...p, status: 'paused' } : p)));
-    toast.success('Promotion paused');
+    toast.success(v('Promotion paused', 'Đã tạm dừng khuyến mãi'));
   };
 
   const handleResume = (id: string) => {
     setPromotions(promotions.map((p) => (p.id === id ? { ...p, status: 'active' } : p)));
-    toast.success('Promotion resumed');
+    toast.success(v('Promotion resumed', 'Đã tiếp tục khuyến mãi'));
   };
 
   const handleDelete = () => {
     setPromotions(promotions.filter((p) => p.id !== selectedPromo?.id));
     setDeleteModalOpen(false);
     setSelectedPromo(null);
-    toast.success('Promotion deleted');
+    toast.success(v('Promotion deleted', 'Đã xóa khuyến mãi'));
   };
 
   const handleDuplicate = (promo: any) => {
@@ -120,7 +122,7 @@ export default function AdminPlatformPromotionsPage() {
       status: 'scheduled',
     };
     setPromotions([newPromo, ...promotions]);
-    toast.success('Promotion duplicated');
+    toast.success(v('Promotion duplicated', 'Đã nhân bản khuyến mãi'));
   };
 
   return (
@@ -137,7 +139,7 @@ export default function AdminPlatformPromotionsPage() {
               marginBottom: '8px',
             }}
           >
-            Platform Promotions
+            {v('Platform Promotions', 'Khuyến mãi nền tảng')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -160,7 +162,7 @@ export default function AdminPlatformPromotionsPage() {
                 padding: '0 24px',
               }}
             >
-              Push Notifications
+              {v('Push Notifications', 'Thông báo đẩy')}
             </Button>
           </Link>
           <Link to="/admin/marketing/email-campaigns">
@@ -176,7 +178,7 @@ export default function AdminPlatformPromotionsPage() {
                 padding: '0 24px',
               }}
             >
-              Email Campaigns
+              {v('Email Campaigns', 'Chiến dịch email')}
             </Button>
           </Link>
           <Link to="/admin/marketing/vouchers/create">
@@ -192,7 +194,7 @@ export default function AdminPlatformPromotionsPage() {
               }}
             >
               <Plus style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Create Promotion
+              {v('Create Promotion', 'Tạo khuyến mãi')}
             </Button>
           </Link>
         </div>
@@ -221,7 +223,7 @@ export default function AdminPlatformPromotionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Promotions
+              {v('Total Promotions', 'Tổng khuyến mãi')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -253,7 +255,7 @@ export default function AdminPlatformPromotionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Now
+              {v('Active Now', 'Đang hoạt động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -285,7 +287,7 @@ export default function AdminPlatformPromotionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Usage
+              {v('Total Usage', 'Tổng lượt sử dụng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -317,7 +319,7 @@ export default function AdminPlatformPromotionsPage() {
                 marginBottom: '4px',
               }}
             >
-              Scheduled
+              {v('Scheduled', 'Đã lên lịch')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -343,7 +345,7 @@ export default function AdminPlatformPromotionsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search promotions..."
+                placeholder={v('Search promotions...', 'Tìm kiếm khuyến mãi...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -369,12 +371,12 @@ export default function AdminPlatformPromotionsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Type" />
+                <SelectValue placeholder={v('Type', 'Loại')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="sitewide">Sitewide Sale</SelectItem>
-                <SelectItem value="voucher">Voucher</SelectItem>
+                <SelectItem value="all">{v('All Types', 'Tất cả loại')}</SelectItem>
+                <SelectItem value="sitewide">{v('Sitewide Sale', 'Giảm giá toàn trang')}</SelectItem>
+                <SelectItem value="voucher">{v('Voucher', 'Voucher')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -391,14 +393,14 @@ export default function AdminPlatformPromotionsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="paused">Paused</SelectItem>
-                <SelectItem value="expired">Expired</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="active">{v('Active', 'Đang hoạt động')}</SelectItem>
+                <SelectItem value="scheduled">{v('Scheduled', 'Đã lên lịch')}</SelectItem>
+                <SelectItem value="paused">{v('Paused', 'Tạm dừng')}</SelectItem>
+                <SelectItem value="expired">{v('Expired', 'Đã hết hạn')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -436,7 +438,9 @@ export default function AdminPlatformPromotionsPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {typeConfig[promo.type as keyof typeof typeConfig].label}
+                    {promo.type === 'sitewide'
+                      ? v('Sitewide Sale', 'Giảm giá toàn trang')
+                      : v('Voucher', 'Voucher')}
                   </Badge>
                   <Badge
                     className={statusConfig[promo.status as keyof typeof statusConfig].color}
@@ -448,7 +452,13 @@ export default function AdminPlatformPromotionsPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {statusConfig[promo.status as keyof typeof statusConfig].label}
+                    {promo.status === 'active'
+                      ? v('Active', 'Đang hoạt động')
+                      : promo.status === 'scheduled'
+                      ? v('Scheduled', 'Đã lên lịch')
+                      : promo.status === 'paused'
+                      ? v('Paused', 'Tạm dừng')
+                      : v('Expired', 'Đã hết hạn')}
                   </Badge>
                 </div>
 
@@ -462,7 +472,7 @@ export default function AdminPlatformPromotionsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Code
+                      {v('Code', 'Mã')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -484,7 +494,7 @@ export default function AdminPlatformPromotionsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Discount
+                      {v('Discount', 'Giảm giá')}
                     </p>
                     <p
                       className="text-[#F54900]"
@@ -498,7 +508,7 @@ export default function AdminPlatformPromotionsPage() {
                         ? `${promo.discount}%`
                         : promo.discountType === 'fixed'
                         ? `${promo.discount.toLocaleString('vi-VN')}đ`
-                        : 'Free Shipping'}
+                        : v('Free Shipping', 'Miễn phí vận chuyển')}
                     </p>
                   </div>
                   <div>
@@ -510,7 +520,7 @@ export default function AdminPlatformPromotionsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Usage
+                      {v('Usage', 'Lượt sử dụng')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -529,7 +539,7 @@ export default function AdminPlatformPromotionsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Start Date
+                      {v('Start Date', 'Ngày bắt đầu')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -547,7 +557,7 @@ export default function AdminPlatformPromotionsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      End Date
+                      {v('End Date', 'Ngày kết thúc')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -563,7 +573,7 @@ export default function AdminPlatformPromotionsPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Min. purchase: {promo.minPurchase.toLocaleString('vi-VN')}đ
+                    {v('Min. purchase:', 'Đơn tối thiểu:')} {promo.minPurchase.toLocaleString('vi-VN')}đ
                   </p>
                 )}
               </div>
@@ -651,7 +661,7 @@ export default function AdminPlatformPromotionsPage() {
               fontFamily: 'Arimo, sans-serif',
             }}
           >
-            Previous
+            {v('Previous', 'Trước')}
           </Button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <Button
@@ -688,7 +698,7 @@ export default function AdminPlatformPromotionsPage() {
               fontFamily: 'Arimo, sans-serif',
             }}
           >
-            Next
+            {v('Next', 'Sau')}
           </Button>
         </div>
       )}
@@ -705,11 +715,10 @@ export default function AdminPlatformPromotionsPage() {
                 marginBottom: '8px',
               }}
             >
-              Delete Promotion
+              {v('Delete Promotion', 'Xóa khuyến mãi')}
             </DialogTitle>
             <DialogDescription style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-              Are you sure you want to delete "{selectedPromo?.name}"? This action cannot be
-              undone.
+              {v('Are you sure you want to delete', 'Bạn có chắc chắn muốn xóa')} "{selectedPromo?.name}"? {v('This action cannot be undone.', 'Hành động này không thể hoàn tác.')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter style={{ marginTop: '24px' }}>
@@ -728,7 +737,7 @@ export default function AdminPlatformPromotionsPage() {
                 padding: '0 24px',
               }}
             >
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
             <Button
               onClick={handleDelete}
@@ -743,7 +752,7 @@ export default function AdminPlatformPromotionsPage() {
               }}
             >
               <Trash2 style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Delete
+              {v('Delete', 'Xóa')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -58,7 +58,7 @@ export function ProductCard({ id, image, title, price, seller, likes }: ProductC
         <p className="line-clamp-2" style={{ fontSize: '14px', color: '#0d0d0d', fontWeight: 500 }}>{title}</p>
         <div className="flex items-center justify-between">
           <p style={{ fontSize: '17px', color: '#d41c1c', fontFamily: "'Oswald', sans-serif", fontWeight: 600 }}>${price}</p>
-          <p style={{ fontSize: '12px', color: '#888' }}>{likes} {v('likes', 'thich')}</p>
+          <p style={{ fontSize: '12px', color: '#888' }}>{likes} {v('likes', 'lượt thích')}</p>
         </div>
       </div>
     </div>

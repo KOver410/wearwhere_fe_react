@@ -11,7 +11,7 @@ interface HowItWorksProps {
 
 export function HowItWorks({}: HowItWorksProps) {
   const navigate = useNavigate();
-  const { lang } = useLanguage();
+  const { lang, v } = useLanguage();
 
   const isVi = lang === 'vi';
 
@@ -129,7 +129,7 @@ export function HowItWorks({}: HowItWorksProps) {
           >
             <img
               src="https://images.unsplash.com/photo-1567182617421-5b55d6bc42e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwc2hvcHBpbmclMjB1c2VyJTIwcGhvbmV8ZW58MXx8fHwxNzcwMDkxMzg5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-              alt="User Shopping"
+              alt={v('User Shopping', 'Người dùng mua sắm')}
               className="object-cover w-full h-full"
             />
           </motion.div>
@@ -170,7 +170,7 @@ export function HowItWorks({}: HowItWorksProps) {
             >
               <img
                 src="https://images.unsplash.com/photo-1684259498917-b0cde0133e14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwZGVzaWduZXIlMjB3b3JraW5nJTIwY2xvdGhlc3xlbnwxfHx8fDE3NzAwOTEzOTN8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-                alt="Brand Owner"
+                alt={v('Brand Owner', 'Chủ thương hiệu')}
                 className="object-cover w-full h-full"
               />
             </motion.div>
@@ -205,7 +205,7 @@ export function HowItWorks({}: HowItWorksProps) {
         <div className="relative aspect-video max-w-4xl mx-auto overflow-hidden shadow-xl group cursor-pointer" style={{ borderRadius: '10px', backgroundColor: '#0d0d0d' }}>
           <img
             src="https://images.unsplash.com/photo-1733322992706-1210ca79f4df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwcnVud2F5JTIwdmlkZW8lMjB0aHVtYm5haWx8ZW58MXx8fHwxNzcwMDkxMzk2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-            alt="Video Thumbnail"
+            alt={v('Video Thumbnail', 'Ảnh thu nhỏ video')}
             className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
           />
           <div className="absolute inset-0 flex items-center justify-center">

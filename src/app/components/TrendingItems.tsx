@@ -18,6 +18,7 @@ const trendingItems = [
 ];
 
 function ProductTile({ item, formatPrice, index }: { item: typeof trendingItems[0]; formatPrice: (p: number) => string; index: number }) {
+  const { v } = useLanguage();
   const [liked, setLiked] = useState(false);
   return (
     <motion.div
@@ -45,7 +46,7 @@ function ProductTile({ item, formatPrice, index }: { item: typeof trendingItems[
           <div className="mb-2 line-clamp-2" style={{ fontSize: '15px', color: '#0d0d0d', fontWeight: 500, lineHeight: 1.4 }}>{item.name}</div>
           <div className="flex items-baseline justify-between">
             <div style={{ fontSize: '18px', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{formatPrice(item.price)}</div>
-            <div style={{ fontSize: '11px', color: '#888' }}>{(item.clicks / 1000).toFixed(1)}k views</div>
+            <div style={{ fontSize: '11px', color: '#888' }}>{(item.clicks / 1000).toFixed(1)}k {v('views', 'lượt xem')}</div>
           </div>
         </div>
       </Link>

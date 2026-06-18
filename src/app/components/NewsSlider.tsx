@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export function NewsSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { t } = useLanguage();
+  const { t, v } = useLanguage();
 
   const slides = [
     {
@@ -77,7 +77,7 @@ export function NewsSlider() {
                   transition={{ duration: 0.5 }}
                 >
                   <span className="block mb-3" style={{ fontSize: '14px', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>
-                    Editorial
+                    {v('Editorial', 'Bài viết')}
                   </span>
                   <h3 className="text-white mb-4" style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, lineHeight: 1.1, textTransform: 'uppercase' }}>
                     {slide.title}
@@ -112,7 +112,7 @@ export function NewsSlider() {
                         height: '2px',
                         backgroundColor: index === currentSlide ? '#d41c1c' : 'rgba(255,255,255,0.2)',
                       }}
-                      aria-label={`Go to slide ${index + 1}`}
+                      aria-label={v(`Go to slide ${index + 1}`, `Đến slide ${index + 1}`)}
                     />
                   ))}
                 </div>

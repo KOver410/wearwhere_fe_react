@@ -24,7 +24,7 @@ export function AboutUs() {
             <div key={i} className="relative overflow-hidden">
               <ImageWithFallback
                 src={img}
-                alt={`Hero ${i + 1}`}
+                alt={isVi ? `Ảnh ${i + 1}` : `Hero ${i + 1}`}
                 className="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-black/10" />
@@ -64,7 +64,7 @@ export function AboutUs() {
             <div className="relative overflow-hidden h-full" style={{ borderRadius: '4px' }}>
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1761957375235-46acb4862151?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwZmFzaGlvbiUyMGNvbW11bml0eSUyMGdyb3VwJTIwZnJpZW5kc3xlbnwxfHx8fDE3NzMwNjIyODN8MA&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Our Story"
+                alt={isVi ? 'Câu chuyện của chúng tôi' : 'Our Story'}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -146,7 +146,7 @@ export function AboutUs() {
             <div className="relative overflow-hidden h-full" style={{ borderRadius: '4px' }}>
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1768145488772-db787036bb13?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsb2NhbCUyMGJyYW5kJTIwY2xvdGhpbmclMjBib3V0aXF1ZSUyMHN0b3JlfGVufDF8fHx8MTc3MzA2MjI4M3ww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="What makes us different"
+                alt={isVi ? 'Điều khác biệt của chúng tôi' : 'What makes us different'}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -162,7 +162,7 @@ export function AboutUs() {
             <div className="relative overflow-hidden h-full" style={{ borderRadius: '4px' }}>
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1684259498917-b0cde0133e14?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwZGVzaWduZXIlMjBzZXdpbmclMjBhdGVsaWVyJTIwd29ya3Nob3B8ZW58MXx8fHwxNzczMDYyMjgyfDA&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Our History"
+                alt={isVi ? 'Lịch sử của chúng tôi' : 'Our History'}
                 className="w-full h-full object-cover"
               />
             </div>

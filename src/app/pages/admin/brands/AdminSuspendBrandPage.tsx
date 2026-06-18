@@ -21,6 +21,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockBrand = {
@@ -57,8 +58,28 @@ const suspensionDurations = [
 ];
 
 export default function AdminSuspendBrandPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const reasonLabels: Record<string, string> = {
+    policy_violation: v('Policy Violation', 'Vi phạm chính sách'),
+    fake_products: v('Selling Fake Products', 'Bán hàng giả'),
+    poor_service: v('Poor Customer Service', 'Dịch vụ khách hàng kém'),
+    fraud: v('Fraudulent Activity', 'Hoạt động gian lận'),
+    multiple_complaints: v('Multiple Customer Complaints', 'Nhiều khiếu nại từ khách hàng'),
+    payment_issues: v('Payment Issues', 'Vấn đề thanh toán'),
+    other: v('Other', 'Khác'),
+  };
+
+  const durationLabels: Record<string, string> = {
+    '7': v('7 days', '7 ngày'),
+    '14': v('14 days', '14 ngày'),
+    '30': v('30 days', '30 ngày'),
+    '60': v('60 days', '60 ngày'),
+    '90': v('90 days', '90 ngày'),
+    permanent: v('Permanent', 'Vĩnh viễn'),
+  };
   const [suspensionReason, setSuspensionReason] = useState('');
   const [suspensionDuration, setSuspensionDuration] = useState('30');
   const [detailedReason, setDetailedReason] = useState('');
@@ -67,20 +88,20 @@ export default function AdminSuspendBrandPage() {
 
   const handleSuspend = () => {
     if (!suspensionReason) {
-      toast.error('Please select a suspension reason');
+      toast.error(v('Please select a suspension reason', 'Vui lòng chọn lý do tạm khóa'));
       return;
     }
     if (!detailedReason.trim()) {
-      toast.error('Please provide detailed explanation');
+      toast.error(v('Please provide detailed explanation', 'Vui lòng cung cấp giải thích chi tiết'));
       return;
     }
-    toast.success('Brand suspended successfully');
+    toast.success(v('Brand suspended successfully', 'Đã tạm khóa thương hiệu thành công'));
     navigate(`/admin/brands/${id}`);
   };
 
   const calculateSuspensionEndDate = () => {
     if (suspensionDuration === 'permanent') {
-      return 'Permanent suspension';
+      return v('Permanent suspension', 'Tạm khóa vĩnh viễn');
     }
     const days = parseInt(suspensionDuration);
     const endDate = new Date();
@@ -115,13 +136,13 @@ export default function AdminSuspendBrandPage() {
                 marginBottom: '8px',
               }}
             >
-              Suspend Brand
+              {v('Suspend Brand', 'Tạm khóa thương hiệu')}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Suspend brand activities for {mockBrand.name}
+              {v('Suspend brand activities for', 'Tạm khóa hoạt động của thương hiệu')} {mockBrand.name}
             </p>
           </div>
         </div>
@@ -169,7 +190,7 @@ export default function AdminSuspendBrandPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {mockBrand.status === 'active' ? 'Active' : 'Suspended'}
+                    {mockBrand.status === 'active' ? v('Active', 'Hoạt động') : v('Suspended', 'Tạm khóa')}
                   </Badge>
                 </div>
                 <p
@@ -187,7 +208,7 @@ export default function AdminSuspendBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    🏪 {mockBrand.stats.stores} stores
+                    🏪 {mockBrand.stats.stores} {v('stores', 'cửa hàng')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -197,7 +218,7 @@ export default function AdminSuspendBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    📦 {mockBrand.stats.products.toLocaleString('vi-VN')} products
+                    📦 {mockBrand.stats.products.toLocaleString('vi-VN')} {v('products', 'sản phẩm')}
                   </span>
                   <span
                     className="text-[#0A0A0A]"
@@ -228,7 +249,7 @@ export default function AdminSuspendBrandPage() {
                 marginBottom: '24px',
               }}
             >
-              Suspension Details
+              {v('Suspension Details', 'Chi tiết tạm khóa')}
             </h3>
             <div className="flex flex-col" style={{ gap: '20px' }}>
               {/* Suspension Reason */}
@@ -242,7 +263,7 @@ export default function AdminSuspendBrandPage() {
                     display: 'block',
                   }}
                 >
-                  Suspension Reason *
+                  {v('Suspension Reason', 'Lý do tạm khóa')} *
                 </Label>
                 <Select value={suspensionReason} onValueChange={setSuspensionReason}>
                   <SelectTrigger
@@ -254,12 +275,12 @@ export default function AdminSuspendBrandPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    <SelectValue placeholder="Select reason..." />
+                    <SelectValue placeholder={v('Select reason...', 'Chọn lý do...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {suspensionReasons.map((reason) => (
                       <SelectItem key={reason.value} value={reason.value}>
-                        {reason.label}
+                        {reasonLabels[reason.value] ?? reason.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -277,7 +298,7 @@ export default function AdminSuspendBrandPage() {
                     display: 'block',
                   }}
                 >
-                  Suspension Duration *
+                  {v('Suspension Duration', 'Thời hạn tạm khóa')} *
                 </Label>
                 <Select value={suspensionDuration} onValueChange={setSuspensionDuration}>
                   <SelectTrigger
@@ -294,7 +315,7 @@ export default function AdminSuspendBrandPage() {
                   <SelectContent>
                     {suspensionDurations.map((duration) => (
                       <SelectItem key={duration.value} value={duration.value}>
-                        {duration.label}
+                        {durationLabels[duration.value] ?? duration.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -308,8 +329,8 @@ export default function AdminSuspendBrandPage() {
                   }}
                 >
                   {suspensionDuration === 'permanent'
-                    ? 'Brand will be permanently suspended'
-                    : `Suspension will end on ${calculateSuspensionEndDate()}`}
+                    ? v('Brand will be permanently suspended', 'Thương hiệu sẽ bị tạm khóa vĩnh viễn')
+                    : `${v('Suspension will end on', 'Tạm khóa sẽ kết thúc vào')} ${calculateSuspensionEndDate()}`}
                 </p>
               </div>
 
@@ -324,10 +345,10 @@ export default function AdminSuspendBrandPage() {
                     display: 'block',
                   }}
                 >
-                  Detailed Explanation *
+                  {v('Detailed Explanation', 'Giải thích chi tiết')} *
                 </Label>
                 <Textarea
-                  placeholder="Provide detailed explanation for the suspension, including specific violations and evidence..."
+                  placeholder={v('Provide detailed explanation for the suspension, including specific violations and evidence...', 'Cung cấp giải thích chi tiết về việc tạm khóa, bao gồm các vi phạm cụ thể và bằng chứng...')}
                   value={detailedReason}
                   onChange={(e) => setDetailedReason(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -346,7 +367,7 @@ export default function AdminSuspendBrandPage() {
                     marginTop: '6px',
                   }}
                 >
-                  This explanation will be sent to the brand
+                  {v('This explanation will be sent to the brand', 'Giải thích này sẽ được gửi đến thương hiệu')}
                 </p>
               </div>
 
@@ -361,10 +382,10 @@ export default function AdminSuspendBrandPage() {
                     display: 'block',
                   }}
                 >
-                  Evidence Links (Optional)
+                  {v('Evidence Links (Optional)', 'Liên kết bằng chứng (Tùy chọn)')}
                 </Label>
                 <Textarea
-                  placeholder="Add links to evidence, reports, or screenshots (one per line)..."
+                  placeholder={v('Add links to evidence, reports, or screenshots (one per line)...', 'Thêm liên kết đến bằng chứng, báo cáo hoặc ảnh chụp màn hình (mỗi dòng một liên kết)...')}
                   value={evidenceLinks}
                   onChange={(e) => setEvidenceLinks(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -399,7 +420,7 @@ export default function AdminSuspendBrandPage() {
                     marginBottom: '8px',
                   }}
                 >
-                  Suspension Impact
+                  {v('Suspension Impact', 'Tác động của việc tạm khóa')}
                 </h3>
                 <p
                   className="text-[#0A0A0A]"
@@ -409,38 +430,38 @@ export default function AdminSuspendBrandPage() {
                     marginBottom: '12px',
                   }}
                 >
-                  When a brand is suspended, the following will happen:
+                  {v('When a brand is suspended, the following will happen:', 'Khi một thương hiệu bị tạm khóa, những điều sau sẽ xảy ra:')}
                 </p>
                 <ul className="flex flex-col" style={{ gap: '8px', paddingLeft: '20px' }}>
                   <li
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    All products will be hidden from the platform
+                    {v('All products will be hidden from the platform', 'Tất cả sản phẩm sẽ bị ẩn khỏi nền tảng')}
                   </li>
                   <li
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Brand portal access will be restricted
+                    {v('Brand portal access will be restricted', 'Quyền truy cập cổng thương hiệu sẽ bị hạn chế')}
                   </li>
                   <li
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Active orders will be cancelled
+                    {v('Active orders will be cancelled', 'Các đơn hàng đang hoạt động sẽ bị hủy')}
                   </li>
                   <li
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Brand will receive email notification
+                    {v('Brand will receive email notification', 'Thương hiệu sẽ nhận được thông báo qua email')}
                   </li>
                   <li
                     className="text-[#0A0A0A]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Revenue payouts will be held
+                    {v('Revenue payouts will be held', 'Các khoản thanh toán doanh thu sẽ bị tạm giữ')}
                   </li>
                 </ul>
               </div>
@@ -464,7 +485,7 @@ export default function AdminSuspendBrandPage() {
                 marginBottom: '20px',
               }}
             >
-              Suspension Summary
+              {v('Suspension Summary', 'Tóm tắt tạm khóa')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               <div>
@@ -476,7 +497,7 @@ export default function AdminSuspendBrandPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Reason
+                  {v('Reason', 'Lý do')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -487,8 +508,8 @@ export default function AdminSuspendBrandPage() {
                   }}
                 >
                   {suspensionReason
-                    ? suspensionReasons.find((r) => r.value === suspensionReason)?.label
-                    : 'Not selected'}
+                    ? reasonLabels[suspensionReason] ?? suspensionReasons.find((r) => r.value === suspensionReason)?.label
+                    : v('Not selected', 'Chưa chọn')}
                 </p>
               </div>
               <div>
@@ -500,7 +521,7 @@ export default function AdminSuspendBrandPage() {
                     marginBottom: '4px',
                   }}
                 >
-                  Duration
+                  {v('Duration', 'Thời hạn')}
                 </p>
                 <p
                   className="text-[#0A0A0A]"
@@ -510,7 +531,7 @@ export default function AdminSuspendBrandPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  {suspensionDurations.find((d) => d.value === suspensionDuration)?.label}
+                  {durationLabels[suspensionDuration] ?? suspensionDurations.find((d) => d.value === suspensionDuration)?.label}
                 </p>
               </div>
               {suspensionDuration !== 'permanent' && (
@@ -523,7 +544,7 @@ export default function AdminSuspendBrandPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    End Date
+                    {v('End Date', 'Ngày kết thúc')}
                   </p>
                   <div className="flex items-center" style={{ gap: '6px' }}>
                     <Calendar
@@ -560,7 +581,7 @@ export default function AdminSuspendBrandPage() {
                 marginBottom: '20px',
               }}
             >
-              Affected Data
+              {v('Affected Data', 'Dữ liệu bị ảnh hưởng')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div className="flex items-center justify-between">
@@ -568,7 +589,7 @@ export default function AdminSuspendBrandPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Stores
+                  {v('Stores', 'Cửa hàng')}
                 </span>
                 <span
                   className="text-[#0A0A0A]"
@@ -586,7 +607,7 @@ export default function AdminSuspendBrandPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Products
+                  {v('Products', 'Sản phẩm')}
                 </span>
                 <span
                   className="text-[#0A0A0A]"
@@ -619,7 +640,7 @@ export default function AdminSuspendBrandPage() {
               }}
             >
               <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Confirm Suspension
+              {v('Confirm Suspension', 'Xác nhận tạm khóa')}
             </Button>
           </Card>
 
@@ -642,13 +663,13 @@ export default function AdminSuspendBrandPage() {
                   marginBottom: '4px',
                 }}
               >
-                This action is serious
+                {v('This action is serious', 'Đây là hành động nghiêm trọng')}
               </p>
               <p
                 className="text-[#0A0A0A]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Make sure you have reviewed all evidence before suspending a brand.
+                {v('Make sure you have reviewed all evidence before suspending a brand.', 'Hãy đảm bảo bạn đã xem xét tất cả bằng chứng trước khi tạm khóa một thương hiệu.')}
               </p>
             </div>
           </div>

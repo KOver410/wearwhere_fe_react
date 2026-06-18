@@ -39,11 +39,11 @@ export function RegisterPage() {
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert('Google sign-up coming soon!')}>
+          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert(v('Google sign-up coming soon!', 'Đăng ký bằng Google sẽ sớm ra mắt!'))}>
             <Chrome className="mr-2 h-5 w-5" />
             Google
           </Button>
-          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert('Facebook sign-up coming soon!')}>
+          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert(v('Facebook sign-up coming soon!', 'Đăng ký bằng Facebook sẽ sớm ra mắt!'))}>
             <Facebook className="mr-2 h-5 w-5" />
             Facebook
           </Button>
@@ -127,7 +127,7 @@ export function RegisterPage() {
           <Controller
             name="terms"
             control={control}
-            rules={{ required: 'You must accept the terms' }}
+            rules={{ required: v('You must accept the terms', 'Bạn phải chấp nhận điều khoản') }}
             render={({ field }) => (
               <Checkbox 
                 id="terms" 
@@ -142,7 +142,7 @@ export function RegisterPage() {
               htmlFor="terms"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-600"
             >
-              I agree to the <Link to="/terms" className="text-black underline">{v('Terms of Service', 'Điều khoản sử dụng')}</Link> and <Link to="/privacy" className="text-black underline">{v('Privacy Policy', 'Chính sách bảo mật')}</Link>
+              {v('I agree to the', 'Tôi đồng ý với')} <Link to="/terms" className="text-black underline">{v('Terms of Service', 'Điều khoản sử dụng')}</Link> {v('and', 'và')} <Link to="/privacy" className="text-black underline">{v('Privacy Policy', 'Chính sách bảo mật')}</Link>
             </label>
              {errors.terms && <p className="text-sm text-red-500">{errors.terms.message as string}</p>}
           </div>

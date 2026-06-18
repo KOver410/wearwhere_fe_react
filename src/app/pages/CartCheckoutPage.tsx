@@ -113,7 +113,7 @@ export function CartCheckoutPage() {
     if (voucherCode.toUpperCase() === 'SAVE10') {
       setAppliedVoucher({ code: 'SAVE10', discount: 10 });
     } else {
-      alert('Invalid voucher code');
+      alert(v('Invalid voucher code', 'Mã voucher không hợp lệ'));
     }
   };
 
@@ -125,13 +125,13 @@ export function CartCheckoutPage() {
 
   const onSubmit = (data: CheckoutFormData) => {
     console.log('Order data:', data);
-    alert('Order placed successfully! Total: $' + total.toFixed(2));
+    alert(v('Order placed successfully! Total: $', 'Đặt hàng thành công! Tổng cộng: $') + total.toFixed(2));
     navigate('/');
   };
 
   const handleContinueToShipping = () => {
     if (cartItems.length === 0) {
-      alert('Your cart is empty!');
+      alert(v('Your cart is empty!', 'Giỏ hàng của bạn trống!'));
       return;
     }
     setCurrentStep('shipping');
@@ -387,7 +387,7 @@ export function CartCheckoutPage() {
                   </div>
                   {appliedVoucher && (
                     <p style={{ fontSize: '14px', color: '#e2b93b', marginTop: '8px' }}>
-                      ✓ Voucher "{appliedVoucher.code}" applied! {appliedVoucher.discount}% discount
+                      ✓ {v('Voucher', 'Voucher')} "{appliedVoucher.code}" {v('applied!', 'đã được áp dụng!')} {appliedVoucher.discount}% {v('discount', 'giảm giá')}
                     </p>
                   )}
                 </div>

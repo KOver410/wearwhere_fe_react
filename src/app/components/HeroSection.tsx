@@ -74,7 +74,7 @@ export function HeroSection() {
                     lineHeight: 1,
                   }}
                 >
-                  SHOP<br />NOW
+                  {lang === 'vi' ? <>MUA<br />NGAY</> : <>SHOP<br />NOW</>}
                 </span>
               </Link>
 

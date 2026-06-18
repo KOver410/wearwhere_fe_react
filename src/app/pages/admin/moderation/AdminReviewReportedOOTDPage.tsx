@@ -26,6 +26,7 @@ import {
   Clock,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockReport = {
@@ -99,7 +100,20 @@ const actionOptions = [
   { value: 'ban_user', label: 'Ban User', color: 'bg-[#E7000B]' },
 ];
 
+const actionLabelVi: Record<string, string> = {
+  keep: 'Giữ nội dung',
+  remove: 'Gỡ nội dung',
+  warn: 'Cảnh báo người dùng',
+  ban_user: 'Cấm người dùng',
+};
+
+const reasonLabelVi: Record<string, string> = {
+  Spam: 'Spam',
+  'Inappropriate Content': 'Nội dung không phù hợp',
+};
+
 export default function AdminReviewReportedOOTDPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const { id } = useParams();
   const [selectedAction, setSelectedAction] = useState('');
@@ -109,14 +123,14 @@ export default function AdminReviewReportedOOTDPage() {
 
   const handleSubmitAction = () => {
     if (!selectedAction) {
-      toast.error('Please select an action');
+      toast.error(v('Please select an action', 'Vui lòng chọn một hành động'));
       return;
     }
     if (!actionNote.trim()) {
-      toast.error('Please add action notes');
+      toast.error(v('Please add action notes', 'Vui lòng thêm ghi chú hành động'));
       return;
     }
-    toast.success('Action submitted successfully');
+    toast.success(v('Action submitted successfully', 'Đã gửi hành động thành công'));
     navigate('/admin/moderation');
   };
 
@@ -147,13 +161,13 @@ export default function AdminReviewReportedOOTDPage() {
                 marginBottom: '8px',
               }}
             >
-              Review Reported OOTD Post
+              {v('Review Reported OOTD Post', 'Xem xét bài đăng OOTD bị báo cáo')}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Review và take action on reported content
+              {v('Review và take action on reported content', 'Xem xét và xử lý nội dung bị báo cáo')}
             </p>
           </div>
         </div>
@@ -168,7 +182,7 @@ export default function AdminReviewReportedOOTDPage() {
           }}
         >
           <AlertTriangle style={{ width: '16px', height: '16px', marginRight: '6px' }} />
-          {mockReport.reports.length} Reports
+          {mockReport.reports.length} {v('Reports', 'Báo cáo')}
         </Badge>
       </div>
 
@@ -189,7 +203,7 @@ export default function AdminReviewReportedOOTDPage() {
                 marginBottom: '20px',
               }}
             >
-              Original OOTD Post
+              {v('Original OOTD Post', 'Bài đăng OOTD gốc')}
             </h3>
 
             {/* Author Info */}
@@ -229,7 +243,7 @@ export default function AdminReviewReportedOOTDPage() {
                       }}
                     >
                       <User style={{ width: '12px', height: '12px', marginRight: '4px' }} />
-                      View Profile
+                      {v('View Profile', 'Xem hồ sơ')}
                     </Button>
                   </Link>
                 </div>
@@ -237,13 +251,13 @@ export default function AdminReviewReportedOOTDPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  {mockReport.content.author.username} • {mockReport.content.author.followers.toLocaleString('vi-VN')} followers
+                  {mockReport.content.author.username} • {mockReport.content.author.followers.toLocaleString('vi-VN')} {v('followers', 'người theo dõi')}
                 </p>
                 <p
                   className="text-[#6A7282]"
                   style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Posted {new Date(mockReport.content.postedAt).toLocaleString('vi-VN')}
+                  {v('Posted', 'Đã đăng')} {new Date(mockReport.content.postedAt).toLocaleString('vi-VN')}
                 </p>
               </div>
             </div>
@@ -359,7 +373,7 @@ export default function AdminReviewReportedOOTDPage() {
                 marginBottom: '20px',
               }}
             >
-              Reports ({mockReport.reports.length})
+              {v('Reports', 'Báo cáo')} ({mockReport.reports.length})
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {mockReport.reports.map((report) => (
@@ -403,7 +417,7 @@ export default function AdminReviewReportedOOTDPage() {
                           }}
                         >
                           <Flag style={{ width: '12px', height: '12px', marginRight: '4px' }} />
-                          {report.reason}
+                          {v(report.reason, reasonLabelVi[report.reason] ?? report.reason)}
                         </Badge>
                       </div>
                       <p
@@ -450,7 +464,7 @@ export default function AdminReviewReportedOOTDPage() {
                 marginBottom: '16px',
               }}
             >
-              Review Status
+              {v('Review Status', 'Trạng thái xem xét')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div className="flex items-center" style={{ gap: '8px' }}>
@@ -459,7 +473,7 @@ export default function AdminReviewReportedOOTDPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Claimed by {mockReport.claimedBy}
+                  {v('Claimed by', 'Nhận bởi')} {mockReport.claimedBy}
                 </p>
               </div>
               <p
@@ -485,7 +499,7 @@ export default function AdminReviewReportedOOTDPage() {
                 marginBottom: '20px',
               }}
             >
-              Take Action
+              {v('Take Action', 'Xử lý')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {/* Action Selection */}
@@ -499,7 +513,7 @@ export default function AdminReviewReportedOOTDPage() {
                     display: 'block',
                   }}
                 >
-                  Select Action *
+                  {v('Select Action', 'Chọn hành động')} *
                 </Label>
                 <Select value={selectedAction} onValueChange={setSelectedAction}>
                   <SelectTrigger
@@ -511,12 +525,12 @@ export default function AdminReviewReportedOOTDPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    <SelectValue placeholder="Select action..." />
+                    <SelectValue placeholder={v('Select action...', 'Chọn hành động...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {actionOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {option.label}
+                        {v(option.label, actionLabelVi[option.value] ?? option.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -535,7 +549,7 @@ export default function AdminReviewReportedOOTDPage() {
                       display: 'block',
                     }}
                   >
-                    Ban Duration
+                    {v('Ban Duration', 'Thời hạn cấm')}
                   </Label>
                   <Select value={banDuration} onValueChange={setBanDuration}>
                     <SelectTrigger
@@ -550,10 +564,10 @@ export default function AdminReviewReportedOOTDPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="7">7 days</SelectItem>
-                      <SelectItem value="14">14 days</SelectItem>
-                      <SelectItem value="30">30 days</SelectItem>
-                      <SelectItem value="permanent">Permanent</SelectItem>
+                      <SelectItem value="7">{v('7 days', '7 ngày')}</SelectItem>
+                      <SelectItem value="14">{v('14 days', '14 ngày')}</SelectItem>
+                      <SelectItem value="30">{v('30 days', '30 ngày')}</SelectItem>
+                      <SelectItem value="permanent">{v('Permanent', 'Vĩnh viễn')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -570,10 +584,10 @@ export default function AdminReviewReportedOOTDPage() {
                     display: 'block',
                   }}
                 >
-                  Action Notes *
+                  {v('Action Notes', 'Ghi chú hành động')} *
                 </Label>
                 <Textarea
-                  placeholder="Explain your decision and reasoning..."
+                  placeholder={v('Explain your decision and reasoning...', 'Giải thích quyết định và lý do của bạn...')}
                   value={actionNote}
                   onChange={(e) => setActionNote(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -602,7 +616,7 @@ export default function AdminReviewReportedOOTDPage() {
                 {selectedAction === 'remove' && <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />}
                 {selectedAction === 'warn' && <AlertCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />}
                 {selectedAction === 'ban_user' && <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />}
-                Submit Action
+                {v('Submit Action', 'Gửi hành động')}
               </Button>
             </div>
           </Card>
@@ -626,14 +640,13 @@ export default function AdminReviewReportedOOTDPage() {
                   marginBottom: '4px',
                 }}
               >
-                Important
+                {v('Important', 'Quan trọng')}
               </p>
               <p
                 className="text-[#0A0A0A]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Your decision will be recorded in the moderation history. Make sure to review all
-                evidence carefully.
+                {v('Your decision will be recorded in the moderation history. Make sure to review all evidence carefully.', 'Quyết định của bạn sẽ được ghi lại trong lịch sử kiểm duyệt. Hãy đảm bảo xem xét kỹ tất cả bằng chứng.')}
               </p>
             </div>
           </div>

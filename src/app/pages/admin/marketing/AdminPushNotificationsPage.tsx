@@ -25,6 +25,7 @@ import {
   Search,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data for sent notifications
 const mockNotifications = [
@@ -41,6 +42,7 @@ const statusConfig = {
 };
 
 export default function AdminPushNotificationsPage() {
+  const { v } = useLanguage();
   const [notifications, setNotifications] = useState(mockNotifications);
   const [searchQuery, setSearchQuery] = useState('');
   const [showComposer, setShowComposer] = useState(false);
@@ -63,9 +65,9 @@ export default function AdminPushNotificationsPage() {
 
   const handleSend = () => {
     if (formData.scheduleType === 'now') {
-      toast.success('Push notification sent successfully!');
+      toast.success(v('Push notification sent successfully!', 'Đã gửi thông báo đẩy thành công!'));
     } else {
-      toast.success('Push notification scheduled!');
+      toast.success(v('Push notification scheduled!', 'Đã lên lịch thông báo đẩy!'));
     }
     setShowComposer(false);
     setFormData({
@@ -112,7 +114,7 @@ export default function AdminPushNotificationsPage() {
               marginBottom: '8px',
             }}
           >
-            Push Notifications
+            {v('Push Notifications', 'Thông báo đẩy')}
           </h1>
           <p
             className="text-[#4A5565]"
@@ -135,7 +137,7 @@ export default function AdminPushNotificationsPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Marketing
+              {v('Back to Marketing', 'Quay lại Marketing')}
             </Button>
           </Link>
           <Button
@@ -151,7 +153,7 @@ export default function AdminPushNotificationsPage() {
             }}
           >
             <Send style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            {showComposer ? 'Hide Composer' : 'Compose Notification'}
+            {showComposer ? v('Hide Composer', 'Ẩn trình soạn') : v('Compose Notification', 'Soạn thông báo')}
           </Button>
         </div>
       </div>
@@ -179,7 +181,7 @@ export default function AdminPushNotificationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Sent
+              {v('Total Sent', 'Tổng đã gửi')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -211,7 +213,7 @@ export default function AdminPushNotificationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Users Reached
+              {v('Users Reached', 'Người dùng tiếp cận')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -243,7 +245,7 @@ export default function AdminPushNotificationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Avg. Open Rate
+              {v('Avg. Open Rate', 'Tỷ lệ mở TB')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -275,7 +277,7 @@ export default function AdminPushNotificationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Avg. Click Rate
+              {v('Avg. Click Rate', 'Tỷ lệ nhấp TB')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -302,7 +304,7 @@ export default function AdminPushNotificationsPage() {
               marginBottom: '24px',
             }}
           >
-            Compose Push Notification
+            {v('Compose Push Notification', 'Soạn thông báo đẩy')}
           </h3>
 
           <div className="grid grid-cols-3" style={{ gap: '24px' }}>
@@ -318,11 +320,11 @@ export default function AdminPushNotificationsPage() {
                     display: 'block',
                   }}
                 >
-                  Notification Title *
+                  {v('Notification Title *', 'Tiêu đề thông báo *')}
                 </Label>
                 <Input
                   required
-                  placeholder="e.g., Flash Sale Alert!"
+                  placeholder={v('e.g., Flash Sale Alert!', 'vd: Cảnh báo Flash Sale!')}
                   value={formData.title}
                   onChange={(e) => handleChange('title', e.target.value)}
                   maxLength={50}
@@ -342,7 +344,7 @@ export default function AdminPushNotificationsPage() {
                     marginTop: '6px',
                   }}
                 >
-                  {formData.title.length}/50 characters
+                  {formData.title.length}/50 {v('characters', 'ký tự')}
                 </p>
               </div>
 
@@ -356,11 +358,11 @@ export default function AdminPushNotificationsPage() {
                     display: 'block',
                   }}
                 >
-                  Message *
+                  {v('Message *', 'Nội dung *')}
                 </Label>
                 <Textarea
                   required
-                  placeholder="Enter your message..."
+                  placeholder={v('Enter your message...', 'Nhập nội dung của bạn...')}
                   value={formData.message}
                   onChange={(e) => handleChange('message', e.target.value)}
                   maxLength={150}
@@ -380,7 +382,7 @@ export default function AdminPushNotificationsPage() {
                     marginTop: '6px',
                   }}
                 >
-                  {formData.message.length}/150 characters
+                  {formData.message.length}/150 {v('characters', 'ký tự')}
                 </p>
               </div>
 
@@ -394,10 +396,10 @@ export default function AdminPushNotificationsPage() {
                     display: 'block',
                   }}
                 >
-                  Action URL (Optional)
+                  {v('Action URL (Optional)', 'URL hành động (Tùy chọn)')}
                 </Label>
                 <Input
-                  placeholder="e.g., /products/sale"
+                  placeholder={v('e.g., /products/sale', 'vd: /products/sale')}
                   value={formData.actionUrl}
                   onChange={(e) => handleChange('actionUrl', e.target.value)}
                   className="border-[#D1D5DC]"
@@ -416,7 +418,7 @@ export default function AdminPushNotificationsPage() {
                     marginTop: '6px',
                   }}
                 >
-                  Where users go when they tap the notification
+                  {v('Where users go when they tap the notification', 'Nơi người dùng đến khi nhấn vào thông báo')}
                 </p>
               </div>
 
@@ -430,7 +432,7 @@ export default function AdminPushNotificationsPage() {
                     display: 'block',
                   }}
                 >
-                  Target Audience *
+                  {v('Target Audience *', 'Đối tượng mục tiêu *')}
                 </Label>
                 <Select value={formData.audience} onValueChange={(v) => handleChange('audience', v)}>
                   <SelectTrigger
@@ -445,11 +447,11 @@ export default function AdminPushNotificationsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Users (~15,000)</SelectItem>
-                    <SelectItem value="vip">VIP Members (~2,340)</SelectItem>
-                    <SelectItem value="new">New Users (~1,200)</SelectItem>
-                    <SelectItem value="inactive">Inactive Users (~3,450)</SelectItem>
-                    <SelectItem value="custom">Custom Segment</SelectItem>
+                    <SelectItem value="all">{v('All Users (~15,000)', 'Tất cả người dùng (~15.000)')}</SelectItem>
+                    <SelectItem value="vip">{v('VIP Members (~2,340)', 'Thành viên VIP (~2.340)')}</SelectItem>
+                    <SelectItem value="new">{v('New Users (~1,200)', 'Người dùng mới (~1.200)')}</SelectItem>
+                    <SelectItem value="inactive">{v('Inactive Users (~3,450)', 'Người dùng không hoạt động (~3.450)')}</SelectItem>
+                    <SelectItem value="custom">{v('Custom Segment', 'Phân khúc tùy chỉnh')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -467,7 +469,7 @@ export default function AdminPushNotificationsPage() {
                     display: 'block',
                   }}
                 >
-                  Send Time *
+                  {v('Send Time *', 'Thời gian gửi *')}
                 </Label>
                 <Select
                   value={formData.scheduleType}
@@ -485,8 +487,8 @@ export default function AdminPushNotificationsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="now">Send Now</SelectItem>
-                    <SelectItem value="scheduled">Schedule for Later</SelectItem>
+                    <SelectItem value="now">{v('Send Now', 'Gửi ngay')}</SelectItem>
+                    <SelectItem value="scheduled">{v('Schedule for Later', 'Lên lịch gửi sau')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -503,7 +505,7 @@ export default function AdminPushNotificationsPage() {
                         display: 'block',
                       }}
                     >
-                      Date *
+                      {v('Date *', 'Ngày *')}
                     </Label>
                     <Input
                       required
@@ -530,7 +532,7 @@ export default function AdminPushNotificationsPage() {
                         display: 'block',
                       }}
                     >
-                      Time *
+                      {v('Time *', 'Giờ *')}
                     </Label>
                     <Input
                       required
@@ -559,7 +561,7 @@ export default function AdminPushNotificationsPage() {
                     marginBottom: '12px',
                   }}
                 >
-                  Preview
+                  {v('Preview', 'Xem trước')}
                 </p>
                 <div className="bg-white" style={{ padding: '16px', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
                   <div className="flex items-start" style={{ gap: '12px' }}>
@@ -579,13 +581,13 @@ export default function AdminPushNotificationsPage() {
                           marginBottom: '4px',
                         }}
                       >
-                        {formData.title || 'Notification Title'}
+                        {formData.title || v('Notification Title', 'Tiêu đề thông báo')}
                       </p>
                       <p
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif', lineHeight: '1.4' }}
                       >
-                        {formData.message || 'Your notification message will appear here...'}
+                        {formData.message || v('Your notification message will appear here...', 'Nội dung thông báo của bạn sẽ hiển thị ở đây...')}
                       </p>
                       <p
                         className="text-[#6A7282]"
@@ -595,7 +597,7 @@ export default function AdminPushNotificationsPage() {
                           marginTop: '8px',
                         }}
                       >
-                        WearWhere • now
+                        WearWhere • {v('now', 'bây giờ')}
                       </p>
                     </div>
                   </div>
@@ -615,7 +617,7 @@ export default function AdminPushNotificationsPage() {
                 }}
               >
                 <Send style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                {formData.scheduleType === 'now' ? 'Send Now' : 'Schedule'}
+                {formData.scheduleType === 'now' ? v('Send Now', 'Gửi ngay') : v('Schedule', 'Lên lịch')}
               </Button>
             </div>
           </div>
@@ -633,7 +635,7 @@ export default function AdminPushNotificationsPage() {
             style={{ width: '16px', height: '16px' }}
           />
           <Input
-            placeholder="Search notifications..."
+            placeholder={v('Search notifications...', 'Tìm kiếm thông báo...')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 border-[#D1D5DC]"
@@ -657,7 +659,7 @@ export default function AdminPushNotificationsPage() {
             fontFamily: 'Arimo, sans-serif',
           }}
         >
-          Notification History
+          {v('Notification History', 'Lịch sử thông báo')}
         </h3>
 
         {filteredNotifications.map((notif) => (
@@ -689,7 +691,11 @@ export default function AdminPushNotificationsPage() {
                       padding: '6px 12px',
                     }}
                   >
-                    {statusConfig[notif.status as keyof typeof statusConfig].label}
+                    {notif.status === 'sent'
+                      ? v('Sent', 'Đã gửi')
+                      : notif.status === 'scheduled'
+                      ? v('Scheduled', 'Đã lên lịch')
+                      : v('Draft', 'Bản nháp')}
                   </Badge>
                 </div>
 
@@ -714,7 +720,7 @@ export default function AdminPushNotificationsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Audience
+                      {v('Audience', 'Đối tượng')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -732,7 +738,7 @@ export default function AdminPushNotificationsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Sent
+                      {v('Sent', 'Đã gửi')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"
@@ -754,7 +760,7 @@ export default function AdminPushNotificationsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Opened
+                      {v('Opened', 'Đã mở')}
                     </p>
                     <p
                       className="text-[#10B981]"
@@ -779,7 +785,7 @@ export default function AdminPushNotificationsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      Clicked
+                      {v('Clicked', 'Đã nhấp')}
                     </p>
                     <p
                       className="text-[#F54900]"
@@ -804,7 +810,7 @@ export default function AdminPushNotificationsPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      {notif.status === 'scheduled' ? 'Scheduled' : 'Sent At'}
+                      {notif.status === 'scheduled' ? v('Scheduled', 'Đã lên lịch') : v('Sent At', 'Thời gian gửi')}
                     </p>
                     <p
                       className="text-[#0A0A0A]"

@@ -12,8 +12,16 @@ const statusColors: Record<string, { bg: string; text: string }> = {
   completed: { bg: '#E8F5E8', text: '#2D6A2D' },
 };
 
+const statusLabels: Record<string, { en: string; vi: string }> = {
+  pending: { en: 'Pending', vi: 'Chờ xử lý' },
+  approved: { en: 'Approved', vi: 'Đã duyệt' },
+  rejected: { en: 'Rejected', vi: 'Từ chối' },
+  completed: { en: 'Completed', vi: 'Hoàn tất' },
+};
+
 export function MyReturnsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
+  const isVi = lang === 'vi';
   return (
     <AccountLayout>
       <div className="space-y-6">
@@ -34,9 +42,9 @@ export function MyReturnsPage() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-4" style={{ borderBottom: '1px solid #e0d8cf' }}>
                     <div>
                       <div className="flex items-center gap-3">
-                        <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>Return #{ret.id.toUpperCase()}</p>
+                        <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v('Return', 'Đổi trả')} #{ret.id.toUpperCase()}</p>
                         <span className="px-3 py-1 capitalize" style={{ backgroundColor: sc.bg, color: sc.text, fontSize: '11px', fontWeight: 600, borderRadius: '9999px', letterSpacing: '0.05em', fontFamily: "'Oswald', sans-serif" }}>
-                          {ret.status}
+                          {isVi ? (statusLabels[ret.status]?.vi ?? ret.status) : (statusLabels[ret.status]?.en ?? ret.status)}
                         </span>
                       </div>
                       <p style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
@@ -56,7 +64,7 @@ export function MyReturnsPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{item.name}</p>
-                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · Size: {item.size}</p>
+                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v('Size', 'Size')}: {item.size}</p>
                         </div>
                       </div>
                     ))}

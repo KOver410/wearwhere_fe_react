@@ -51,7 +51,7 @@ function EditorialMarquee() {
 
 /* ═══ TRENDING POSTS ═══ */
 function TrendingPosts() {
-  const { lang } = useLanguage();
+  const { lang, v } = useLanguage();
 
   const posts = [
     {
@@ -269,7 +269,7 @@ function TrendingPosts() {
                 boxShadow: '0px 4px 12px rgba(0,0,0,0.3)',
                 border: '2px solid rgba(255,249,242,0.2)',
               }}
-              aria-label="Scroll left"
+              aria-label={v('Scroll left', 'Cuộn sang trái')}
             >
               <ChevronLeft size={22} />
             </button>
@@ -286,7 +286,7 @@ function TrendingPosts() {
                 boxShadow: '0px 4px 12px rgba(0,0,0,0.3)',
                 border: '2px solid rgba(255,249,242,0.2)',
               }}
-              aria-label="Scroll right"
+              aria-label={v('Scroll right', 'Cuộn sang phải')}
             >
               <ChevronRight size={22} />
             </button>

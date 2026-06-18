@@ -130,7 +130,7 @@ export function MyOrdersPage() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{item.name}</p>
-                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · Size: {item.size} · Qty: {item.quantity}</p>
+                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v('Size', 'Size')}: {item.size} · {v('Qty', 'SL')}: {item.quantity}</p>
                         </div>
                         <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>${(item.price * item.quantity).toFixed(2)}</p>
                       </div>

@@ -75,7 +75,7 @@ export function AddressBookPage() {
                   <MapPin className="w-4 h-4" style={{ color: '#e2b93b' }} />
                   <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{addr.label}</span>
                   {addr.isDefault && (
-                    <span className="px-2 py-0.5 text-white" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: '#d41c1c', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>DEFAULT</span>
+                    <span className="px-2 py-0.5 text-white" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: '#d41c1c', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>{v('DEFAULT', 'MẶC ĐỊNH')}</span>
                   )}
                 </div>
                 <div className="flex items-center gap-1">

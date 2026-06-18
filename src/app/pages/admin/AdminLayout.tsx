@@ -3,11 +3,13 @@ import { Outlet, useNavigate, Link, useLocation } from 'react-router';
 import { Button } from '@/app/components/ui/button';
 import { LayoutDashboard, Activity, Users, Package, Store, Shield, ShoppingBag, Megaphone, LogOut, ChevronRight } from 'lucide-react';
 import { cn } from '@/app/components/ui/utils';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import logoImage from 'figma:asset/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { v } = useLanguage();
 
   useEffect(() => {
     const isAuthenticated = localStorage.getItem('adminAuth') === 'true';
@@ -22,14 +24,14 @@ export default function AdminLayout() {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-    { name: 'Real-time Monitor', href: '/admin/monitor', icon: Activity },
-    { name: 'Users', href: '/admin/users', icon: Users },
-    { name: 'Products', href: '/admin/products', icon: Package },
-    { name: 'Brands', href: '/admin/brands', icon: Store },
-    { name: 'Moderation', href: '/admin/moderation', icon: Shield },
-    { name: 'Orders', href: '/admin/orders', icon: ShoppingBag },
-    { name: 'Marketing', href: '/admin/marketing', icon: Megaphone },
+    { name: v('Dashboard', 'Bảng điều khiển'), href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: v('Real-time Monitor', 'Giám sát thời gian thực'), href: '/admin/monitor', icon: Activity },
+    { name: v('Users', 'Người dùng'), href: '/admin/users', icon: Users },
+    { name: v('Products', 'Sản phẩm'), href: '/admin/products', icon: Package },
+    { name: v('Brands', 'Thương hiệu'), href: '/admin/brands', icon: Store },
+    { name: v('Moderation', 'Kiểm duyệt'), href: '/admin/moderation', icon: Shield },
+    { name: v('Orders', 'Đơn hàng'), href: '/admin/orders', icon: ShoppingBag },
+    { name: v('Marketing', 'Tiếp thị'), href: '/admin/marketing', icon: Megaphone },
   ];
 
   return (
@@ -40,7 +42,7 @@ export default function AdminLayout() {
           <Link to="/admin/dashboard" className="flex items-center">
             <img src={logoImage} alt="WearWhere" className="h-9 w-auto brightness-0 invert" />
           </Link>
-          <div className="mt-2 text-xs text-[#F54900] uppercase tracking-wider font-medium" style={{ fontFamily: 'Arimo, sans-serif' }}>Admin Portal</div>
+          <div className="mt-2 text-xs text-[#F54900] uppercase tracking-wider font-medium" style={{ fontFamily: 'Arimo, sans-serif' }}>{v('Admin Portal', 'Cổng quản trị')}</div>
         </div>
 
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
@@ -83,7 +85,7 @@ export default function AdminLayout() {
             style={{ fontFamily: 'Arimo, sans-serif' }}
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
+            {v('Sign Out', 'Đăng xuất')}
           </Button>
         </div>
       </div>

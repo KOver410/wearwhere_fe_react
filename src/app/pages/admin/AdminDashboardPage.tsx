@@ -1,5 +1,6 @@
 import { Card } from '@/app/components/ui/card';
 import { Badge } from '@/app/components/ui/badge';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import {
   Users,
   DollarSign,
@@ -67,6 +68,7 @@ const brandCategoryData = [
 ];
 
 export default function AdminDashboardPage() {
+  const { v } = useLanguage();
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
   };
@@ -80,10 +82,10 @@ export default function AdminDashboardPage() {
       {/* Page Header */}
       <div>
         <h1 className="text-[#0A0A0A]" style={{ fontSize: '36px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '8px' }}>
-          System Dashboard
+          {v('System Dashboard', 'Bảng điều khiển hệ thống')}
         </h1>
         <p className="text-[#4A5565]" style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}>
-          Overview and system monitoring for WearWhere
+          {v('Overview and system monitoring for WearWhere', 'Tổng quan và giám sát hệ thống cho WearWhere')}
         </p>
       </div>
 
@@ -106,7 +108,7 @@ export default function AdminDashboardPage() {
             </div>
             <div>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-                Total Users
+                {v('Total Users', 'Tổng người dùng')}
               </p>
               <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {formatNumber(statsData.totalUsers)}
@@ -132,7 +134,7 @@ export default function AdminDashboardPage() {
             </div>
             <div>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-                Revenue (30 days)
+                {v('Revenue (30 days)', 'Doanh thu (30 ngày)')}
               </p>
               <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {formatCurrency(statsData.revenue)}
@@ -158,7 +160,7 @@ export default function AdminDashboardPage() {
             </div>
             <div>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-                GMV (30 days)
+                {v('GMV (30 days)', 'GMV (30 ngày)')}
               </p>
               <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {formatCurrency(statsData.gmv)}
@@ -184,7 +186,7 @@ export default function AdminDashboardPage() {
             </div>
             <div>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', marginBottom: '4px' }}>
-                Active Brands
+                {v('Active Brands', 'Thương hiệu hoạt động')}
               </p>
               <h3 className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {formatNumber(statsData.activeBrands)}
@@ -199,21 +201,21 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col" style={{ gap: '24px' }}>
           <div className="flex items-center justify-between">
             <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
-              System Health
+              {v('System Health', 'Tình trạng hệ thống')}
             </h2>
             <Badge
               className={`${systemHealth.status === 'healthy' ? 'bg-[#10B981]/10 text-[#10B981]' : 'bg-[#E7000B]/10 text-[#E7000B]'}`}
               style={{ borderRadius: '9999px', fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', padding: '4px 12px', gap: '4px' }}
             >
               <CheckCircle style={{ width: '14px', height: '14px' }} />
-              {systemHealth.status === 'healthy' ? 'Healthy' : 'Issues Detected'}
+              {systemHealth.status === 'healthy' ? v('Healthy', 'Khỏe mạnh') : v('Issues Detected', 'Phát hiện sự cố')}
             </Badge>
           </div>
 
           <div className="grid grid-cols-3" style={{ gap: '24px' }}>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-                Uptime
+                {v('Uptime', 'Thời gian hoạt động')}
               </p>
               <p className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {systemHealth.uptime}%
@@ -221,7 +223,7 @@ export default function AdminDashboardPage() {
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-                Avg Response Time
+                {v('Avg Response Time', 'Thời gian phản hồi TB')}
               </p>
               <p className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {systemHealth.responseTime}ms
@@ -229,7 +231,7 @@ export default function AdminDashboardPage() {
             </div>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <p className="text-[#6A7282]" style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}>
-                Error Rate
+                {v('Error Rate', 'Tỷ lệ lỗi')}
               </p>
               <p className="text-[#0A0A0A]" style={{ fontSize: '30px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}>
                 {systemHealth.errorRate}%
@@ -244,7 +246,7 @@ export default function AdminDashboardPage() {
         {/* Revenue & GMV Chart */}
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '24px' }}>
-            Revenue & GMV Trend
+            {v('Revenue & GMV Trend', 'Xu hướng doanh thu & GMV')}
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={revenueData}>
@@ -269,7 +271,7 @@ export default function AdminDashboardPage() {
         {/* User Growth Chart */}
         <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
           <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '24px' }}>
-            User Growth
+            {v('User Growth', 'Tăng trưởng người dùng')}
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={userGrowthData}>
@@ -294,7 +296,7 @@ export default function AdminDashboardPage() {
       {/* Bottom Row */}
       <Card className="bg-white" style={{ padding: '24px', borderRadius: '14px', border: '1px solid #E5E7EB' }}>
         <h2 className="text-[#0A0A0A]" style={{ fontSize: '18px', fontWeight: '700', fontFamily: 'Arimo, sans-serif', marginBottom: '24px' }}>
-          Brands by Category
+          {v('Brands by Category', 'Thương hiệu theo danh mục')}
         </h2>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={brandCategoryData}>

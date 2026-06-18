@@ -10,6 +10,14 @@ import { copyToClipboard } from '@/app/utils/clipboard';
 const statusSteps = ['Confirmed', 'Processing', 'Shipped', 'Delivered'];
 const statusStepsVi = ['Xác nhận', 'Đang xử lý', 'Đang giao', 'Đã giao'];
 const statusIndex: Record<string, number> = { pending: 0, processing: 1, shipped: 2, delivered: 3, cancelled: -1, returned: -1 };
+const statusLabels: Record<string, { en: string; vi: string }> = {
+  pending: { en: 'Pending', vi: 'Chờ xử lý' },
+  processing: { en: 'Processing', vi: 'Đang xử lý' },
+  shipped: { en: 'Shipped', vi: 'Đang giao' },
+  delivered: { en: 'Delivered', vi: 'Đã giao' },
+  cancelled: { en: 'Cancelled', vi: 'Đã hủy' },
+  returned: { en: 'Returned', vi: 'Đã trả' },
+};
 
 export function OrderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -63,7 +71,7 @@ export function OrderDetailPage() {
           </Link>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', lineHeight: 1.05 }}>Order {order.orderNumber}</h1>
+              <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', lineHeight: 1.05 }}>{v('Order', 'Đơn hàng')} {order.orderNumber}</h1>
               <p style={{ fontSize: '14px', color: '#888' }}>{v('Placed on', 'Đặt ngày')} {new Date(order.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
             <span
@@ -74,7 +82,7 @@ export function OrderDetailPage() {
                 fontSize: '11px', fontWeight: 600, borderRadius: '9999px', letterSpacing: '0.05em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif",
               }}
             >
-              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+              {isVi ? (statusLabels[order.status]?.vi ?? order.status) : (statusLabels[order.status]?.en ?? order.status.charAt(0).toUpperCase() + order.status.slice(1))}
             </span>
           </div>
         </div>
@@ -106,10 +114,10 @@ export function OrderDetailPage() {
             </div>
             {order.trackingNumber && (
               <div className="flex items-center gap-2 mt-6 p-3" style={{ backgroundColor: '#fff9f2', borderRadius: '10px', border: '2px solid #e0d8cf' }}>
-                <span style={{ fontSize: '13px', color: '#888' }}>Tracking:</span>
+                <span style={{ fontSize: '13px', color: '#888' }}>{v('Tracking:', 'Mã vận đơn:')}</span>
                 <span style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{order.trackingNumber}</span>
                 <button onClick={copyTracking} className="p-1 hover:bg-[#f0ebe4] rounded transition-colors"><Copy className="w-3.5 h-3.5 text-[#888]" /></button>
-                {copied && <span style={{ fontSize: '11px', color: '#d41c1c' }}>Copied!</span>}
+                {copied && <span style={{ fontSize: '11px', color: '#d41c1c' }}>{v('Copied!', 'Đã sao chép!')}</span>}
               </div>
             )}
             {order.estimatedDelivery && (
@@ -129,7 +137,7 @@ export function OrderDetailPage() {
                 <div className="flex-1 min-w-0">
                   <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
                   <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{item.brand}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>Size: {item.size} | Color: {item.color} | Qty: {item.quantity}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {item.color} | {v('Qty', 'SL')}: {item.quantity}</p>
                 </div>
                 <p style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d' }}>${(item.price * item.quantity).toFixed(2)}</p>
               </div>
@@ -170,7 +178,7 @@ export function OrderDetailPage() {
             <Link to={`/account/orders/${order.id}/return`} className="px-5 py-3 border-2 border-[#d41c1c] hover:bg-red-50 transition-colors" style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, color: '#d41c1c', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}>
               {v('Request Return', 'Yêu cầu đổi trả')}
             </Link>
-            <button onClick={() => { alert('Items added to cart!'); navigate('/cart'); }} className="px-5 py-3 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors" style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}>
+            <button onClick={() => { alert(v('Items added to cart!', 'Đã thêm sản phẩm vào giỏ hàng!')); navigate('/cart'); }} className="px-5 py-3 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors" style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}>
               {v('Buy Again', 'Mua lại')}
             </button>
           </div>

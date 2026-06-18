@@ -2,21 +2,23 @@ import { Link, Outlet, useLocation } from 'react-router';
 import { LayoutDashboard, ShoppingBag, BarChart3, LogOut, Settings, MapPin, Store, Package, ShoppingCart, RotateCcw, ChevronRight } from 'lucide-react';
 import { cn } from '@/app/components/ui/utils';
 import { Button } from '@/app/components/ui/button';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 import logoImage from 'figma:asset/80e96fc2cdc554ebf44dc26a8edeb9829e3445b2.png';
 
 export function BrandLayout() {
   const location = useLocation();
-  
+  const { v } = useLanguage();
+
   const navigation = [
-    { name: 'Overview', href: '/brand/dashboard', icon: LayoutDashboard },
-    { name: 'Orders', href: '/brand/orders', icon: ShoppingCart },
-    { name: 'Returns', href: '/brand/returns', icon: RotateCcw },
-    { name: 'Products', href: '/brand/products', icon: Package },
-    { name: 'Sales Analytics', href: '/brand/sales', icon: ShoppingBag },
-    { name: 'Traffic Analytics', href: '/brand/traffic', icon: BarChart3 },
-    { name: 'Store Profile', href: '/brand/profile', icon: Store },
-    { name: 'Store Locations', href: '/brand/locations', icon: MapPin },
-    { name: 'Settings', href: '/brand/settings', icon: Settings },
+    { name: v('Overview', 'Tổng quan'), href: '/brand/dashboard', icon: LayoutDashboard },
+    { name: v('Orders', 'Đơn hàng'), href: '/brand/orders', icon: ShoppingCart },
+    { name: v('Returns', 'Đổi trả'), href: '/brand/returns', icon: RotateCcw },
+    { name: v('Products', 'Sản phẩm'), href: '/brand/products', icon: Package },
+    { name: v('Sales Analytics', 'Phân tích bán hàng'), href: '/brand/sales', icon: ShoppingBag },
+    { name: v('Traffic Analytics', 'Phân tích lưu lượng'), href: '/brand/traffic', icon: BarChart3 },
+    { name: v('Store Profile', 'Hồ sơ cửa hàng'), href: '/brand/profile', icon: Store },
+    { name: v('Store Locations', 'Địa điểm cửa hàng'), href: '/brand/locations', icon: MapPin },
+    { name: v('Settings', 'Cài đặt'), href: '/brand/settings', icon: Settings },
   ];
 
   return (
@@ -27,7 +29,7 @@ export function BrandLayout() {
           <Link to="/brand/dashboard" className="flex items-center">
             <img src={logoImage} alt="WearWhere" className="h-9 w-auto brightness-0 invert" />
           </Link>
-          <div className="mt-2 text-xs text-[#F54900] uppercase tracking-wider font-medium">Brand Portal</div>
+          <div className="mt-2 text-xs text-[#F54900] uppercase tracking-wider font-medium">{v('Brand Portal', 'Cổng thương hiệu')}</div>
         </div>
         
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
@@ -65,7 +67,7 @@ export function BrandLayout() {
           <Link to="/login">
             <Button variant="outline" className="w-full justify-start text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20 bg-transparent">
               <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
+              {v('Sign Out', 'Đăng xuất')}
             </Button>
           </Link>
         </div>

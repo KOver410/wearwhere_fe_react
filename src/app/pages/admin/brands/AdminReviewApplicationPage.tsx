@@ -25,6 +25,7 @@ import {
   AlertTriangle,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockApplication = {
@@ -77,6 +78,7 @@ const mockApplication = {
 };
 
 export default function AdminReviewApplicationPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const { id } = useParams();
   const [reviewNote, setReviewNote] = useState('');
@@ -85,19 +87,19 @@ export default function AdminReviewApplicationPage() {
 
   const handleApprove = () => {
     if (!reviewNote.trim()) {
-      toast.error('Please add review notes');
+      toast.error(v('Please add review notes', 'Vui lòng thêm ghi chú xét duyệt'));
       return;
     }
-    toast.success('Application approved successfully');
+    toast.success(v('Application approved successfully', 'Đã duyệt đơn đăng ký thành công'));
     navigate('/admin/brands/applications');
   };
 
   const handleReject = () => {
     if (!reviewNote.trim() || !rejectReason) {
-      toast.error('Please provide rejection reason and notes');
+      toast.error(v('Please provide rejection reason and notes', 'Vui lòng cung cấp lý do và ghi chú từ chối'));
       return;
     }
-    toast.success('Application rejected');
+    toast.success(v('Application rejected', 'Đã từ chối đơn đăng ký'));
     navigate('/admin/brands/applications');
   };
 
@@ -130,13 +132,13 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '8px',
               }}
             >
-              Review Brand Application
+              {v('Review Brand Application', 'Xét duyệt đơn đăng ký thương hiệu')}
             </h1>
             <p
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Chi tiết đơn đăng ký của {mockApplication.brandName}
+              {v('Application details of', 'Chi tiết đơn đăng ký của')} {mockApplication.brandName}
             </p>
           </div>
         </div>
@@ -159,7 +161,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '24px',
               }}
             >
-              Business Information
+              {v('Business Information', 'Thông tin doanh nghiệp')}
             </h2>
             <div className="grid grid-cols-2" style={{ gap: '24px' }}>
               <div>
@@ -172,7 +174,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Brand Name
+                  {v('Brand Name', 'Tên thương hiệu')}
                 </Label>
                 <p
                   className="text-[#0A0A0A]"
@@ -195,7 +197,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Business Name
+                  {v('Business Name', 'Tên doanh nghiệp')}
                 </Label>
                 <p
                   className="text-[#0A0A0A]"
@@ -218,7 +220,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Business Type
+                  {v('Business Type', 'Loại hình kinh doanh')}
                 </Label>
                 <Badge
                   className="bg-[#F3F4F6] text-[#0A0A0A]"
@@ -243,7 +245,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Tax Code
+                  {v('Tax Code', 'Mã số thuế')}
                 </Label>
                 <p
                   className="text-[#0A0A0A]"
@@ -266,7 +268,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Business Address
+                  {v('Business Address', 'Địa chỉ kinh doanh')}
                 </Label>
                 <div className="flex items-start" style={{ gap: '8px' }}>
                   <MapPin
@@ -298,7 +300,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '24px',
               }}
             >
-              Contact Information
+              {v('Contact Information', 'Thông tin liên hệ')}
             </h2>
             <div className="grid grid-cols-2" style={{ gap: '24px' }}>
               <div>
@@ -311,7 +313,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Email
+                  {v('Email', 'Email')}
                 </Label>
                 <div className="flex items-center" style={{ gap: '8px' }}>
                   <Mail className="text-[#6A7282]" style={{ width: '16px', height: '16px' }} />
@@ -333,7 +335,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Phone
+                  {v('Phone', 'Số điện thoại')}
                 </Label>
                 <div className="flex items-center" style={{ gap: '8px' }}>
                   <Phone className="text-[#6A7282]" style={{ width: '16px', height: '16px' }} />
@@ -356,7 +358,7 @@ export default function AdminReviewApplicationPage() {
                   display: 'block',
                 }}
               >
-                Representative
+                {v('Representative', 'Người đại diện')}
               </Label>
               <div className="grid grid-cols-2" style={{ gap: '16px' }}>
                 <div>
@@ -364,7 +366,7 @@ export default function AdminReviewApplicationPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Name
+                    {v('Name', 'Họ tên')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -382,7 +384,7 @@ export default function AdminReviewApplicationPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Position
+                    {v('Position', 'Chức vụ')}
                   </p>
                   <p
                     className="text-[#0A0A0A]"
@@ -413,7 +415,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '16px',
               }}
             >
-              Description
+              {v('Description', 'Mô tả')}
             </h2>
             <p
               className="text-[#0A0A0A]"
@@ -435,7 +437,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '16px',
               }}
             >
-              Business Plan
+              {v('Business Plan', 'Kế hoạch kinh doanh')}
             </h2>
             <p
               className="text-[#0A0A0A]"
@@ -463,7 +465,7 @@ export default function AdminReviewApplicationPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Uploaded Documents
+                {v('Uploaded Documents', 'Hồ sơ đã tải lên')}
               </h2>
               <Badge
                 className={
@@ -479,7 +481,7 @@ export default function AdminReviewApplicationPage() {
                   padding: '6px 12px',
                 }}
               >
-                {documentsComplete ? 'All Verified' : 'Incomplete'}
+                {documentsComplete ? v('All Verified', 'Đã xác minh đủ') : v('Incomplete', 'Chưa đầy đủ')}
               </Badge>
             </div>
             <div className="flex flex-col" style={{ gap: '12px' }}>
@@ -514,7 +516,7 @@ export default function AdminReviewApplicationPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Uploaded: {new Date(doc.uploadDate).toLocaleDateString('vi-VN')}
+                        {v('Uploaded', 'Đã tải lên')}: {new Date(doc.uploadDate).toLocaleDateString('vi-VN')}
                       </p>
                     </div>
                   </div>
@@ -533,7 +535,7 @@ export default function AdminReviewApplicationPage() {
                         padding: '4px 12px',
                       }}
                     >
-                      {doc.verified ? 'Verified' : 'Pending'}
+                      {doc.verified ? v('Verified', 'Đã xác minh') : v('Pending', 'Đang chờ')}
                     </Badge>
                     <Button
                       variant="ghost"
@@ -568,7 +570,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '16px',
               }}
             >
-              Application Status
+              {v('Application Status', 'Trạng thái đơn')}
             </h3>
             <div className="flex flex-col" style={{ gap: '12px' }}>
               <div className="flex justify-between">
@@ -576,7 +578,7 @@ export default function AdminReviewApplicationPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Submitted:
+                  {v('Submitted', 'Ngày nộp')}:
                 </span>
                 <span
                   className="text-[#0A0A0A]"
@@ -594,7 +596,7 @@ export default function AdminReviewApplicationPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  Requested Tier:
+                  {v('Requested Tier', 'Gói đăng ký')}:
                 </span>
                 <Badge
                   className="bg-[#10B981]/10 text-[#10B981]"
@@ -626,7 +628,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '16px',
               }}
             >
-              Approve Application
+              {v('Approve Application', 'Duyệt đơn')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               <div>
@@ -639,7 +641,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Approved Tier
+                  {v('Approved Tier', 'Gói được duyệt')}
                 </Label>
                 <Select value={approvedTier} onValueChange={setApprovedTier}>
                   <SelectTrigger
@@ -654,9 +656,9 @@ export default function AdminReviewApplicationPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="starter">Starter</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                    <SelectItem value="premium">Premium</SelectItem>
+                    <SelectItem value="starter">{v('Starter', 'Khởi đầu')}</SelectItem>
+                    <SelectItem value="business">{v('Business', 'Doanh nghiệp')}</SelectItem>
+                    <SelectItem value="premium">{v('Premium', 'Cao cấp')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -670,10 +672,10 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Review Notes
+                  {v('Review Notes', 'Ghi chú xét duyệt')}
                 </Label>
                 <Textarea
-                  placeholder="Add notes about approval decision..."
+                  placeholder={v('Add notes about approval decision...', 'Thêm ghi chú về quyết định duyệt...')}
                   value={reviewNote}
                   onChange={(e) => setReviewNote(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -697,7 +699,7 @@ export default function AdminReviewApplicationPage() {
                 }}
               >
                 <CheckCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Approve Application
+                {v('Approve Application', 'Duyệt đơn')}
               </Button>
             </div>
           </Card>
@@ -716,7 +718,7 @@ export default function AdminReviewApplicationPage() {
                 marginBottom: '16px',
               }}
             >
-              Reject Application
+              {v('Reject Application', 'Từ chối đơn')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               <div>
@@ -729,7 +731,7 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Rejection Reason
+                  {v('Rejection Reason', 'Lý do từ chối')}
                 </Label>
                 <Select value={rejectReason} onValueChange={setRejectReason}>
                   <SelectTrigger
@@ -741,14 +743,14 @@ export default function AdminReviewApplicationPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    <SelectValue placeholder="Select reason..." />
+                    <SelectValue placeholder={v('Select reason...', 'Chọn lý do...')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="incomplete_docs">Incomplete Documents</SelectItem>
-                    <SelectItem value="invalid_license">Invalid Business License</SelectItem>
-                    <SelectItem value="suspicious">Suspicious Activity</SelectItem>
-                    <SelectItem value="policy_violation">Policy Violation</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="incomplete_docs">{v('Incomplete Documents', 'Hồ sơ không đầy đủ')}</SelectItem>
+                    <SelectItem value="invalid_license">{v('Invalid Business License', 'Giấy phép kinh doanh không hợp lệ')}</SelectItem>
+                    <SelectItem value="suspicious">{v('Suspicious Activity', 'Hoạt động đáng ngờ')}</SelectItem>
+                    <SelectItem value="policy_violation">{v('Policy Violation', 'Vi phạm chính sách')}</SelectItem>
+                    <SelectItem value="other">{v('Other', 'Khác')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -762,10 +764,10 @@ export default function AdminReviewApplicationPage() {
                     display: 'block',
                   }}
                 >
-                  Rejection Notes
+                  {v('Rejection Notes', 'Ghi chú từ chối')}
                 </Label>
                 <Textarea
-                  placeholder="Explain rejection reason..."
+                  placeholder={v('Explain rejection reason...', 'Giải thích lý do từ chối...')}
                   value={reviewNote}
                   onChange={(e) => setReviewNote(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -790,7 +792,7 @@ export default function AdminReviewApplicationPage() {
                 }}
               >
                 <XCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                Reject Application
+                {v('Reject Application', 'Từ chối đơn')}
               </Button>
             </div>
           </Card>
@@ -814,14 +816,13 @@ export default function AdminReviewApplicationPage() {
                   marginBottom: '4px',
                 }}
               >
-                Important
+                {v('Important', 'Quan trọng')}
               </p>
               <p
                 className="text-[#0A0A0A]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Review all documents carefully before making a decision. The brand will be notified
-                immediately.
+                {v('Review all documents carefully before making a decision. The brand will be notified immediately.', 'Hãy xem xét kỹ tất cả hồ sơ trước khi đưa ra quyết định. Thương hiệu sẽ được thông báo ngay lập tức.')}
               </p>
             </div>
           </div>

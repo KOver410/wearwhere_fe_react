@@ -34,6 +34,7 @@ import { Textarea } from '@/app/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/app/components/ui/radio-group';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockUser = {
@@ -182,6 +183,7 @@ const mockReportedContent = [
 ];
 
 export default function AdminUserDetailPage() {
+  const { v } = useLanguage();
   const { id } = useParams();
   const navigate = useNavigate();
   const [banModalOpen, setBanModalOpen] = useState(false);
@@ -190,7 +192,7 @@ export default function AdminUserDetailPage() {
   const [notifyUser, setNotifyUser] = useState(true);
 
   const handleBanUser = () => {
-    toast.success('User has been banned successfully');
+    toast.success(v('User has been banned successfully', 'Đã cấm người dùng thành công'));
     setBanModalOpen(false);
     navigate('/admin/users');
   };
@@ -209,7 +211,7 @@ export default function AdminUserDetailPage() {
           }}
         >
           <ArrowLeft style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-          Back to Users
+          {v('Back to Users', 'Quay lại Người dùng')}
         </Button>
       </Link>
 
@@ -248,7 +250,7 @@ export default function AdminUserDetailPage() {
                     padding: '4px 12px',
                   }}
                 >
-                  Active
+                  {v('Active', 'Hoạt động')}
                 </Badge>
               </div>
               <p
@@ -295,7 +297,7 @@ export default function AdminUserDetailPage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Joined {new Date(mockUser.registrationDate).toLocaleDateString('vi-VN')}
+                    {v('Joined', 'Tham gia')} {new Date(mockUser.registrationDate).toLocaleDateString('vi-VN')}
                   </span>
                 </div>
               </div>
@@ -317,7 +319,7 @@ export default function AdminUserDetailPage() {
               }}
             >
               <Mail style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Send Email
+              {v('Send Email', 'Gửi email')}
             </Button>
             <Dialog open={banModalOpen} onOpenChange={setBanModalOpen}>
               <DialogTrigger asChild>
@@ -333,7 +335,7 @@ export default function AdminUserDetailPage() {
                   }}
                 >
                   <Ban style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                  Ban User
+                  {v('Ban User', 'Cấm người dùng')}
                 </Button>
               </DialogTrigger>
               <DialogContent
@@ -348,12 +350,15 @@ export default function AdminUserDetailPage() {
                       marginBottom: '8px',
                     }}
                   >
-                    Ban User
+                    {v('Ban User', 'Cấm người dùng')}
                   </DialogTitle>
                   <DialogDescription
                     style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    This action will restrict the user's access to the platform.
+                    {v(
+                      "This action will restrict the user's access to the platform.",
+                      'Hành động này sẽ hạn chế quyền truy cập của người dùng vào nền tảng.'
+                    )}
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col" style={{ gap: '24px', marginTop: '24px' }}>
@@ -366,10 +371,10 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Reason for Ban
+                      {v('Reason for Ban', 'Lý do cấm')}
                     </Label>
                     <Textarea
-                      placeholder="Enter the reason for banning this user..."
+                      placeholder={v('Enter the reason for banning this user...', 'Nhập lý do cấm người dùng này...')}
                       value={banReason}
                       onChange={(e) => setBanReason(e.target.value)}
                       className="border-[#D1D5DC]"
@@ -391,7 +396,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Ban Duration
+                      {v('Ban Duration', 'Thời hạn cấm')}
                     </Label>
                     <RadioGroup value={banDuration} onValueChange={setBanDuration}>
                       <div className="flex items-center" style={{ gap: '8px', padding: '8px 0' }}>
@@ -404,7 +409,7 @@ export default function AdminUserDetailPage() {
                             cursor: 'pointer',
                           }}
                         >
-                          7 days
+                          {v('7 days', '7 ngày')}
                         </Label>
                       </div>
                       <div className="flex items-center" style={{ gap: '8px', padding: '8px 0' }}>
@@ -417,7 +422,7 @@ export default function AdminUserDetailPage() {
                             cursor: 'pointer',
                           }}
                         >
-                          30 days
+                          {v('30 days', '30 ngày')}
                         </Label>
                       </div>
                       <div className="flex items-center" style={{ gap: '8px', padding: '8px 0' }}>
@@ -430,7 +435,7 @@ export default function AdminUserDetailPage() {
                             cursor: 'pointer',
                           }}
                         >
-                          90 days
+                          {v('90 days', '90 ngày')}
                         </Label>
                       </div>
                       <div className="flex items-center" style={{ gap: '8px', padding: '8px 0' }}>
@@ -443,7 +448,7 @@ export default function AdminUserDetailPage() {
                             cursor: 'pointer',
                           }}
                         >
-                          Permanent
+                          {v('Permanent', 'Vĩnh viễn')}
                         </Label>
                       </div>
                     </RadioGroup>
@@ -464,7 +469,7 @@ export default function AdminUserDetailPage() {
                         cursor: 'pointer',
                       }}
                     >
-                      Send email notification to user
+                      {v('Send email notification to user', 'Gửi thông báo qua email cho người dùng')}
                     </Label>
                   </div>
                 </div>
@@ -481,7 +486,7 @@ export default function AdminUserDetailPage() {
                       padding: '0 24px',
                     }}
                   >
-                    Cancel
+                    {v('Cancel', 'Hủy')}
                   </Button>
                   <Button
                     onClick={handleBanUser}
@@ -495,7 +500,7 @@ export default function AdminUserDetailPage() {
                       padding: '0 24px',
                     }}
                   >
-                    Confirm Ban
+                    {v('Confirm Ban', 'Xác nhận cấm')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -519,7 +524,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Orders
+              {v('Orders', 'Đơn hàng')}
             </p>
           </div>
           <div className="text-center">
@@ -533,7 +538,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Total Spent
+              {v('Total Spent', 'Tổng chi tiêu')}
             </p>
           </div>
           <div className="text-center">
@@ -547,7 +552,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Reviews
+              {v('Reviews', 'Đánh giá')}
             </p>
           </div>
           <div className="text-center">
@@ -561,7 +566,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              OOTD Posts
+              {v('OOTD Posts', 'Bài đăng OOTD')}
             </p>
           </div>
           <div className="text-center">
@@ -575,7 +580,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Followers
+              {v('Followers', 'Người theo dõi')}
             </p>
           </div>
           <div className="text-center">
@@ -589,7 +594,7 @@ export default function AdminUserDetailPage() {
               className="text-[#6A7282]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
             >
-              Following
+              {v('Following', 'Đang theo dõi')}
             </p>
           </div>
         </div>
@@ -611,7 +616,7 @@ export default function AdminUserDetailPage() {
             }}
           >
             <ShoppingBag style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Orders History
+            {v('Orders History', 'Lịch sử đơn hàng')}
           </TabsTrigger>
           <TabsTrigger
             value="ootd"
@@ -623,7 +628,7 @@ export default function AdminUserDetailPage() {
             }}
           >
             <ImageIcon style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            OOTD Posts
+            {v('OOTD Posts', 'Bài đăng OOTD')}
           </TabsTrigger>
           <TabsTrigger
             value="reviews"
@@ -635,7 +640,7 @@ export default function AdminUserDetailPage() {
             }}
           >
             <Star style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Reviews
+            {v('Reviews', 'Đánh giá')}
           </TabsTrigger>
           <TabsTrigger
             value="activity"
@@ -647,7 +652,7 @@ export default function AdminUserDetailPage() {
             }}
           >
             <Activity style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Activity Log
+            {v('Activity Log', 'Nhật ký hoạt động')}
           </TabsTrigger>
           <TabsTrigger
             value="reported"
@@ -659,7 +664,7 @@ export default function AdminUserDetailPage() {
             }}
           >
             <AlertTriangle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Reported Content
+            {v('Reported Content', 'Nội dung bị báo cáo')}
           </TabsTrigger>
         </TabsList>
 
@@ -687,7 +692,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Order ID
+                      {v('Order ID', 'Mã đơn hàng')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -698,7 +703,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Date
+                      {v('Date', 'Ngày')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -709,7 +714,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Items
+                      {v('Items', 'Số lượng')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -720,7 +725,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Total
+                      {v('Total', 'Tổng tiền')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -731,7 +736,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Status
+                      {v('Status', 'Trạng thái')}
                     </th>
                   </tr>
                 </thead>
@@ -763,7 +768,7 @@ export default function AdminUserDetailPage() {
                           className="text-[#0A0A0A]"
                           style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          {order.items} items
+                          {order.items} {v('items', 'sản phẩm')}
                         </p>
                       </td>
                       <td style={{ padding: '16px 24px' }}>
@@ -793,7 +798,9 @@ export default function AdminUserDetailPage() {
                             padding: '4px 12px',
                           }}
                         >
-                          {order.status}
+                          {order.status === 'delivered'
+                            ? v('delivered', 'đã giao')
+                            : v('cancelled', 'đã hủy')}
                         </Badge>
                       </td>
                     </tr>
@@ -943,7 +950,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Action
+                      {v('Action', 'Hành động')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -954,7 +961,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Device
+                      {v('Device', 'Thiết bị')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -965,7 +972,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      IP Address
+                      {v('IP Address', 'Địa chỉ IP')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -976,7 +983,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Location
+                      {v('Location', 'Vị trí')}
                     </th>
                     <th
                       className="text-left text-[#0A0A0A]"
@@ -987,7 +994,7 @@ export default function AdminUserDetailPage() {
                         fontFamily: 'Arimo, sans-serif',
                       }}
                     >
-                      Time
+                      {v('Time', 'Thời gian')}
                     </th>
                   </tr>
                 </thead>
@@ -1098,7 +1105,9 @@ export default function AdminUserDetailPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {report.status}
+                        {report.status === 'pending'
+                          ? v('pending', 'đang chờ')
+                          : v('resolved', 'đã xử lý')}
                       </Badge>
                     </div>
                     <p
@@ -1109,14 +1118,14 @@ export default function AdminUserDetailPage() {
                         marginBottom: '8px',
                       }}
                     >
-                      Reason: {report.reason}
+                      {v('Reason:', 'Lý do:')} {report.reason}
                     </p>
                     <div className="flex items-center" style={{ gap: '16px' }}>
                       <p
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        Reported by {report.reportedBy} users
+                        {v('Reported by', 'Bị báo cáo bởi')} {report.reportedBy} {v('users', 'người dùng')}
                       </p>
                       <p
                         className="text-[#6A7282]"
@@ -1139,7 +1148,7 @@ export default function AdminUserDetailPage() {
                           fontFamily: 'Arimo, sans-serif',
                         }}
                       >
-                        Review
+                        {v('Review', 'Xem xét')}
                       </Button>
                       <Button
                         size="sm"
@@ -1151,7 +1160,7 @@ export default function AdminUserDetailPage() {
                           fontFamily: 'Arimo, sans-serif',
                         }}
                       >
-                        Remove Content
+                        {v('Remove Content', 'Gỡ nội dung')}
                       </Button>
                     </div>
                   )}

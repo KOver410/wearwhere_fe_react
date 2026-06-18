@@ -30,6 +30,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/components/ui/dropdown-menu';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockUsers = [
@@ -121,6 +122,14 @@ const statusConfig = {
 };
 
 export default function AdminUsersPage() {
+  const { v } = useLanguage();
+  const statusLabel = (status: keyof typeof statusConfig) =>
+    ({
+      active: v('Active', 'Hoạt động'),
+      inactive: v('Inactive', 'Không hoạt động'),
+      suspended: v('Suspended', 'Tạm khóa'),
+      banned: v('Banned', 'Bị cấm'),
+    })[status];
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
@@ -166,13 +175,13 @@ export default function AdminUsersPage() {
               marginBottom: '8px',
             }}
           >
-            User Management
+            {v('User Management', 'Quản lý người dùng')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý tất cả end users trong hệ thống
+            {v('Manage all end users in the system', 'Quản lý tất cả end users trong hệ thống')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -189,7 +198,7 @@ export default function AdminUsersPage() {
             }}
           >
             <Download style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-            Export
+            {v('Export', 'Xuất dữ liệu')}
           </Button>
           <Link to="/admin/users/deleted">
             <Button
@@ -205,7 +214,7 @@ export default function AdminUsersPage() {
               }}
             >
               <AlertCircle style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Deleted Accounts
+              {v('Deleted Accounts', 'Tài khoản đã xóa')}
             </Button>
           </Link>
         </div>
@@ -234,7 +243,7 @@ export default function AdminUsersPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Users
+              {v('Total Users', 'Tổng người dùng')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -266,7 +275,7 @@ export default function AdminUsersPage() {
                 marginBottom: '4px',
               }}
             >
-              Active Users
+              {v('Active Users', 'Người dùng hoạt động')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -298,7 +307,7 @@ export default function AdminUsersPage() {
                 marginBottom: '4px',
               }}
             >
-              Suspended
+              {v('Suspended', 'Tạm khóa')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -330,7 +339,7 @@ export default function AdminUsersPage() {
                 marginBottom: '4px',
               }}
             >
-              Banned Users
+              {v('Banned Users', 'Người dùng bị cấm')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -356,7 +365,7 @@ export default function AdminUsersPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search users..."
+                placeholder={v('Search users...', 'Tìm kiếm người dùng...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -382,14 +391,14 @@ export default function AdminUsersPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-                <SelectItem value="suspended">Suspended</SelectItem>
-                <SelectItem value="banned">Banned</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="active">{v('Active', 'Hoạt động')}</SelectItem>
+                <SelectItem value="inactive">{v('Inactive', 'Không hoạt động')}</SelectItem>
+                <SelectItem value="suspended">{v('Suspended', 'Tạm khóa')}</SelectItem>
+                <SelectItem value="banned">{v('Banned', 'Bị cấm')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -406,14 +415,14 @@ export default function AdminUsersPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Registration Date" />
+                <SelectValue placeholder={v('Registration Date', 'Ngày đăng ký')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Time</SelectItem>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="week">This Week</SelectItem>
-                <SelectItem value="month">This Month</SelectItem>
-                <SelectItem value="year">This Year</SelectItem>
+                <SelectItem value="all">{v('All Time', 'Tất cả thời gian')}</SelectItem>
+                <SelectItem value="today">{v('Today', 'Hôm nay')}</SelectItem>
+                <SelectItem value="week">{v('This Week', 'Tuần này')}</SelectItem>
+                <SelectItem value="month">{v('This Month', 'Tháng này')}</SelectItem>
+                <SelectItem value="year">{v('This Year', 'Năm nay')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -430,14 +439,14 @@ export default function AdminUsersPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Activity" />
+                <SelectValue placeholder={v('Activity', 'Hoạt động')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Activity</SelectItem>
-                <SelectItem value="active_24h">Active in 24h</SelectItem>
-                <SelectItem value="active_7d">Active in 7 days</SelectItem>
-                <SelectItem value="active_30d">Active in 30 days</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{v('All Activity', 'Tất cả hoạt động')}</SelectItem>
+                <SelectItem value="active_24h">{v('Active in 24h', 'Hoạt động trong 24h')}</SelectItem>
+                <SelectItem value="active_7d">{v('Active in 7 days', 'Hoạt động trong 7 ngày')}</SelectItem>
+                <SelectItem value="active_30d">{v('Active in 30 days', 'Hoạt động trong 30 ngày')}</SelectItem>
+                <SelectItem value="inactive">{v('Inactive', 'Không hoạt động')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -462,7 +471,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  User
+                  {v('User', 'Người dùng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -473,7 +482,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -484,7 +493,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Registration
+                  {v('Registration', 'Ngày đăng ký')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -495,7 +504,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Last Active
+                  {v('Last Active', 'Hoạt động gần nhất')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -506,7 +515,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Activity
+                  {v('Activity', 'Hoạt động')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -517,7 +526,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Reports
+                  {v('Reports', 'Báo cáo')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -528,7 +537,7 @@ export default function AdminUsersPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -574,7 +583,7 @@ export default function AdminUsersPage() {
                         padding: '4px 12px',
                       }}
                     >
-                      {statusConfig[user.status as keyof typeof statusConfig].label}
+                      {statusLabel(user.status as keyof typeof statusConfig)}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -600,7 +609,7 @@ export default function AdminUsersPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          {user.orders} orders
+                          {user.orders} {v('orders', 'đơn hàng')}
                         </span>
                       </div>
                       <div className="flex items-center" style={{ gap: '4px' }}>
@@ -608,7 +617,7 @@ export default function AdminUsersPage() {
                           className="text-[#6A7282]"
                           style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                         >
-                          {user.ootdPosts} posts
+                          {user.ootdPosts} {v('posts', 'bài đăng')}
                         </span>
                       </div>
                     </div>
@@ -625,14 +634,14 @@ export default function AdminUsersPage() {
                           padding: '4px 12px',
                         }}
                       >
-                        {user.reportedCount} reports
+                        {user.reportedCount} {v('reports', 'báo cáo')}
                       </Badge>
                     ) : (
                       <span
                         className="text-[#6A7282]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        No reports
+                        {v('No reports', 'Không có báo cáo')}
                       </span>
                     )}
                   </td>
@@ -666,15 +675,15 @@ export default function AdminUsersPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>
                             <Mail style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                            Send Email
+                            {v('Send Email', 'Gửi email')}
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Ban style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                            Suspend User
+                            {v('Suspend User', 'Tạm khóa người dùng')}
                           </DropdownMenuItem>
                           <DropdownMenuItem className="text-[#E7000B]">
                             <Ban style={{ width: '14px', height: '14px', marginRight: '8px' }} />
-                            Ban User
+                            {v('Ban User', 'Cấm người dùng')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -695,9 +704,9 @@ export default function AdminUsersPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredUsers.length)} of{' '}
-            {filteredUsers.length} users
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredUsers.length)} {v('of', 'trong')}{' '}
+            {filteredUsers.length} {v('users', 'người dùng')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -712,7 +721,7 @@ export default function AdminUsersPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -749,7 +758,7 @@ export default function AdminUsersPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>

@@ -74,7 +74,35 @@ const row3: Item[] = [
    Product Tile — clean, borderless, KREAM style
    ═══════════════════════════════════════════════════════════ */
 
+const altTranslations: Record<string, string> = {
+  'Red Leather Coat': 'Áo khoác da đỏ',
+  'Black Leather Coat': 'Áo khoác da đen',
+  'Black Hoodie Jacket': 'Áo khoác hoodie đen',
+  'Washed Oversized Tee': 'Áo thun oversize wash',
+  'Phon Chay Sweatshirt': 'Áo nỉ Phon Chay',
+  'Leopard Camisole': 'Áo hai dây họa tiết báo',
+  'Polka Dot Tank Top': 'Áo ba lỗ chấm bi',
+  'Gray Collar Sweater': 'Áo len cổ bẻ xám',
+  'Distressed Biker Jeans': 'Quần jeans biker rách',
+  'Washed Flare Jeans': 'Quần jeans ống loe wash',
+  'Black Rhinestone Shorts': 'Quần short đính đá đen',
+  'Yellow Stripe Joggers': 'Quần jogger sọc vàng',
+  'Dark Wide Leg Pants': 'Quần ống rộng tối màu',
+  'Distressed Denim Shorts': 'Quần short denim rách',
+  'Pleated Mini Skirt': 'Chân váy ngắn xếp ly',
+  'Denim Pleated Skirt': 'Chân váy denim xếp ly',
+  'Black Leather Boots': 'Bốt da đen',
+  'Black Combat Boots': 'Bốt combat đen',
+  'Black Graphic Sneakers': 'Giày sneaker họa tiết đen',
+  'White Running Shoes': 'Giày chạy bộ trắng',
+  'Beige Retro Sneakers': 'Giày sneaker retro be',
+  'White Chunky Sneakers': 'Giày sneaker đế thô trắng',
+  'Black Sock Boots': 'Bốt ôm chân đen',
+  'Cream Velcro Sneakers': 'Giày sneaker dán velcro kem',
+};
+
 function Tile({ item }: { item: Item }) {
+  const { v } = useLanguage();
   return (
     <motion.div
       className="flex-shrink-0 cursor-pointer group"
@@ -91,7 +119,7 @@ function Tile({ item }: { item: Item }) {
       >
         <ImageWithFallback
           src={item.image}
-          alt={item.alt}
+          alt={v(item.alt, altTranslations[item.alt] ?? item.alt)}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           style={{ mixBlendMode: 'multiply' }}
         />

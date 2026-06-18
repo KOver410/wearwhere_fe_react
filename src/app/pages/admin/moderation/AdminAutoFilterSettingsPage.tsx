@@ -22,6 +22,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockSettings = {
@@ -55,7 +56,22 @@ const severityConfig = {
   low: { label: 'Low', color: 'bg-[#6A7282]/10 text-[#6A7282]' },
 };
 
+const categoryLabelVi: Record<string, string> = {
+  spam: 'Spam',
+  harassment: 'Quấy rối',
+  misleading: 'Gây hiểu lầm',
+  fraud: 'Lừa đảo',
+  profanity: 'Ngôn từ thô tục',
+};
+
+const severityLabelVi: Record<string, string> = {
+  high: 'Cao',
+  medium: 'Trung bình',
+  low: 'Thấp',
+};
+
 export default function AdminAutoFilterSettingsPage() {
+  const { v } = useLanguage();
   const [settings, setSettings] = useState(mockSettings);
   const [keywords, setKeywords] = useState(mockKeywords);
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,7 +89,7 @@ export default function AdminAutoFilterSettingsPage() {
 
   const handleAddKeyword = () => {
     if (!newKeyword.trim()) {
-      toast.error('Please enter a keyword');
+      toast.error(v('Please enter a keyword', 'Vui lòng nhập từ khóa'));
       return;
     }
     const newItem = {
@@ -84,16 +100,16 @@ export default function AdminAutoFilterSettingsPage() {
     };
     setKeywords([...keywords, newItem]);
     setNewKeyword('');
-    toast.success('Keyword added');
+    toast.success(v('Keyword added', 'Đã thêm từ khóa'));
   };
 
   const handleDeleteKeyword = (id: number) => {
     setKeywords(keywords.filter((k) => k.id !== id));
-    toast.success('Keyword removed');
+    toast.success(v('Keyword removed', 'Đã gỡ từ khóa'));
   };
 
   const handleSaveSettings = () => {
-    toast.success('Settings saved successfully');
+    toast.success(v('Settings saved successfully', 'Đã lưu cài đặt thành công'));
   };
 
   return (
@@ -110,13 +126,13 @@ export default function AdminAutoFilterSettingsPage() {
               marginBottom: '8px',
             }}
           >
-            Auto-filter Settings
+            {v('Auto-filter Settings', 'Cài đặt bộ lọc tự động')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Configure automatic content filtering và moderation rules
+            {v('Configure automatic content filtering và moderation rules', 'Cấu hình lọc nội dung tự động và quy tắc kiểm duyệt')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -133,7 +149,7 @@ export default function AdminAutoFilterSettingsPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Queue
+              {v('Back to Queue', 'Quay lại hàng đợi')}
             </Button>
           </Link>
           <Link to="/admin/moderation/keywords">
@@ -149,7 +165,7 @@ export default function AdminAutoFilterSettingsPage() {
                 padding: '0 24px',
               }}
             >
-              Keyword Blacklist
+              {v('Keyword Blacklist', 'Danh sách từ khóa cấm')}
             </Button>
           </Link>
         </div>
@@ -172,7 +188,7 @@ export default function AdminAutoFilterSettingsPage() {
                 marginBottom: '20px',
               }}
             >
-              Auto-hide Threshold
+              {v('Auto-hide Threshold', 'Ngưỡng tự động ẩn')}
             </h3>
             <p
               className="text-[#6A7282]"
@@ -182,7 +198,7 @@ export default function AdminAutoFilterSettingsPage() {
                 marginBottom: '16px',
               }}
             >
-              Automatically hide content when it reaches this number of reports
+              {v('Automatically hide content when it reaches this number of reports', 'Tự động ẩn nội dung khi đạt đến số lượng báo cáo này')}
             </p>
             <div className="flex items-center" style={{ gap: '16px' }}>
               <Input
@@ -208,7 +224,7 @@ export default function AdminAutoFilterSettingsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                reports
+                {v('reports', 'báo cáo')}
               </span>
             </div>
           </Card>
@@ -227,7 +243,7 @@ export default function AdminAutoFilterSettingsPage() {
                 marginBottom: '20px',
               }}
             >
-              Detection Rules
+              {v('Detection Rules', 'Quy tắc phát hiện')}
             </h3>
             <div className="flex flex-col" style={{ gap: '16px' }}>
               {/* Spam Detection */}
@@ -245,13 +261,13 @@ export default function AdminAutoFilterSettingsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Spam Detection
+                    {v('Spam Detection', 'Phát hiện spam')}
                   </p>
                   <p
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Detect repetitive or promotional content
+                    {v('Detect repetitive or promotional content', 'Phát hiện nội dung lặp lại hoặc quảng cáo')}
                   </p>
                 </div>
                 <button
@@ -285,13 +301,13 @@ export default function AdminAutoFilterSettingsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Profanity Filter
+                    {v('Profanity Filter', 'Bộ lọc ngôn từ thô tục')}
                   </p>
                   <p
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Filter content with inappropriate language
+                    {v('Filter content with inappropriate language', 'Lọc nội dung có ngôn từ không phù hợp')}
                   </p>
                 </div>
                 <button
@@ -325,13 +341,13 @@ export default function AdminAutoFilterSettingsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    External Link Filter
+                    {v('External Link Filter', 'Bộ lọc liên kết ngoài')}
                   </p>
                   <p
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Flag content with suspicious external links
+                    {v('Flag content with suspicious external links', 'Gắn cờ nội dung có liên kết ngoài đáng ngờ')}
                   </p>
                 </div>
                 <button
@@ -365,13 +381,13 @@ export default function AdminAutoFilterSettingsPage() {
                       marginBottom: '4px',
                     }}
                   >
-                    Duplicate Content Detection
+                    {v('Duplicate Content Detection', 'Phát hiện nội dung trùng lặp')}
                   </p>
                   <p
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    Detect and flag duplicate or copied content
+                    {v('Detect and flag duplicate or copied content', 'Phát hiện và gắn cờ nội dung trùng lặp hoặc sao chép')}
                   </p>
                 </div>
                 <button
@@ -409,7 +425,7 @@ export default function AdminAutoFilterSettingsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                Keyword Blacklist Preview
+                {v('Keyword Blacklist Preview', 'Xem trước danh sách từ khóa cấm')}
               </h3>
               <Badge
                 className="bg-[#F3F4F6] text-[#0A0A0A]"
@@ -421,7 +437,7 @@ export default function AdminAutoFilterSettingsPage() {
                   padding: '6px 12px',
                 }}
               >
-                {keywords.length} keywords
+                {keywords.length} {v('keywords', 'từ khóa')}
               </Badge>
             </div>
 
@@ -440,10 +456,10 @@ export default function AdminAutoFilterSettingsPage() {
                     display: 'block',
                   }}
                 >
-                  Keyword
+                  {v('Keyword', 'Từ khóa')}
                 </Label>
                 <Input
-                  placeholder="Enter keyword..."
+                  placeholder={v('Enter keyword...', 'Nhập từ khóa...')}
                   value={newKeyword}
                   onChange={(e) => setNewKeyword(e.target.value)}
                   className="border-[#D1D5DC]"
@@ -465,7 +481,7 @@ export default function AdminAutoFilterSettingsPage() {
                     display: 'block',
                   }}
                 >
-                  Category
+                  {v('Category', 'Danh mục')}
                 </Label>
                 <Select value={newCategory} onValueChange={setNewCategory}>
                   <SelectTrigger
@@ -482,7 +498,7 @@ export default function AdminAutoFilterSettingsPage() {
                   <SelectContent>
                     {categories.map((cat) => (
                       <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
+                        {v(cat.label, categoryLabelVi[cat.value] ?? cat.label)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -498,7 +514,7 @@ export default function AdminAutoFilterSettingsPage() {
                     display: 'block',
                   }}
                 >
-                  Severity
+                  {v('Severity', 'Mức độ')}
                 </Label>
                 <Select value={newSeverity} onValueChange={setNewSeverity}>
                   <SelectTrigger
@@ -513,9 +529,9 @@ export default function AdminAutoFilterSettingsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="low">Low</SelectItem>
+                    <SelectItem value="high">{v('High', 'Cao')}</SelectItem>
+                    <SelectItem value="medium">{v('Medium', 'Trung bình')}</SelectItem>
+                    <SelectItem value="low">{v('Low', 'Thấp')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -532,7 +548,7 @@ export default function AdminAutoFilterSettingsPage() {
                 }}
               >
                 <Plus style={{ width: '16px', height: '16px', marginRight: '6px' }} />
-                Add
+                {v('Add', 'Thêm')}
               </Button>
             </div>
 
@@ -544,7 +560,7 @@ export default function AdminAutoFilterSettingsPage() {
                   style={{ width: '14px', height: '14px' }}
                 />
                 <Input
-                  placeholder="Search keywords..."
+                  placeholder={v('Search keywords...', 'Tìm kiếm từ khóa...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9 border-[#D1D5DC]"
@@ -570,10 +586,10 @@ export default function AdminAutoFilterSettingsPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="all">{v('All Categories', 'Tất cả danh mục')}</SelectItem>
                   {categories.map((cat) => (
                     <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
+                      {v(cat.label, categoryLabelVi[cat.value] ?? cat.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -610,7 +626,7 @@ export default function AdminAutoFilterSettingsPage() {
                           padding: '4px 10px',
                         }}
                       >
-                        {cat?.label}
+                        {cat ? v(cat.label, categoryLabelVi[cat.value] ?? cat.label) : null}
                       </Badge>
                       <Badge
                         className={severityConfig[keyword.severity as keyof typeof severityConfig].color}
@@ -621,7 +637,10 @@ export default function AdminAutoFilterSettingsPage() {
                           padding: '4px 10px',
                         }}
                       >
-                        {severityConfig[keyword.severity as keyof typeof severityConfig].label}
+                        {v(
+                          severityConfig[keyword.severity as keyof typeof severityConfig].label,
+                          severityLabelVi[keyword.severity] ?? severityConfig[keyword.severity as keyof typeof severityConfig].label
+                        )}
                       </Badge>
                     </div>
                     <Button
@@ -655,7 +674,7 @@ export default function AdminAutoFilterSettingsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                View Full Blacklist
+                {v('View Full Blacklist', 'Xem toàn bộ danh sách cấm')}
               </Button>
             </Link>
           </Card>
@@ -680,7 +699,7 @@ export default function AdminAutoFilterSettingsPage() {
               }}
             >
               <Save style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-              Save Settings
+              {v('Save Settings', 'Lưu cài đặt')}
             </Button>
           </Card>
 
@@ -698,7 +717,7 @@ export default function AdminAutoFilterSettingsPage() {
                 marginBottom: '16px',
               }}
             >
-              Quick Actions
+              {v('Quick Actions', 'Hành động nhanh')}
             </h3>
             <div className="flex flex-col" style={{ gap: '8px' }}>
               <Link to="/admin/moderation/history">
@@ -712,7 +731,7 @@ export default function AdminAutoFilterSettingsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Moderation History
+                  {v('Moderation History', 'Lịch sử kiểm duyệt')}
                 </Button>
               </Link>
               <Link to="/admin/moderation/warnings">
@@ -726,7 +745,7 @@ export default function AdminAutoFilterSettingsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  User Warnings
+                  {v('User Warnings', 'Cảnh báo người dùng')}
                 </Button>
               </Link>
               <Link to="/admin/moderation/appeals">
@@ -740,7 +759,7 @@ export default function AdminAutoFilterSettingsPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Appeal Reviews
+                  {v('Appeal Reviews', 'Xem xét khiếu nại')}
                 </Button>
               </Link>
             </div>
@@ -765,14 +784,13 @@ export default function AdminAutoFilterSettingsPage() {
                   marginBottom: '4px',
                 }}
               >
-                Auto-filter Guidelines
+                {v('Auto-filter Guidelines', 'Hướng dẫn bộ lọc tự động')}
               </p>
               <p
                 className="text-[#0A0A0A]"
                 style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
               >
-                Auto-filtered content will be added to moderation queue for manual review. Adjust
-                threshold carefully to balance automation and accuracy.
+                {v('Auto-filtered content will be added to moderation queue for manual review. Adjust threshold carefully to balance automation and accuracy.', 'Nội dung bị lọc tự động sẽ được thêm vào hàng đợi kiểm duyệt để xem xét thủ công. Điều chỉnh ngưỡng cẩn thận để cân bằng giữa tự động hóa và độ chính xác.')}
               </p>
             </div>
           </div>

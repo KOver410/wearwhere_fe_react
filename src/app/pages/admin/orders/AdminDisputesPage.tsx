@@ -20,6 +20,7 @@ import {
   ExternalLink,
   TrendingUp,
 } from 'lucide-react';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockDisputes = [
@@ -47,6 +48,18 @@ const priorityConfig = {
 };
 
 export default function AdminDisputesPage() {
+  const { v } = useLanguage();
+  const statusLabels: Record<string, string> = {
+    pending: v('Pending Review', 'Chờ xem xét'),
+    under_review: v('Under Review', 'Đang xem xét'),
+    resolved: v('Resolved', 'Đã xử lý'),
+    rejected: v('Rejected', 'Đã từ chối'),
+  };
+  const priorityLabels: Record<string, string> = {
+    high: v('High', 'Cao'),
+    medium: v('Medium', 'Trung bình'),
+    low: v('Low', 'Thấp'),
+  };
   const [disputes, setDisputes] = useState(mockDisputes);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -96,13 +109,13 @@ export default function AdminDisputesPage() {
               marginBottom: '8px',
             }}
           >
-            Disputes
+            {v('Disputes', 'Tranh chấp')}
           </h1>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Danh sách disputes giữa buyer và brand
+            {v('Danh sách disputes giữa buyer và brand', 'Danh sách tranh chấp giữa người mua và thương hiệu')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -119,7 +132,7 @@ export default function AdminDisputesPage() {
                 padding: '0 24px',
               }}
             >
-              View Refunds
+              {v('View Refunds', 'Xem hoàn tiền')}
             </Button>
           </Link>
           <Link to="/admin/orders">
@@ -135,7 +148,7 @@ export default function AdminDisputesPage() {
                 padding: '0 24px',
               }}
             >
-              Back to Orders
+              {v('Back to Orders', 'Quay lại đơn hàng')}
             </Button>
           </Link>
         </div>
@@ -164,7 +177,7 @@ export default function AdminDisputesPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Disputes
+              {v('Total Disputes', 'Tổng tranh chấp')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -196,7 +209,7 @@ export default function AdminDisputesPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Review
+              {v('Pending Review', 'Chờ xem xét')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -228,7 +241,7 @@ export default function AdminDisputesPage() {
                 marginBottom: '4px',
               }}
             >
-              Under Review
+              {v('Under Review', 'Đang xem xét')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -260,7 +273,7 @@ export default function AdminDisputesPage() {
                 marginBottom: '4px',
               }}
             >
-              Resolved
+              {v('Resolved', 'Đã xử lý')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -286,7 +299,7 @@ export default function AdminDisputesPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search disputes..."
+                placeholder={v('Search disputes...', 'Tìm kiếm tranh chấp...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -312,14 +325,14 @@ export default function AdminDisputesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="under_review">Under Review</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Review', 'Chờ xem xét')}</SelectItem>
+                <SelectItem value="under_review">{v('Under Review', 'Đang xem xét')}</SelectItem>
+                <SelectItem value="resolved">{v('Resolved', 'Đã xử lý')}</SelectItem>
+                <SelectItem value="rejected">{v('Rejected', 'Đã từ chối')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -336,13 +349,13 @@ export default function AdminDisputesPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Priority" />
+                <SelectValue placeholder={v('Priority', 'Mức ưu tiên')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{v('All Priority', 'Tất cả mức ưu tiên')}</SelectItem>
+                <SelectItem value="high">{v('High', 'Cao')}</SelectItem>
+                <SelectItem value="medium">{v('Medium', 'Trung bình')}</SelectItem>
+                <SelectItem value="low">{v('Low', 'Thấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -372,7 +385,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Dispute ID
+                  {v('Dispute ID', 'Mã tranh chấp')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -383,7 +396,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Order ID
+                  {v('Order ID', 'Mã đơn hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -394,7 +407,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Customer
+                  {v('Customer', 'Khách hàng')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -405,7 +418,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Brand
+                  {v('Brand', 'Thương hiệu')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -416,7 +429,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Reason
+                  {v('Reason', 'Lý do')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -427,7 +440,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Amount
+                  {v('Amount', 'Số tiền')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -438,7 +451,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Priority
+                  {v('Priority', 'Mức ưu tiên')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -449,7 +462,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Status
+                  {v('Status', 'Trạng thái')}
                 </th>
                 <th
                   className="text-left text-[#0A0A0A]"
@@ -460,7 +473,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Created
+                  {v('Created', 'Ngày tạo')}
                 </th>
                 <th
                   className="text-right text-[#0A0A0A]"
@@ -471,7 +484,7 @@ export default function AdminDisputesPage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  Actions
+                  {v('Actions', 'Thao tác')}
                 </th>
               </tr>
             </thead>
@@ -545,7 +558,7 @@ export default function AdminDisputesPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {priorityConfig[dispute.priority as keyof typeof priorityConfig].label}
+                      {priorityLabels[dispute.priority]}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -559,7 +572,7 @@ export default function AdminDisputesPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {statusConfig[dispute.status as keyof typeof statusConfig].label}
+                      {statusLabels[dispute.status]}
                     </Badge>
                   </td>
                   <td style={{ padding: '16px 24px' }}>
@@ -604,9 +617,9 @@ export default function AdminDisputesPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredDisputes.length)} of{' '}
-            {filteredDisputes.length} disputes
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredDisputes.length)} {v('of', 'trong')}{' '}
+            {filteredDisputes.length} {v('disputes', 'tranh chấp')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -621,7 +634,7 @@ export default function AdminDisputesPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -658,7 +671,7 @@ export default function AdminDisputesPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Tiếp')}
             </Button>
           </div>
         </div>

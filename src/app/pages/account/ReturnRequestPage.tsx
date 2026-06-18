@@ -69,7 +69,7 @@ export function ReturnRequestPage() {
             <ArrowLeft className="w-4 h-4" />{v('Back to Order', 'Về đơn hàng')}
           </Link>
           <h1 style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', lineHeight: 1.05 }}>{v('Request Return', 'Yêu cầu đổi trả')}</h1>
-          <p style={{ fontSize: '14px', color: '#888', marginTop: '4px' }}>Order {order.orderNumber}</p>
+          <p style={{ fontSize: '14px', color: '#888', marginTop: '4px' }}>{v('Order', 'Đơn hàng')} {order.orderNumber}</p>
         </div>
 
         {/* Select Items */}
@@ -84,7 +84,7 @@ export function ReturnRequestPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>Size: {item.size} | Color: {item.color} | Qty: {item.quantity}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {item.color} | {v('Qty', 'SL')}: {item.quantity}</p>
                 </div>
                 <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>${item.price.toFixed(2)}</p>
               </label>
@@ -112,7 +112,7 @@ export function ReturnRequestPage() {
           <div className="mt-4 p-4 border-2 border-dashed border-[#e0d8cf] text-center cursor-pointer hover:border-[#d41c1c] transition-colors" style={{ borderRadius: '10px' }}>
             <Upload className="w-6 h-6 mx-auto text-[#888] mb-2" />
             <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Upload photos (optional)', 'Tải ảnh lên (không bắt buộc)')}</p>
-            <p style={{ fontSize: '12px', color: '#888' }}>JPG, PNG up to 5MB each</p>
+            <p style={{ fontSize: '12px', color: '#888' }}>{v('JPG, PNG up to 5MB each', 'JPG, PNG tối đa 5MB mỗi ảnh')}</p>
           </div>
         </div>
 

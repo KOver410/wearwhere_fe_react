@@ -20,6 +20,7 @@ import {
   FileText,
   Building,
 } from 'lucide-react';
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockApplications = [
@@ -126,6 +127,20 @@ const tierConfig = {
 };
 
 export default function AdminBrandApplicationsPage() {
+  const { v } = useLanguage();
+  const statusLabel = (key: keyof typeof statusConfig) =>
+    ({
+      pending: v('Pending Review', 'Chờ duyệt'),
+      under_review: v('Under Review', 'Đang xem xét'),
+      approved: v('Approved', 'Đã duyệt'),
+      rejected: v('Rejected', 'Từ chối'),
+    }[key]);
+  const tierLabel = (key: keyof typeof tierConfig) =>
+    ({
+      starter: v('Starter', 'Khởi đầu'),
+      business: v('Business', 'Doanh nghiệp'),
+      premium: v('Premium', 'Cao cấp'),
+    }[key]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [tierFilter, setTierFilter] = useState('all');
@@ -172,7 +187,7 @@ export default function AdminBrandApplicationsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Brand Applications
+              {v('Brand Applications', 'Đơn đăng ký thương hiệu')}
             </h1>
             <Badge
               className="bg-[#F54900]/10 text-[#F54900]"
@@ -184,14 +199,14 @@ export default function AdminBrandApplicationsPage() {
                 padding: '6px 16px',
               }}
             >
-              {stats.pending} Pending
+              {stats.pending} {v('Pending', 'Chờ duyệt')}
             </Badge>
           </div>
           <p
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Review và approve đơn đăng ký brand mới
+            {v('Review and approve new brand applications', 'Xem xét và duyệt đơn đăng ký thương hiệu mới')}
           </p>
         </div>
         <Link to="/admin/brands">
@@ -207,7 +222,7 @@ export default function AdminBrandApplicationsPage() {
               padding: '0 24px',
             }}
           >
-            Back to Brands
+            {v('Back to Brands', 'Quay lại Thương hiệu')}
           </Button>
         </Link>
       </div>
@@ -235,7 +250,7 @@ export default function AdminBrandApplicationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Total Applications
+              {v('Total Applications', 'Tổng số đơn')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -267,7 +282,7 @@ export default function AdminBrandApplicationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Pending Review
+              {v('Pending Review', 'Chờ duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -299,7 +314,7 @@ export default function AdminBrandApplicationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Under Review
+              {v('Under Review', 'Đang xem xét')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -331,7 +346,7 @@ export default function AdminBrandApplicationsPage() {
                 marginBottom: '4px',
               }}
             >
-              Approved
+              {v('Approved', 'Đã duyệt')}
             </p>
             <h3
               className="text-[#0A0A0A]"
@@ -357,7 +372,7 @@ export default function AdminBrandApplicationsPage() {
                 style={{ width: '16px', height: '16px' }}
               />
               <Input
-                placeholder="Search applications..."
+                placeholder={v('Search applications...', 'Tìm kiếm đơn đăng ký...')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 border-[#D1D5DC]"
@@ -383,14 +398,14 @@ export default function AdminBrandApplicationsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={v('Status', 'Trạng thái')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending Review</SelectItem>
-                <SelectItem value="under_review">Under Review</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{v('All Status', 'Tất cả trạng thái')}</SelectItem>
+                <SelectItem value="pending">{v('Pending Review', 'Chờ duyệt')}</SelectItem>
+                <SelectItem value="under_review">{v('Under Review', 'Đang xem xét')}</SelectItem>
+                <SelectItem value="approved">{v('Approved', 'Đã duyệt')}</SelectItem>
+                <SelectItem value="rejected">{v('Rejected', 'Từ chối')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -407,13 +422,13 @@ export default function AdminBrandApplicationsPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               >
-                <SelectValue placeholder="Requested Tier" />
+                <SelectValue placeholder={v('Requested Tier', 'Gói đăng ký')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Tiers</SelectItem>
-                <SelectItem value="starter">Starter</SelectItem>
-                <SelectItem value="business">Business</SelectItem>
-                <SelectItem value="premium">Premium</SelectItem>
+                <SelectItem value="all">{v('All Tiers', 'Tất cả các gói')}</SelectItem>
+                <SelectItem value="starter">{v('Starter', 'Khởi đầu')}</SelectItem>
+                <SelectItem value="business">{v('Business', 'Doanh nghiệp')}</SelectItem>
+                <SelectItem value="premium">{v('Premium', 'Cao cấp')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -458,7 +473,7 @@ export default function AdminBrandApplicationsPage() {
                       }}
                     >
                       <StatusIcon style={{ width: '14px', height: '14px' }} />
-                      {statusConfig[app.status as keyof typeof statusConfig].label}
+                      {statusLabel(app.status as keyof typeof statusConfig)}
                     </Badge>
                     <Badge
                       className={tierConfig[app.requestedTier as keyof typeof tierConfig].color}
@@ -470,7 +485,7 @@ export default function AdminBrandApplicationsPage() {
                         padding: '6px 12px',
                       }}
                     >
-                      {tierConfig[app.requestedTier as keyof typeof tierConfig].label}
+                      {tierLabel(app.requestedTier as keyof typeof tierConfig)}
                     </Badge>
                   </div>
                   <div className="flex items-center" style={{ gap: '16px', marginBottom: '12px' }}>
@@ -499,7 +514,7 @@ export default function AdminBrandApplicationsPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      Submitted: {new Date(app.submittedDate).toLocaleDateString('vi-VN')}
+                      {v('Submitted', 'Ngày nộp')}: {new Date(app.submittedDate).toLocaleDateString('vi-VN')}
                     </p>
                   </div>
                   <p
@@ -522,7 +537,7 @@ export default function AdminBrandApplicationsPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '12px', fontWeight: '700', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      DOCUMENTS:
+                      {v('DOCUMENTS', 'HỒ SƠ')}:
                     </span>
                     <Badge
                       className={
@@ -537,7 +552,7 @@ export default function AdminBrandApplicationsPage() {
                         padding: '4px 10px',
                       }}
                     >
-                      {app.documents.businessLicense ? '✓' : '✗'} Business License
+                      {app.documents.businessLicense ? '✓' : '✗'} {v('Business License', 'Giấy phép kinh doanh')}
                     </Badge>
                     <Badge
                       className={
@@ -552,7 +567,7 @@ export default function AdminBrandApplicationsPage() {
                         padding: '4px 10px',
                       }}
                     >
-                      {app.documents.taxDocument ? '✓' : '✗'} Tax Document
+                      {app.documents.taxDocument ? '✓' : '✗'} {v('Tax Document', 'Hồ sơ thuế')}
                     </Badge>
                     <Badge
                       className={
@@ -567,7 +582,7 @@ export default function AdminBrandApplicationsPage() {
                         padding: '4px 10px',
                       }}
                     >
-                      {app.documents.identityCard ? '✓' : '✗'} Identity Card
+                      {app.documents.identityCard ? '✓' : '✗'} {v('Identity Card', 'Căn cước công dân')}
                     </Badge>
                   </div>
 
@@ -590,7 +605,7 @@ export default function AdminBrandApplicationsPage() {
                           marginBottom: '4px',
                         }}
                       >
-                        {app.status === 'approved' ? 'APPROVED:' : 'REJECTED:'}
+                        {app.status === 'approved' ? v('APPROVED:', 'ĐÃ DUYỆT:') : v('REJECTED:', 'TỪ CHỐI:')}
                       </p>
                       <p
                         className="text-[#0A0A0A]"
@@ -616,7 +631,7 @@ export default function AdminBrandApplicationsPage() {
                       }}
                     >
                       <Eye style={{ width: '14px', height: '14px', marginRight: '6px' }} />
-                      Review Application
+                      {v('Review Application', 'Xem xét đơn')}
                     </Button>
                   </Link>
                 )}
@@ -636,9 +651,9 @@ export default function AdminBrandApplicationsPage() {
             className="text-[#6A7282]"
             style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-            {Math.min(currentPage * itemsPerPage, filteredApplications.length)} of{' '}
-            {filteredApplications.length} applications
+            {v('Showing', 'Hiển thị')} {(currentPage - 1) * itemsPerPage + 1} {v('to', 'đến')}{' '}
+            {Math.min(currentPage * itemsPerPage, filteredApplications.length)} {v('of', 'trong')}{' '}
+            {filteredApplications.length} {v('applications', 'đơn đăng ký')}
           </p>
           <div className="flex items-center" style={{ gap: '8px' }}>
             <Button
@@ -653,7 +668,7 @@ export default function AdminBrandApplicationsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Previous
+              {v('Previous', 'Trước')}
             </Button>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
               <Button
@@ -690,7 +705,7 @@ export default function AdminBrandApplicationsPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             >
-              Next
+              {v('Next', 'Sau')}
             </Button>
           </div>
         </div>

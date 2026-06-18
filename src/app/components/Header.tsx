@@ -65,10 +65,10 @@ export function Header({}: HeaderProps) {
               {/* Desktop Nav */}
               <nav className="hidden md:flex items-center">
                 {[
-                  { to: '/', label: 'HOME', active: currentPath === '/' },
-                  { to: '/shop', label: 'SHOP', active: isActive('/shop') },
-                  { to: '/ootd', label: 'STYLE', active: isActive('/ootd') || isActive('/style') },
-                  { to: '/brands', label: 'BRAND', active: isActive('/brands') },
+                  { to: '/', label: v('HOME', 'TRANG CHỦ'), active: currentPath === '/' },
+                  { to: '/shop', label: v('SHOP', 'CỬA HÀNG'), active: isActive('/shop') },
+                  { to: '/ootd', label: v('STYLE', 'PHONG CÁCH'), active: isActive('/ootd') || isActive('/style') },
+                  { to: '/brands', label: v('BRAND', 'THƯƠNG HIỆU'), active: isActive('/brands') },
                 ].map((item) => (
                   <Link
                     key={item.to}
@@ -95,7 +95,7 @@ export function Header({}: HeaderProps) {
 
               {/* Icon Actions */}
               <div className="flex items-center gap-0">
-                <Link to="/search" className="p-2 hover:bg-[#0d0d0d]/5 transition-colors" aria-label="Search">
+                <Link to="/search" className="p-2 hover:bg-[#0d0d0d]/5 transition-colors" aria-label={v('Search', 'Tìm kiếm')}>
                   <Search className={`w-[18px] h-[18px] ${isActive('/search') ? 'text-[#d41c1c]' : 'text-[#0d0d0d]'}`} />
                 </Link>
 
@@ -106,7 +106,7 @@ export function Header({}: HeaderProps) {
                       <span className="absolute -top-0 -right-0 text-white rounded-full w-4 h-4 flex items-center justify-center"
                         style={{ fontSize: '9px', fontWeight: 900, backgroundColor: '#d41c1c' }}>3</span>
                     </Link>
-                    <Link to="/notifications" className="p-2 hover:bg-[#0d0d0d]/5 transition-colors relative" aria-label="Notifications">
+                    <Link to="/notifications" className="p-2 hover:bg-[#0d0d0d]/5 transition-colors relative" aria-label={v('Notifications', 'Thông báo')}>
                       <Bell className="w-[18px] h-[18px] text-[#0d0d0d]" />
                       <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: '#d41c1c' }} />
                     </Link>

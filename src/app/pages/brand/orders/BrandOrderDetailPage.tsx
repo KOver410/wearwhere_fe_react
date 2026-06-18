@@ -42,6 +42,7 @@ import { Textarea } from "@/app/components/ui/textarea";
 import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
 import { toast } from "sonner";
+import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock Data
 const MOCK_ORDER = {
@@ -113,6 +114,7 @@ const MOCK_ORDER = {
 };
 
 export default function BrandOrderDetailPage() {
+  const { v } = useLanguage();
   const { id } = useParams();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isShipOpen, setIsShipOpen] = useState(false);
@@ -123,19 +125,19 @@ export default function BrandOrderDetailPage() {
   const handleConfirmOrder = () => {
     setOrderStatus('confirmed');
     setIsConfirmOpen(false);
-    toast.success("Order confirmed successfully");
+    toast.success(v("Order confirmed successfully", "Đã xác nhận đơn hàng thành công"));
   };
 
   const handleShipOrder = () => {
     setOrderStatus('shipped');
     setIsShipOpen(false);
-    toast.success("Order shipped successfully");
+    toast.success(v("Order shipped successfully", "Đã giao đơn hàng thành công"));
   };
 
   const handleCancelOrder = () => {
     setOrderStatus('cancelled');
     setIsCancelOpen(false);
-    toast.error("Order cancelled");
+    toast.error(v("Order cancelled", "Đã hủy đơn hàng"));
   };
 
   const getStatusColor = (status: string) => {
@@ -167,34 +169,34 @@ export default function BrandOrderDetailPage() {
               </Badge>
             </div>
             <p className="text-gray-500 text-sm mt-1">
-              Placed on {format(new Date(MOCK_ORDER.date), "MMMM d, yyyy 'at' h:mm a")}
+              {v('Placed on', 'Đặt ngày')} {format(new Date(MOCK_ORDER.date), "MMMM d, yyyy 'at' h:mm a")}
             </p>
           </div>
         </div>
         <div className="flex gap-2">
            <Button variant="outline" className="gap-2" onClick={() => window.print()}>
             <Printer className="h-4 w-4" />
-            Print
+            {v('Print', 'In')}
           </Button>
           
           {orderStatus === 'pending' && (
             <Button onClick={() => setIsConfirmOpen(true)} className="gap-2 bg-[#F54900] text-white hover:bg-[#E04400]">
               <CheckCircle2 className="h-4 w-4" />
-              Confirm Order
+              {v('Confirm Order', 'Xác nhận đơn')}
             </Button>
           )}
 
           {orderStatus === 'confirmed' && (
             <Button onClick={() => setIsShipOpen(true)} className="gap-2 bg-[#F54900] text-white hover:bg-[#E04400]">
               <Truck className="h-4 w-4" />
-              Ship Order
+              {v('Ship Order', 'Giao đơn')}
             </Button>
           )}
 
           {(orderStatus === 'pending' || orderStatus === 'confirmed') && (
             <Button onClick={() => setIsCancelOpen(true)} variant="outline" className="text-red-600 border-red-100 hover:bg-red-50 hover:text-red-700">
               <XCircle className="h-4 w-4" />
-              Cancel
+              {v('Cancel', 'Hủy')}
             </Button>
           )}
         </div>
@@ -206,7 +208,7 @@ export default function BrandOrderDetailPage() {
           {/* Order Items */}
           <Card>
             <CardHeader>
-              <CardTitle>Order Items</CardTitle>
+              <CardTitle>{v('Order Items', 'Sản phẩm trong đơn')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
@@ -219,12 +221,12 @@ export default function BrandOrderDetailPage() {
                       <div>
                         <p className="font-medium text-gray-900">{item.name}</p>
                         <p className="text-sm text-gray-500">{item.variant}</p>
-                        <p className="text-xs text-gray-400 font-mono mt-1">SKU: {item.sku}</p>
+                        <p className="text-xs text-gray-400 font-mono mt-1">{v('SKU', 'SKU')}: {item.sku}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-medium text-gray-900">${item.price.toFixed(2)}</p>
-                      <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                      <p className="text-sm text-gray-500">{v('Qty', 'SL')}: {item.quantity}</p>
                       <p className="font-medium text-gray-900 mt-1">${(item.price * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
@@ -232,19 +234,19 @@ export default function BrandOrderDetailPage() {
                 <Separator />
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-500">
-                    <span>Subtotal</span>
+                    <span>{v('Subtotal', 'Tạm tính')}</span>
                     <span>${MOCK_ORDER.subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
-                    <span>Shipping</span>
+                    <span>{v('Shipping', 'Phí vận chuyển')}</span>
                     <span>${MOCK_ORDER.shipping.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
-                    <span>Tax</span>
+                    <span>{v('Tax', 'Thuế')}</span>
                     <span>${MOCK_ORDER.tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-medium text-lg text-gray-900 pt-2">
-                    <span>Total</span>
+                    <span>{v('Total', 'Tổng cộng')}</span>
                     <span>${MOCK_ORDER.total.toFixed(2)}</span>
                   </div>
                 </div>
@@ -255,7 +257,7 @@ export default function BrandOrderDetailPage() {
           {/* Timeline */}
           <Card>
             <CardHeader>
-              <CardTitle>Timeline</CardTitle>
+              <CardTitle>{v('Timeline', 'Tiến trình đơn hàng')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="relative border-l border-gray-200 ml-3 space-y-8 pb-4">
@@ -282,7 +284,7 @@ export default function BrandOrderDetailPage() {
            {/* Payment Info */}
           <Card>
              <CardHeader>
-                <CardTitle>Payment Details</CardTitle>
+                <CardTitle>{v('Payment Details', 'Chi tiết thanh toán')}</CardTitle>
              </CardHeader>
              <CardContent>
                 <div className="flex justify-between items-center p-4 border rounded-lg bg-gray-50">
@@ -291,7 +293,7 @@ export default function BrandOrderDetailPage() {
                             <CreditCard className="h-5 w-5 text-gray-600"/>
                         </div>
                         <div>
-                            <p className="font-medium text-gray-900">Payment via Card</p>
+                            <p className="font-medium text-gray-900">{v('Payment via Card', 'Thanh toán bằng thẻ')}</p>
                             <p className="text-sm text-gray-500">{MOCK_ORDER.paymentMethod}</p>
                         </div>
                     </div>
@@ -308,7 +310,7 @@ export default function BrandOrderDetailPage() {
           {/* Customer */}
           <Card>
             <CardHeader>
-              <CardTitle>Customer</CardTitle>
+              <CardTitle>{v('Customer', 'Khách hàng')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">
@@ -317,7 +319,7 @@ export default function BrandOrderDetailPage() {
                 </div>
                 <div>
                   <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
-                  <p className="text-xs text-gray-500">Customer since 2023</p>
+                  <p className="text-xs text-gray-500">{v('Customer since 2023', 'Khách hàng từ 2023')}</p>
                 </div>
               </div>
               <Separator />
@@ -337,7 +339,7 @@ export default function BrandOrderDetailPage() {
           {/* Shipping Address */}
           <Card>
             <CardHeader>
-              <CardTitle>Shipping Address</CardTitle>
+              <CardTitle>{v('Shipping Address', 'Địa chỉ giao hàng')}</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
@@ -350,7 +352,7 @@ export default function BrandOrderDetailPage() {
            {/* Billing Address */}
            <Card>
             <CardHeader>
-              <CardTitle>Billing Address</CardTitle>
+              <CardTitle>{v('Billing Address', 'Địa chỉ thanh toán')}</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
@@ -366,17 +368,17 @@ export default function BrandOrderDetailPage() {
       <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm Order</DialogTitle>
+            <DialogTitle>{v('Confirm Order', 'Xác nhận đơn hàng')}</DialogTitle>
             <DialogDescription>
-              Select a shipping carrier and confirm stock availability.
+              {v('Select a shipping carrier and confirm stock availability.', 'Chọn đơn vị vận chuyển và xác nhận tình trạng còn hàng.')}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
              <div className="space-y-2">
-                <Label htmlFor="confirm-carrier">Preferred Carrier</Label>
+                <Label htmlFor="confirm-carrier">{v('Preferred Carrier', 'Đơn vị vận chuyển ưu tiên')}</Label>
                 <Select defaultValue="fedex">
                    <SelectTrigger>
-                      <SelectValue placeholder="Select carrier"/>
+                      <SelectValue placeholder={v('Select carrier', 'Chọn đơn vị vận chuyển')}/>
                    </SelectTrigger>
                    <SelectContent>
                       <SelectItem value="fedex">FedEx</SelectItem>
@@ -388,12 +390,12 @@ export default function BrandOrderDetailPage() {
              </div>
              <div className="p-4 bg-yellow-50 border border-yellow-100 rounded-md flex gap-3 text-sm text-yellow-800">
                 <AlertCircle className="h-5 w-5 shrink-0 text-yellow-600"/>
-                <p>Ensure all items are in stock and ready to be packed.</p>
+                <p>{v('Ensure all items are in stock and ready to be packed.', 'Đảm bảo tất cả sản phẩm còn hàng và sẵn sàng đóng gói.')}</p>
              </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsConfirmOpen(false)}>Cancel</Button>
-            <Button onClick={handleConfirmOrder} className="bg-[#F54900] text-white hover:bg-[#E04400]">Confirm Order</Button>
+            <Button variant="outline" onClick={() => setIsConfirmOpen(false)}>{v('Cancel', 'Hủy')}</Button>
+            <Button onClick={handleConfirmOrder} className="bg-[#F54900] text-white hover:bg-[#E04400]">{v('Confirm Order', 'Xác nhận đơn')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -402,17 +404,17 @@ export default function BrandOrderDetailPage() {
       <Dialog open={isShipOpen} onOpenChange={setIsShipOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Update Shipping</DialogTitle>
+            <DialogTitle>{v('Update Shipping', 'Cập nhật vận chuyển')}</DialogTitle>
             <DialogDescription>
-              Enter tracking information for this order.
+              {v('Enter tracking information for this order.', 'Nhập thông tin theo dõi cho đơn hàng này.')}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
              <div className="space-y-2">
-                <Label htmlFor="carrier">Carrier</Label>
+                <Label htmlFor="carrier">{v('Carrier', 'Đơn vị vận chuyển')}</Label>
                 <Select defaultValue="fedex">
                    <SelectTrigger>
-                      <SelectValue placeholder="Select carrier"/>
+                      <SelectValue placeholder={v('Select carrier', 'Chọn đơn vị vận chuyển')}/>
                    </SelectTrigger>
                    <SelectContent>
                       <SelectItem value="fedex">FedEx</SelectItem>
@@ -423,13 +425,13 @@ export default function BrandOrderDetailPage() {
                 </Select>
              </div>
              <div className="space-y-2">
-                <Label htmlFor="tracking">Tracking Number</Label>
-                <Input id="tracking" placeholder="e.g. 123456789012" />
+                <Label htmlFor="tracking">{v('Tracking Number', 'Mã vận đơn')}</Label>
+                <Input id="tracking" placeholder={v('e.g. 123456789012', 'ví dụ: 123456789012')} />
              </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsShipOpen(false)}>Cancel</Button>
-            <Button onClick={handleShipOrder} className="bg-[#F54900] text-white hover:bg-[#E04400]">Mark as Shipped</Button>
+            <Button variant="outline" onClick={() => setIsShipOpen(false)}>{v('Cancel', 'Hủy')}</Button>
+            <Button onClick={handleShipOrder} className="bg-[#F54900] text-white hover:bg-[#E04400]">{v('Mark as Shipped', 'Đánh dấu đã giao')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -438,34 +440,34 @@ export default function BrandOrderDetailPage() {
       <Dialog open={isCancelOpen} onOpenChange={setIsCancelOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Cancel Order</DialogTitle>
+            <DialogTitle>{v('Cancel Order', 'Hủy đơn hàng')}</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. The customer will be refunded automatically.
+              {v('This action cannot be undone. The customer will be refunded automatically.', 'Hành động này không thể hoàn tác. Khách hàng sẽ được hoàn tiền tự động.')}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 space-y-4">
              <div className="space-y-2">
-                <Label htmlFor="reason">Reason for cancellation</Label>
+                <Label htmlFor="reason">{v('Reason for cancellation', 'Lý do hủy đơn')}</Label>
                 <Select>
                    <SelectTrigger>
-                      <SelectValue placeholder="Select reason"/>
+                      <SelectValue placeholder={v('Select reason', 'Chọn lý do')}/>
                    </SelectTrigger>
                    <SelectContent>
-                      <SelectItem value="oos">Out of Stock</SelectItem>
-                      <SelectItem value="customer">Customer Request</SelectItem>
-                      <SelectItem value="fraud">Fraudulent Activity</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      <SelectItem value="oos">{v('Out of Stock', 'Hết hàng')}</SelectItem>
+                      <SelectItem value="customer">{v('Customer Request', 'Yêu cầu của khách hàng')}</SelectItem>
+                      <SelectItem value="fraud">{v('Fraudulent Activity', 'Hoạt động gian lận')}</SelectItem>
+                      <SelectItem value="other">{v('Other', 'Khác')}</SelectItem>
                    </SelectContent>
                 </Select>
              </div>
              <div className="space-y-2">
-                <Label htmlFor="note">Additional Note (Optional)</Label>
-                <Textarea id="note" placeholder="Add a note for the customer..." />
+                <Label htmlFor="note">{v('Additional Note (Optional)', 'Ghi chú thêm (Tùy chọn)')}</Label>
+                <Textarea id="note" placeholder={v('Add a note for the customer...', 'Thêm ghi chú cho khách hàng...')} />
              </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsCancelOpen(false)}>Back</Button>
-            <Button onClick={handleCancelOrder} variant="destructive">Cancel Order</Button>
+            <Button variant="outline" onClick={() => setIsCancelOpen(false)}>{v('Back', 'Quay lại')}</Button>
+            <Button onClick={handleCancelOrder} variant="destructive">{v('Cancel Order', 'Hủy đơn hàng')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

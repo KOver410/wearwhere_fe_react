@@ -52,7 +52,7 @@ export function OrderSuccessPage() {
             <button
               onClick={copyOrderNumber}
               className="p-1 hover:bg-[#f3f0eb] rounded transition-colors"
-              title="Copy order number"
+              title={v('Copy order number', 'Sao chép mã đơn hàng')}
             >
               <Copy className="w-4 h-4 text-[#888]" />
             </button>
@@ -134,7 +134,7 @@ export function OrderSuccessPage() {
                 <div className="flex-1 min-w-0">
                   <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
                   <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
-                    Size: {item.size} | Color: {item.selectedColor} | Qty: {item.quantity}
+                    {v('Size', 'Kích cỡ')}: {item.size} | {v('Color', 'Màu')}: {item.selectedColor} | {v('Qty', 'SL')}: {item.quantity}
                   </p>
                   <p style={{ fontSize: '12px', color: '#888' }}>{item.brand}</p>
                 </div>

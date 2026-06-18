@@ -7,7 +7,7 @@ interface FooterProps {
 }
 
 export function Footer({}: FooterProps) {
-  const { t } = useLanguage();
+  const { t, v } = useLanguage();
 
   return (
     <footer style={{ fontFamily: "'Montserrat', sans-serif" }}>
@@ -46,7 +46,7 @@ export function Footer({}: FooterProps) {
                 <li><Link to="/shop?category=women" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{t('nav.women')}</Link></li>
                 <li><Link to="/shop?category=men" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{t('nav.men')}</Link></li>
                 <li><Link to="/brands" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{t('nav.brands')}</Link></li>
-                <li><Link to="/ootd" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>OOTD Community</Link></li>
+                <li><Link to="/ootd" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{v('OOTD Community', 'Cộng đồng OOTD')}</Link></li>
                 <li><Link to="/stores" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{t('mobile.storeLocator')}</Link></li>
                 <li><Link to="/account/vouchers" className="transition-colors hover:text-[#d41c1c]" style={{ color: '#888' }}>{t('nav.vouchers')}</Link></li>
               </ul>

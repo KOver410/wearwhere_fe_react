@@ -65,11 +65,11 @@ export function LoginPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Social Login */}
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert('Google sign-in coming soon!')}>
+          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert(v('Google sign-in coming soon!', 'Đăng nhập bằng Google sẽ sớm ra mắt!'))}>
             <Chrome className="mr-2 h-5 w-5" />
             Google
           </Button>
-          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert('Facebook sign-in coming soon!')}>
+          <Button variant="outline" type="button" className="h-12 w-full" onClick={() => alert(v('Facebook sign-in coming soon!', 'Đăng nhập bằng Facebook sẽ sớm ra mắt!'))}>
             <Facebook className="mr-2 h-5 w-5" />
             Facebook
           </Button>
