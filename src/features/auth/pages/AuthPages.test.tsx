@@ -132,11 +132,6 @@ describe('Auth pages', () => {
     expect(screen.getByRole('button', { name: /google.+chưa hỗ trợ/i })).toBeDisabled()
     expect(screen.getByRole('button', { name: /facebook.+chưa hỗ trợ/i })).toBeDisabled()
 
-    expect(screen.getAllByText('User').length).toBeGreaterThan(0)
-    expect(screen.getAllByText('Customer').length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/Brand.+Chưa hỗ trợ/).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/Admin.+Chưa hỗ trợ/).length).toBeGreaterThan(0)
-
     await user.type(screen.getByLabelText(/email address|địa chỉ email/i), 'customer@example.com')
     await user.type(screen.getByLabelText(/^password$|^mật khẩu$/i), 'P@ssw0rd!')
     await user.click(screen.getByRole('button', { name: /sign in|đăng nhập/i }))

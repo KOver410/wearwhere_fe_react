@@ -10,16 +10,8 @@ import { Label } from '@/shared/ui/label';
 import { toast } from 'sonner';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { useAuth } from '@/shared/contexts/AuthContext';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
 
 type LoginFormValues = {
-  role: 'user' | 'customer' | 'brand' | 'admin'
   email: string
   password: string
   rememberMe: boolean
@@ -42,7 +34,6 @@ export function LoginPage() {
   const { login } = useAuth();
   const { register, handleSubmit, control, formState: { errors } } = useForm<LoginFormValues>({
     defaultValues: {
-      role: 'user',
       email: '',
       password: '',
       rememberMe: false,
@@ -96,27 +87,6 @@ export function LoginPage() {
         </div>
 
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="role">{v('Account Type', 'Loại tài khoản')}</Label>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger id="role" className="h-12">
-                    <SelectValue placeholder={v('Select account type', 'Chọn loại tài khoản')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="customer">Customer</SelectItem>
-                    <SelectItem value="brand" disabled>Brand (Chưa hỗ trợ)</SelectItem>
-                    <SelectItem value="admin" disabled>Admin (Chưa hỗ trợ)</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-
           <div className="space-y-2">
             <Label htmlFor="email">{v('Email address', 'Địa chỉ email')}</Label>
             <Input 
