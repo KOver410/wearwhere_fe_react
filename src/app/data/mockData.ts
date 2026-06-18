@@ -1,4 +1,5 @@
 // Shared mock data for WearWhere platform
+import { productImage } from './productImages';
 
 export interface Product {
   id: number;
@@ -225,7 +226,7 @@ export const brands: Brand[] = [
   },
 ];
 
-export const products: Product[] = [
+const productsRaw: Product[] = [
   {
     id: 1,
     name: 'Vintage Brown Leather Jacket',
@@ -981,6 +982,13 @@ export const products: Product[] = [
     seller: { name: 'Linh', avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop' },
   },
 ];
+
+// Replace all product images with local mock images (bundled by Vite).
+// Assigned by index so each product gets a distinct image from the pool.
+export const products: Product[] = productsRaw.map((p, i) => {
+  const img = productImage(i);
+  return { ...p, image: img, images: [img] };
+});
 
 export const vouchers: Voucher[] = [
   {
