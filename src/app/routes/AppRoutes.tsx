@@ -61,6 +61,7 @@ import BrandReturnsPage from '@/features/brand/pages/returns/BrandReturnsPage';
 import BrandReturnDetailPage from '@/features/brand/pages/returns/BrandReturnDetailPage';
 import BrandSettingsPage from '@/features/brand/pages/settings/BrandSettingsPage';
 import AdminLayout from '@/features/admin/pages/AdminLayout';
+import AdminLoginPage from '@/features/admin/pages/AdminLoginPage';
 import AdminDashboardPage from '@/features/admin/pages/AdminDashboardPage';
 import AdminMonitorPage from '@/features/admin/pages/AdminMonitorPage';
 import AdminUsersPage from '@/features/admin/pages/users/AdminUsersPage';
@@ -152,6 +153,7 @@ export function AppRoutes() {
 
       {/* Portal Login Pages */}
       <Route path="/brand/login" element={<BrandLoginPage />} />
+      <Route path="/admin/login" element={<AdminLoginPage />} />
 
       {/* Brand Pages */}
       <Route path="/brand" element={<RequireRole role="brand" loginPath="/brand/login"><BrandLayout /></RequireRole>}>
@@ -174,7 +176,7 @@ export function AppRoutes() {
       </Route>
 
       {/* Admin Pages */}
-      <Route path="/admin" element={<AdminLayout />}>
+      <Route path="/admin" element={<RequireRole role="admin" loginPath="/admin/login"><AdminLayout /></RequireRole>}>
         <Route path="dashboard" element={<AdminDashboardPage />} />
         <Route path="monitor" element={<AdminMonitorPage />} />
         <Route path="users" element={<AdminUsersPage />} />
