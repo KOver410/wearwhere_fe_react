@@ -43,6 +43,33 @@ function renderForm(loginFn: ReturnType<typeof vi.fn>) {
   )
 }
 
+function renderFormWithState(
+  loginFn: ReturnType<typeof vi.fn>,
+  fromState: { pathname?: string; search?: string } | undefined,
+) {
+  const initialEntry = {
+    pathname: '/brand/login',
+    state: fromState ? { from: fromState } : undefined,
+  }
+  return render(
+    <LanguageProvider>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <PortalLoginForm
+          role="brand"
+          loginFn={loginFn}
+          isLoggedIn={false}
+          currentRole={null}
+          routePrefix="/brand"
+          dashboardPath="/brand/dashboard"
+          idPrefix="brand"
+          title="Brand Portal"
+          subtitle="Sign in to manage your store."
+        />
+      </MemoryRouter>
+    </LanguageProvider>,
+  )
+}
+
 describe('PortalLoginForm', () => {
   beforeEach(() => {
     localStorage.setItem('ww-lang', 'en')
@@ -75,6 +102,45 @@ describe('PortalLoginForm', () => {
     await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => expect(toastErrorMock).toHaveBeenCalled())
+    expect(navigateMock).not.toHaveBeenCalled()
+  })
+
+  it('honors deep-link redirect when from.pathname is under the portal prefix', async () => {
+    const loginFn = vi.fn().mockResolvedValue(undefined)
+    renderFormWithState(loginFn, { pathname: '/brand/orders', search: '?x=1' })
+
+    await userEvent.type(screen.getByLabelText(/email address/i), 'brand@example.com')
+    await userEvent.type(screen.getByLabelText(/^password$/i), 'P@ssw0rd!')
+    await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
+
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/brand/orders?x=1'))
+    expect(navigateMock).not.toHaveBeenCalledWith('/brand/dashboard')
+  })
+
+  it('falls back to dashboard when from.pathname is outside the portal prefix', async () => {
+    const loginFn = vi.fn().mockResolvedValue(undefined)
+    renderFormWithState(loginFn, { pathname: '/account/profile' })
+
+    await userEvent.type(screen.getByLabelText(/email address/i), 'brand@example.com')
+    await userEvent.type(screen.getByLabelText(/^password$/i), 'P@ssw0rd!')
+    await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
+
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith('/brand/dashboard'))
+  })
+
+  it('shows ACCOUNT_LOCKED message and does not navigate when account is locked', async () => {
+    const loginFn = vi.fn().mockRejectedValue(new ApiError(403, 'ACCOUNT_LOCKED', 'locked'))
+    renderForm(loginFn)
+
+    await userEvent.type(screen.getByLabelText(/email address/i), 'brand@example.com')
+    await userEvent.type(screen.getByLabelText(/^password$/i), 'P@ssw0rd!')
+    await userEvent.click(screen.getByRole('button', { name: /sign in/i }))
+
+    await waitFor(() =>
+      expect(toastErrorMock).toHaveBeenCalledWith(
+        'Account temporarily locked after too many attempts. Try again later.',
+      ),
+    )
     expect(navigateMock).not.toHaveBeenCalled()
   })
 })
