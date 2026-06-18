@@ -121,6 +121,7 @@ export function PortalLoginForm({
               />
               <button
                 type="button"
+                aria-label={showPassword ? v('Hide password', 'Ẩn mật khẩu') : v('Show password', 'Hiện mật khẩu')}
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
