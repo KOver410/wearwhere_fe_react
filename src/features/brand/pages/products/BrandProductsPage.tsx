@@ -1,0 +1,305 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router';
+import { 
+  Plus, Search, Filter, MoreHorizontal, Edit, Trash2, 
+  Eye, Archive, ArrowUpDown, ChevronLeft, ChevronRight 
+} from 'lucide-react';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select";
+import { Badge } from '@/shared/ui/badge';
+import { Checkbox } from '@/shared/ui/checkbox';
+
+// Mock Data
+const MOCK_PRODUCTS = [
+  {
+    id: '1',
+    name: 'Oversized Cotton T-Shirt',
+    sku: 'TSH-001',
+    price: 45.00,
+    stock: 124,
+    status: 'Active',
+    category: 'Tops',
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+    variants: 4
+  },
+  {
+    id: '2',
+    name: 'Slim Fit Denim Jeans',
+    sku: 'JNS-023',
+    price: 89.00,
+    stock: 45,
+    status: 'Active',
+    category: 'Bottoms',
+    image: 'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+    variants: 6
+  },
+  {
+    id: '3',
+    name: 'Wool Blend Coat',
+    sku: 'OUT-104',
+    price: 159.00,
+    stock: 12,
+    status: 'Low Stock',
+    category: 'Outerwear',
+    image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+    variants: 3
+  },
+  {
+    id: '4',
+    name: 'Leather Crossbody Bag',
+    sku: 'ACC-005',
+    price: 120.00,
+    stock: 0,
+    status: 'Out of Stock',
+    category: 'Accessories',
+    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+    variants: 2
+  },
+  {
+    id: '5',
+    name: 'Summer Floral Dress',
+    sku: 'DRS-089',
+    price: 75.00,
+    stock: 56,
+    status: 'Draft',
+    category: 'Dresses',
+    image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+    variants: 5
+  }
+];
+
+export default function BrandProductsPage() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+
+  // Filter logic
+  const filteredProducts = MOCK_PRODUCTS.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          product.sku.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = selectedStatus === 'all' || product.status.toLowerCase().replace(' ', '-') === selectedStatus;
+    const matchesCategory = selectedCategory === 'all' || product.category.toLowerCase() === selectedCategory;
+    
+    return matchesSearch && matchesStatus && matchesCategory;
+  });
+
+  const toggleSelectAll = () => {
+    if (selectedProducts.length === filteredProducts.length) {
+      setSelectedProducts([]);
+    } else {
+      setSelectedProducts(filteredProducts.map(p => p.id));
+    }
+  };
+
+  const toggleSelectProduct = (id: string) => {
+    if (selectedProducts.includes(id)) {
+      setSelectedProducts(selectedProducts.filter(pId => pId !== id));
+    } else {
+      setSelectedProducts([...selectedProducts, id]);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Active': return 'bg-green-100 text-green-800 border-green-200';
+      case 'Low Stock': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'Out of Stock': return 'bg-red-100 text-red-800 border-red-200';
+      case 'Draft': return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Products</h1>
+          <p className="text-sm text-[#64748B] mt-1">Manage your product catalog, inventory, and variants.</p>
+        </div>
+        <div className="flex gap-2">
+          <Link to="/brand/products/categories">
+             <Button variant="outline">Categories</Button>
+          </Link>
+          <Button variant="outline" onClick={() => alert('Import products from CSV coming soon!')}>Import</Button>
+          <Button variant="outline" onClick={() => alert('Products exported to CSV!')}>Export</Button>
+          <Link to="/brand/products/new">
+            <Button className="bg-[#F54900] text-white hover:bg-[#E04400]">
+              <Plus className="mr-2 h-4 w-4" /> Add Product
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Filters and Search */}
+      <div className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center">
+        <div className="relative w-full sm:w-96">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input 
+            placeholder="Search products by name or SKU..." 
+            className="pl-9 bg-gray-50 border-gray-200 focus:bg-white focus-visible:ring-[#F54900] transition-colors"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        
+        <div className="flex gap-3 w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
+          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="low-stock">Low Stock</SelectItem>
+              <SelectItem value="out-of-stock">Out of Stock</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="tops">Tops</SelectItem>
+              <SelectItem value="bottoms">Bottoms</SelectItem>
+              <SelectItem value="dresses">Dresses</SelectItem>
+              <SelectItem value="outerwear">Outerwear</SelectItem>
+              <SelectItem value="accessories">Accessories</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Button variant="outline" size="icon" onClick={() => alert('Advanced filters coming soon')}>
+            <Filter className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Product Table */}
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4 w-12">
+                  <Checkbox 
+                    checked={selectedProducts.length === filteredProducts.length && filteredProducts.length > 0}
+                    onCheckedChange={toggleSelectAll}
+                  />
+                </th>
+                <th className="px-6 py-4">Product</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Inventory</th>
+                <th className="px-6 py-4">Category</th>
+                <th className="px-6 py-4 text-right">Price</th>
+                <th className="px-6 py-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filteredProducts.map((product) => (
+                <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4">
+                    <Checkbox 
+                      checked={selectedProducts.includes(product.id)}
+                      onCheckedChange={() => toggleSelectProduct(product.id)}
+                    />
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-lg bg-gray-100 overflow-hidden border border-gray-200 flex-shrink-0">
+                        <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">{product.name}</div>
+                        <div className="text-gray-500 text-xs">{product.variants} variants • {product.sku}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(product.status)}`}>
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col">
+                      <span className="font-medium text-gray-900">{product.stock} in stock</span>
+                      {product.stock < 20 && product.stock > 0 && (
+                        <span className="text-xs text-orange-600">Low inventory</span>
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">
+                    {product.category}
+                  </td>
+                  <td className="px-6 py-4 text-right font-medium text-gray-900">
+                    ${product.price.toFixed(2)}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                          <Eye className="mr-2 h-4 w-4" /> View Details
+                        </DropdownMenuItem>
+                        <Link to={`/brand/products/${product.id}/edit`}>
+                          <DropdownMenuItem>
+                            <Edit className="mr-2 h-4 w-4" /> Edit Product
+                          </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem>
+                          <Archive className="mr-2 h-4 w-4" /> Archive
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600 focus:text-red-600">
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        
+        {/* Pagination */}
+        <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+          <div className="text-sm text-gray-500">
+            Showing <span className="font-medium">1</span> to <span className="font-medium">{filteredProducts.length}</span> of <span className="font-medium">{MOCK_PRODUCTS.length}</span> results
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" disabled>
+              <ChevronLeft className="h-4 w-4 mr-1" /> Previous
+            </Button>
+            <Button variant="outline" size="sm" disabled>
+              Next <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

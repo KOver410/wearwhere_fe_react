@@ -1,0 +1,210 @@
+Thiết kế một homepage/landing page thời trang mang phong cách editorial mạnh mẽ kết hợp graphic shape playful. Layout có typography cực lớn, grid bất đối xứng, nhiều sticker-style shape trang trí như starburst, circle badge, speech bubble, wave, organic blob.
+
+Phong cách tổng thể:
+Bold – Experimental – High fashion – Graphic design driven – Cá tính mạnh – Hiện đại.
+
+1️⃣ HỆ THỐNG MÀU SẮC
+
+Màu chính (bắt buộc):
+
+#d41c1c (đỏ chủ đạo)
+
+#0d0d0d (đen đậm)
+
+#fff9f2 (kem sáng nền chính)
+
+Có thể thêm màu phụ để tăng tính playful:
+
+Xanh olive muted (#6f7d4e)
+
+Vàng mustard nhạt (#e2b93b)
+
+Hồng pastel nhạt (#f1b6c8)
+
+Nhưng không làm mất sự cân bằng với màu đỏ chủ đạo.
+
+2️⃣ TYPOGRAPHY
+
+Heading chính: Bourbon Grotesque (IN HOA, cực lớn, chiếm phần lớn màn hình).
+
+Body text: Montserrat.
+
+Scale chữ cực mạnh, tương phản rõ ràng giữa title và body.
+
+Có thể cho chữ sát lề hoặc tràn layout tạo cảm giác editorial.
+
+3️⃣ HERO SECTION – TYPOGRAPHY DOMINANT
+
+Hiển thị heading lớn:
+
+“MAKE YOUR STYLE FIT.”
+
+Bourbon Grotesque
+
+Màu #0d0d0d
+
+Cực lớn, chiếm 60–70% chiều ngang
+
+Subheading:
+
+“Thời trang không phải để bạn vừa vặn với nó. Nó phải vừa vặn với bạn.”
+
+Montserrat
+
+Màu #0d0d0d
+
+Thêm graphic shapes xung quanh:
+
+1 starburst màu #d41c1c với text nhỏ bên trong: “NEW DROP”
+
+1 circle badge màu mustard với chữ “LIMITED”
+
+1 sticker shape chứa icon nhỏ
+
+Các shape có viền đen #0d0d0d hoặc không viền để tạo tương phản.
+
+4️⃣ GRID CONTENT – BẤT ĐỐI XỨNG
+
+Tạo layout grid giống phong cách FEEL FITS:
+
+Các block nội dung xen kẽ:
+
+Block chữ nền #d41c1c chữ trắng
+
+Block ảnh full bleed
+
+Block quote nền kem
+
+Block màu phụ (olive/mustard)
+
+Ví dụ nội dung:
+
+“I HAVE NOTHING TO WEAR.”
+“HOW WILL I STYLE THIS?”
+“UGH, NOTHING FITS ME.”
+
+Các block có thể:
+
+Không bo góc
+
+Hoặc bo rất nhẹ
+
+Hoặc cắt shape lạ ở một góc
+
+5️⃣ GRAPHIC SHAPE DECORATION (LẤY CẢM HỨNG TỪ ẢNH 2)
+
+Sử dụng các element:
+
+Starburst lớn màu #d41c1c hoặc vàng
+
+Circle badge
+
+Organic blob
+
+Speech bubble
+
+Zigzag line
+
+Wavy underline
+
+Sticker shape có text nhỏ bên trong
+
+Ví dụ text trong shape:
+
+“MAKE SOME NOISE”
+“STYLE YOUR WAY”
+“OWN YOUR FIT”
+“VOTE WITH YOUR STYLE”
+
+Các shape đặt chồng layer lên layout, hơi lệch, tạo cảm giác handmade graphic.
+
+6️⃣ THIẾT KẾ BUTTON SÁNG TẠO
+
+Không dùng button rectangle truyền thống.
+
+Các gợi ý:
+
+Option 1: Starburst Button
+
+Hình starburst màu #d41c1c
+
+Text trắng: “SHOP NOW”
+
+Hover: đổi nền sang #0d0d0d
+
+Option 2: Circle Badge Button
+
+Hình tròn màu mustard
+
+Text Montserrat uppercase
+
+Hover: scale nhẹ + shadow
+
+Option 3: Outline Button
+
+Viền #0d0d0d
+
+Nền #fff9f2
+
+Hover: nền #d41c1c, chữ trắng
+
+Option 4: Blob Button
+
+Shape organic
+
+Text căn giữa
+
+Hover: dịch chuyển nhẹ tạo cảm giác sống động
+
+Button phải:
+
+Có hiệu ứng hover tinh tế
+
+Không quá commercial
+
+Giữ vibe graphic cao cấp
+
+7️⃣ SECTION STORY / ABOUT
+
+Nền #fff9f2.
+
+Đoạn text Montserrat:
+
+“Chúng tôi tin rằng phong cách không phải là xu hướng.
+Nó là cách bạn kể câu chuyện của chính mình.”
+
+Xung quanh có:
+
+1 necklace icon nhỏ
+
+1 shoe graphic
+
+1 organic shape mờ opacity thấp
+
+8️⃣ TỔNG THỂ CẢM GIÁC
+
+Editorial magazine layout
+
+High contrast
+
+Graphic bold
+
+Playful nhưng không trẻ con
+
+Có chiều sâu layer
+
+Nhiều khoảng trắng để cân bằng shape
+
+🎯 KẾT QUẢ MONG MUỐN
+
+Một homepage có cá tính mạnh, pha trộn giữa:
+
+Editorial fashion
+
+Graphic protest poster vibe
+
+Swiss grid + playful shapes
+
+Typography cực lớn dẫn dắt thị giác
+
+Thiết kế phải trông như một brand có tiếng nói riêng, không phải template thương mại điện tử thông thường.

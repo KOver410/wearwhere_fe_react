@@ -1,0 +1,236 @@
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { 
+  Search, 
+  Filter, 
+  MoreHorizontal, 
+  Eye, 
+  CheckCircle2, 
+  XCircle, 
+  RotateCcw
+} from 'lucide-react';
+import { Button } from '@/shared/ui/button';
+import { Input } from '@/shared/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/shared/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
+import { Badge } from '@/shared/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { format } from "date-fns";
+import { cn } from "@/shared/ui/utils";
+
+// Mock Data
+const MOCK_RETURNS = [
+  {
+    id: 'RET-8821-401',
+    orderId: 'ORD-7782-9012',
+    customer: {
+      name: 'Sarah Johnson',
+      email: 'sarah.j@example.com',
+    },
+    items: ['Essential Cotton T-Shirt'],
+    reason: 'Size too small',
+    status: 'pending',
+    date: '2025-06-14T15:30:00',
+    amount: 45.00
+  },
+  {
+    id: 'RET-8821-402',
+    orderId: 'ORD-7782-9008',
+    customer: {
+      name: 'Mike Smith',
+      email: 'mike.s@example.com',
+    },
+    items: ['Slim Fit Denim Jeans'],
+    reason: 'Defective item',
+    status: 'approved',
+    date: '2025-06-13T09:00:00',
+    amount: 130.00
+  },
+  {
+    id: 'RET-8821-403',
+    orderId: 'ORD-7782-8999',
+    customer: {
+      name: 'Emily Davis',
+      email: 'emily.d@example.com',
+    },
+    items: ['Summer Dress'],
+    reason: 'Changed mind',
+    status: 'rejected',
+    date: '2025-06-12T11:45:00',
+    amount: 89.99
+  }
+];
+
+const RETURN_STATUSES = [
+  { value: 'all', label: 'All Returns' },
+  { value: 'pending', label: 'Pending' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'rejected', label: 'Rejected' },
+  { value: 'refunded', label: 'Refunded' }
+];
+
+export default function BrandReturnsPage() {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'approved': return 'bg-green-100 text-green-800 border-green-200';
+      case 'rejected': return 'bg-red-100 text-red-800 border-red-200';
+      case 'refunded': return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const filteredReturns = MOCK_RETURNS.filter(ret => {
+    const matchesTab = activeTab === 'all' || ret.status === activeTab;
+    const matchesSearch = 
+      ret.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      ret.orderId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ret.customer.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesTab && matchesSearch;
+  });
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Returns & Exchanges</h1>
+          <p className="text-[#64748B] text-sm mt-1">Manage return requests and refunds.</p>
+        </div>
+      </div>
+
+      <div className="flex gap-4 items-center justify-between bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+        <div className="relative w-full sm:w-96">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input 
+            placeholder="Search return ID, order ID, customer..." 
+            className="pl-9 bg-gray-50 border-gray-200 focus-visible:ring-[#F54900]"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <Button variant="outline" size="icon" onClick={() => alert('Advanced filters coming soon')}>
+           <Filter className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList className="bg-transparent p-0 border-b border-gray-200 w-full justify-start h-auto rounded-none">
+          {RETURN_STATUSES.map((status) => (
+            <TabsTrigger 
+              key={status.value} 
+              value={status.value}
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-[#F54900] data-[state=active]:bg-transparent data-[state=active]:shadow-none py-3 px-4 text-gray-500 data-[state=active]:text-[#F54900]"
+            >
+              {status.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        <TabsContent value={activeTab} className="m-0">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <Table>
+              <TableHeader className="bg-gray-50">
+                <TableRow>
+                  <TableHead className="w-[150px]">Return ID</TableHead>
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead>Items</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredReturns.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={8} className="h-24 text-center text-gray-500">
+                      No return requests found.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredReturns.map((ret) => (
+                    <TableRow key={ret.id} className="hover:bg-gray-50 transition-colors">
+                      <TableCell className="font-medium">
+                        <Link to={`/brand/returns/${ret.id}`} className="text-black hover:underline">
+                          {ret.id}
+                        </Link>
+                      </TableCell>
+                      <TableCell className="text-gray-500">{ret.orderId}</TableCell>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium text-gray-900">{ret.customer.name}</span>
+                          <span className="text-xs text-gray-500">{ret.customer.email}</span>
+                        </div>
+                      </TableCell>
+                       <TableCell className="text-gray-600 max-w-[200px] truncate">
+                        {ret.items.join(', ')}
+                      </TableCell>
+                      <TableCell className="text-gray-600">
+                        {format(new Date(ret.date), "MMM d, yyyy")}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary" className={cn("font-medium border", getStatusColor(ret.status))}>
+                          {ret.status.charAt(0).toUpperCase() + ret.status.slice(1)}
+                        </Badge>
+                      </TableCell>
+                       <TableCell className="font-medium">${ret.amount.toFixed(2)}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => navigate(`/brand/returns/${ret.id}`)}>
+                              <Eye className="mr-2 h-4 w-4" />
+                              View Details
+                            </DropdownMenuItem>
+                            {ret.status === 'pending' && (
+                              <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-green-600">
+                                  <CheckCircle2 className="mr-2 h-4 w-4" />
+                                  Approve
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-red-600">
+                                  <XCircle className="mr-2 h-4 w-4" />
+                                  Reject
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
