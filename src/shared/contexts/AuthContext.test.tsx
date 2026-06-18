@@ -14,6 +14,8 @@ import { AuthProvider, useAuth } from './AuthContext'
 
 const {
   loginCustomerMock,
+  loginBrandMock,
+  loginAdminMock,
   registerCustomerMock,
   logoutCustomerMock,
   refreshSessionMock,
@@ -21,6 +23,8 @@ const {
   setUnauthorizedHandlerMock,
 } = vi.hoisted(() => ({
   loginCustomerMock: vi.fn(),
+  loginBrandMock: vi.fn(),
+  loginAdminMock: vi.fn(),
   registerCustomerMock: vi.fn(),
   logoutCustomerMock: vi.fn(),
   refreshSessionMock: vi.fn(),
@@ -30,6 +34,8 @@ const {
 
 vi.mock('@/features/auth/api/authApi', () => ({
   loginCustomer: loginCustomerMock,
+  loginBrand: loginBrandMock,
+  loginAdmin: loginAdminMock,
   registerCustomer: registerCustomerMock,
   logoutCustomer: logoutCustomerMock,
   refreshSession: refreshSessionMock,
@@ -150,6 +156,22 @@ function AuthProbe() {
       <button
         type="button"
         onClick={() =>
+          runAction(() => auth.loginBrand({ email: 'brand@example.com', password: 'P@ssw0rd!' }, true))
+        }
+      >
+        login-brand
+      </button>
+      <button
+        type="button"
+        onClick={() =>
+          runAction(() => auth.loginAdmin({ email: 'admin@example.com', password: 'P@ssw0rd!' }, true))
+        }
+      >
+        login-admin
+      </button>
+      <button
+        type="button"
+        onClick={() =>
           runAction(() =>
             auth.register({
               name: 'Customer Example',
@@ -197,6 +219,8 @@ describe('AuthProvider', () => {
   beforeEach(() => {
     vi.resetModules()
     loginCustomerMock.mockReset()
+    loginBrandMock.mockReset()
+    loginAdminMock.mockReset()
     registerCustomerMock.mockReset()
     logoutCustomerMock.mockReset()
     refreshSessionMock.mockReset()
@@ -339,6 +363,54 @@ describe('AuthProvider', () => {
 
     await waitFor(() => {
       expect(screen.getByTestId('error')).not.toHaveTextContent('')
+    })
+
+    expect(screen.getByTestId('logged-in')).toHaveTextContent('false')
+    expect(readTokenSnapshot()).toBeNull()
+  })
+
+  it('logs in a brand account and exposes the brand role', async () => {
+    const user = userEvent.setup()
+    const brandUser = { ...customerUser, id: 'brand-1', email: 'brand@example.com', role: 'brand' }
+    loginBrandMock.mockResolvedValue({ user: brandUser, tokens: firstTokens })
+
+    renderAuth(<AuthProbe />)
+
+    await user.click(screen.getByRole('button', { name: 'login-brand' }))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('logged-in')).toHaveTextContent('true')
+    })
+
+    expect(screen.getByTestId('role')).toHaveTextContent('brand')
+    expect(loginBrandMock).toHaveBeenCalledWith({ email: 'brand@example.com', password: 'P@ssw0rd!' })
+    expect(readTokenSnapshot()).toMatchObject({ persistence: 'local', tokens: firstTokens })
+  })
+
+  it('restores a brand session on mount', async () => {
+    const brandUser = { ...customerUser, id: 'brand-1', email: 'brand@example.com', role: 'brand' }
+    saveTokens(firstTokens, true)
+    getMeMock.mockResolvedValue({ user: brandUser })
+
+    renderAuth(<AuthProbe />)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('logged-in')).toHaveTextContent('true')
+    })
+
+    expect(screen.getByTestId('role')).toHaveTextContent('brand')
+  })
+
+  it('rejects a brand login whose response role is not brand', async () => {
+    const user = userEvent.setup()
+    loginBrandMock.mockResolvedValue({ user: customerUser, tokens: firstTokens })
+
+    renderAuth(<AuthProbe />)
+
+    await user.click(screen.getByRole('button', { name: 'login-brand' }))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-code')).toHaveTextContent('ROLE_MISMATCH')
     })
 
     expect(screen.getByTestId('logged-in')).toHaveTextContent('false')
@@ -636,6 +708,8 @@ describe('ProtectedRoute', () => {
   beforeEach(() => {
     vi.resetModules()
     loginCustomerMock.mockReset()
+    loginBrandMock.mockReset()
+    loginAdminMock.mockReset()
     registerCustomerMock.mockReset()
     logoutCustomerMock.mockReset()
     refreshSessionMock.mockReset()

@@ -11,8 +11,15 @@ import {
 import { ApiError, isAuthTokens } from '@/shared/api/contracts';
 import { setUnauthorizedHandler } from '@/shared/api/apiClient';
 import { clearTokens, readTokenSnapshot, saveTokens, type TokenSnapshot } from '@/shared/api/tokenStorage';
-import { getMe, loginCustomer, logoutCustomer, registerCustomer } from '@/features/auth/api/authApi';
-import type { AuthUser, LoginCustomerInput, RegisterCustomerInput } from '@/features/auth/api/contracts';
+import {
+  getMe,
+  loginAdmin as loginAdminRequest,
+  loginBrand as loginBrandRequest,
+  loginCustomer,
+  logoutCustomer,
+  registerCustomer,
+} from '@/features/auth/api/authApi';
+import type { AuthResponse, AuthUser, AuthUserRole, LoginCustomerInput, RegisterCustomerInput } from '@/features/auth/api/contracts';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -20,6 +27,8 @@ interface AuthContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   login: (input: LoginCustomerInput, rememberMe: boolean) => Promise<AuthUser>;
+  loginBrand: (input: LoginCustomerInput, rememberMe: boolean) => Promise<AuthUser>;
+  loginAdmin: (input: LoginCustomerInput, rememberMe: boolean) => Promise<AuthUser>;
   register: (input: RegisterCustomerInput) => Promise<AuthUser>;
   logout: () => Promise<void>;
   applyUser: (user: AuthUser) => void;
@@ -36,6 +45,12 @@ const defaultAuthContext: AuthContextType = {
   isLoggedIn: false,
   isLoading: false,
   login: async () => {
+    throw new Error('Auth context unavailable');
+  },
+  loginBrand: async () => {
+    throw new Error('Auth context unavailable');
+  },
+  loginAdmin: async () => {
     throw new Error('Auth context unavailable');
   },
   register: async () => {
@@ -64,8 +79,8 @@ function snapshotsMatch(left: TokenSnapshot | null, right: TokenSnapshot | null)
   );
 }
 
-function nonCustomerError(role: string): ApiError {
-  return new ApiError(403, 'UNSUPPORTED_ROLE', `Only customer accounts are supported. Received "${role}".`);
+function roleMismatchError(actualRole: string, expectedRole: string): ApiError {
+  return new ApiError(403, 'ROLE_MISMATCH', `Expected a ${expectedRole} account but received "${actualRole}".`);
 }
 
 function invalidAuthResponseError(): ApiError {
@@ -126,13 +141,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const persistAuthenticatedUser = useCallback(
-    (nextUser: AuthUser, tokens: unknown, persistent: boolean, owningOperationId: number | null) => {
+    (nextUser: AuthUser, tokens: unknown, expectedRole: AuthUserRole, persistent: boolean, owningOperationId: number | null) => {
       if (!isAuthTokens(tokens)) {
         throw invalidAuthResponseError();
       }
 
-      if (nextUser.role !== 'customer') {
-        throw nonCustomerError(nextUser.role);
+      if (nextUser.role !== expectedRole) {
+        throw roleMismatchError(nextUser.role, expectedRole);
       }
 
       saveTokens(tokens, persistent);
@@ -180,14 +195,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      if (response.user.role !== 'customer') {
-        clearTokens();
-        ownedSessionOperationIdRef.current = null;
-        markSessionMutation();
-        applyLoggedOutState();
-        throw nonCustomerError(response.user.role);
-      }
-
       ownedSessionOperationIdRef.current = null;
 
       if (mountedRef.current) {
@@ -226,8 +233,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [applyLoggedOutState, invalidatePendingAuthOperations, markSessionMutation, restoreSession]);
 
-  const login = useCallback(
-    async (input: LoginCustomerInput, rememberMe: boolean) => {
+  const runLogin = useCallback(
+    async (
+      apiFn: (input: LoginCustomerInput) => Promise<AuthResponse>,
+      expectedRole: AuthUserRole,
+      input: LoginCustomerInput,
+      rememberMe: boolean,
+    ) => {
       const operation = beginAuthOperation();
 
       if (mountedRef.current) {
@@ -235,12 +247,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        const response = await loginCustomer(input);
+        const response = await apiFn(input);
         if (!isCurrentAuthOperation(operation.operationId)) {
           throw staleAuthOperationError();
         }
 
-        return persistAuthenticatedUser(response.user, response.tokens, rememberMe, operation.operationId);
+        return persistAuthenticatedUser(response.user, response.tokens, expectedRole, rememberMe, operation.operationId);
       } catch (error) {
         if (!isCurrentAuthOperation(operation.operationId)) {
           throw staleAuthOperationError();
@@ -270,6 +282,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [applyLoggedOutState, beginAuthOperation, isCurrentAuthOperation, markSessionMutation, persistAuthenticatedUser],
   );
 
+  const login = useCallback(
+    (input: LoginCustomerInput, rememberMe: boolean) => runLogin(loginCustomer, 'customer', input, rememberMe),
+    [runLogin],
+  );
+
+  const loginBrand = useCallback(
+    (input: LoginCustomerInput, rememberMe: boolean) => runLogin(loginBrandRequest, 'brand', input, rememberMe),
+    [runLogin],
+  );
+
+  const loginAdmin = useCallback(
+    (input: LoginCustomerInput, rememberMe: boolean) => runLogin(loginAdminRequest, 'admin', input, rememberMe),
+    [runLogin],
+  );
+
   const register = useCallback(
     async (input: RegisterCustomerInput) => {
       const operation = beginAuthOperation();
@@ -284,7 +311,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           throw staleAuthOperationError();
         }
 
-        return persistAuthenticatedUser(response.user, response.tokens, false, operation.operationId);
+        return persistAuthenticatedUser(response.user, response.tokens, 'customer', false, operation.operationId);
       } catch (error) {
         if (!isCurrentAuthOperation(operation.operationId)) {
           throw staleAuthOperationError();
@@ -371,6 +398,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoggedIn: user !== null,
       isLoading,
       login,
+      loginBrand,
+      loginAdmin,
       register,
       logout,
       applyUser,
@@ -380,7 +409,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       dismissPrompt,
       pendingRedirect,
     }),
-    [dismissPrompt, isLoading, login, logout, applyUser, pendingRedirect, promptLogin, register, restoreSession, showLoginPrompt, user],
+    [dismissPrompt, isLoading, login, loginAdmin, loginBrand, logout, applyUser, pendingRedirect, promptLogin, register, restoreSession, showLoginPrompt, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
