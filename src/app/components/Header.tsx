@@ -67,7 +67,7 @@ export function Header({}: HeaderProps) {
                 {[
                   { to: '/', label: v('HOME', 'TRANG CHỦ'), active: currentPath === '/' },
                   { to: '/shop', label: v('SHOP', 'CỬA HÀNG'), active: isActive('/shop') },
-                  { to: '/ootd', label: v('STYLE', 'PHONG CÁCH'), active: isActive('/ootd') || isActive('/style') },
+                  { to: '/ootd', label: 'OOTD', active: isActive('/ootd') || isActive('/style') },
                   { to: '/brands', label: v('BRAND', 'THƯƠNG HIỆU'), active: isActive('/brands') },
                 ].map((item) => (
                   <Link
@@ -174,7 +174,7 @@ export function Header({}: HeaderProps) {
             {[
               { to: '/', label: v('Home', 'Trang Chủ') },
               { to: '/shop', label: v('Shop', 'Cửa Hàng') },
-              { to: '/ootd', label: v('Style', 'Phong Cách') },
+              { to: '/ootd', label: 'OOTD' },
               { to: '/brands', label: v('Brands', 'Thương Hiệu') },
             ].map((item) => (
               <Link key={item.to} to={item.to} onClick={() => setMobileMenuOpen(false)}

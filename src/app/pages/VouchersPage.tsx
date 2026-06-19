@@ -148,10 +148,10 @@ export function VouchersPage() {
                 <div className="flex">
                   {/* Left accent */}
                   <div
-                    className="w-24 flex-shrink-0 flex flex-col items-center justify-center p-4"
+                    className="w-28 flex-shrink-0 flex flex-col items-center justify-center p-3 text-center"
                     style={{ backgroundColor: voucher.status === 'active' ? '#d41c1c' : '#4a4a4a', color: '#FFFFFF' }}
                   >
-                    <span style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700 }}>
+                    <span style={{ fontSize: voucher.discountType === 'percentage' ? '28px' : '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, lineHeight: 1.1, width: '100%', wordBreak: 'break-word' }}>
                       {voucher.discountType === 'percentage' ? `${voucher.discount}%` : formatVnd(voucher.discount)}
                     </span>
                     <span style={{ fontSize: '11px', opacity: 0.8, fontFamily: "'Oswald', sans-serif", textTransform: 'uppercase' }}>
@@ -241,7 +241,7 @@ export function VouchersPage() {
                 </div>
 
                 {/* Dashed border decoration */}
-                <div className="absolute left-[96px] top-0 bottom-0 border-l-2 border-dashed border-white/30" />
+                <div className="absolute left-[112px] top-0 bottom-0 border-l-2 border-dashed border-white/30" />
               </div>
             ))}
           </div>
