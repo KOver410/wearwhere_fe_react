@@ -104,7 +104,7 @@ export function SmartWardrobe() {
                       </div>
                     ))}
                   </div>
-                  <Link to="/wardrobe" className="mt-5 block text-center py-3 transition-all hover:bg-[#fff9f2] hover:text-[#0d0d0d]"
+                  <Link to="/account/wardrobe" className="mt-5 block text-center py-3 transition-all hover:bg-[#fff9f2] hover:text-[#0d0d0d]"
                     style={{ border: '2px solid #fff9f2', color: '#fff9f2', fontSize: '12px', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                     {lang === 'vi' ? 'TỦ ĐỒ THÔNG MINH' : 'SMART WARDROBE'} →
                   </Link>

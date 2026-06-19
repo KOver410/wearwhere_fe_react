@@ -156,7 +156,7 @@ export function EditorialCollections() {
                 onClick={() => handleTap(col.id)}
               >
                 <Link
-                  to={`/style/${col.slug}`}
+                  to={`/product/${col.id}`}
                   className="block w-full h-full relative"
                 >
                   {/* Image */}
@@ -314,7 +314,7 @@ export function EditorialCollections() {
               className="flex-shrink-0"
               style={{ width: '280px', scrollSnapAlign: 'start' }}
             >
-              <Link to={`/style/${col.slug}`} className="block relative overflow-hidden" style={{ height: '380px' }}>
+              <Link to={`/product/${col.id}`} className="block relative overflow-hidden" style={{ height: '380px' }}>
                 <ImageWithFallback
                   src={col.image}
                   alt={col.brand}

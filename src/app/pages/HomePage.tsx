@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { HeroSection } from '@/app/components/HeroSection';
 import { EditorialCollections } from '@/app/components/EditorialCollections';
 import { OutfitSuggestions } from '@/app/components/OutfitSuggestions';
@@ -221,6 +222,7 @@ function TrendingPosts() {
                 className="flex-shrink-0 snap-start relative group cursor-pointer overflow-hidden"
                 style={{ width: `${CARD_WIDTH}px`, aspectRatio: '3/4.5', borderRadius: '6px' }}
               >
+                <Link to={`/ootd/${((post.id - 1) % 8) + 1}`} className="block w-full h-full">
                 {/* Image */}
                 <ImageWithFallback
                   src={post.image}
@@ -254,6 +256,7 @@ function TrendingPosts() {
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
                   style={{ backgroundColor: 'rgba(212,28,28,0.15)' }}>
                 </div>
+                </Link>
               </motion.div>
             ))}
           </div>
