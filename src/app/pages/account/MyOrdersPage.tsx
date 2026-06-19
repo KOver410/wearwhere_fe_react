@@ -5,6 +5,7 @@ import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { orders } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 const statusLabels: Record<string, { en: string; vi: string }> = {
   pending: { en: 'Pending', vi: 'Chờ xử lý' },
@@ -109,7 +110,7 @@ export function MyOrdersPage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d' }}>${order.total.toFixed(2)}</span>
+                      <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d' }}>{formatVnd(order.total)}</span>
                       <Link
                         to={`/account/orders/${order.id}`}
                         className="flex items-center gap-1 px-4 py-2 border-2 border-[#e0d8cf] hover:bg-[#f3f0eb] transition-colors"
@@ -129,10 +130,10 @@ export function MyOrdersPage() {
                           <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{item.name}</p>
+                          <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
                           <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v('Size', 'Size')}: {item.size} · {v('Qty', 'SL')}: {item.quantity}</p>
                         </div>
-                        <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>${(item.price * item.quantity).toFixed(2)}</p>
+                        <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{formatVnd(item.price * item.quantity)}</p>
                       </div>
                     ))}
                   </div>

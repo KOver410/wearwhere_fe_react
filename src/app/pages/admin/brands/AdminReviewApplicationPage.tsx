@@ -81,6 +81,17 @@ export default function AdminReviewApplicationPage() {
   const { v } = useLanguage();
   const navigate = useNavigate();
   const { id } = useParams();
+  const tierLabel = (id: string) =>
+    ({
+      starter: v('Starter', 'Khởi đầu'),
+      business: v('Business', 'Doanh nghiệp'),
+      premium: v('Premium', 'Cao cấp'),
+    }[id] ?? id);
+  const businessTypeLabel = (type: string) =>
+    ({
+      Company: v('Company', 'Công ty'),
+      Individual: v('Individual', 'Cá nhân'),
+    }[type] ?? type);
   const [reviewNote, setReviewNote] = useState('');
   const [approvedTier, setApprovedTier] = useState('business');
   const [rejectReason, setRejectReason] = useState('');
@@ -232,7 +243,7 @@ export default function AdminReviewApplicationPage() {
                     padding: '4px 12px',
                   }}
                 >
-                  {mockApplication.businessType}
+                  {businessTypeLabel(mockApplication.businessType)}
                 </Badge>
               </div>
               <div>
@@ -608,7 +619,7 @@ export default function AdminReviewApplicationPage() {
                     padding: '4px 12px',
                   }}
                 >
-                  {mockApplication.requestedTier}
+                  {tierLabel(mockApplication.requestedTier)}
                 </Badge>
               </div>
             </div>

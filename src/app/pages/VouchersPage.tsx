@@ -4,6 +4,7 @@ import { Ticket, Copy, ChevronRight, Clock, CheckCircle, XCircle, Gift } from 'l
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { vouchers } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 import { copyToClipboard } from '@/app/utils/clipboard';
 import { AccountLayout } from '@/app/components/AccountLayout';
 
@@ -151,7 +152,7 @@ export function VouchersPage() {
                     style={{ backgroundColor: voucher.status === 'active' ? '#d41c1c' : '#4a4a4a', color: '#FFFFFF' }}
                   >
                     <span style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700 }}>
-                      {voucher.discountType === 'percentage' ? `${voucher.discount}%` : `$${voucher.discount}`}
+                      {voucher.discountType === 'percentage' ? `${voucher.discount}%` : formatVnd(voucher.discount)}
                     </span>
                     <span style={{ fontSize: '11px', opacity: 0.8, fontFamily: "'Oswald', sans-serif", textTransform: 'uppercase' }}>
                       OFF
@@ -163,7 +164,7 @@ export function VouchersPage() {
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#0d0d0d' }}>
-                          {voucher.title}
+                          {v(voucher.title, voucher.titleVi)}
                         </h3>
                         {voucher.brandName && (
                           <div className="flex items-center gap-2 mt-1">
@@ -191,17 +192,17 @@ export function VouchersPage() {
                     </div>
 
                     <p style={{ fontSize: '13px', color: '#4a4a4a', marginBottom: '8px' }}>
-                      {voucher.description}
+                      {v(voucher.description, voucher.descriptionVi)}
                     </p>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: '12px', color: '#888' }}>
-                          {v('Min. order', 'Đơn tối thiểu')}: ${voucher.minOrder}
+                          {v('Min. order', 'Đơn tối thiểu')}: {formatVnd(voucher.minOrder)}
                         </span>
                         {voucher.maxDiscount && (
                           <span style={{ fontSize: '12px', color: '#888' }}>
-                            {v('Max', 'Tối đa')}: ${voucher.maxDiscount}
+                            {v('Max', 'Tối đa')}: {formatVnd(voucher.maxDiscount)}
                           </span>
                         )}
                       </div>

@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
 import { toast } from "sonner";
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_RETURN = {
@@ -34,7 +35,9 @@ const MOCK_RETURN = {
   date: '2025-06-14T15:30:00',
   status: 'pending',
   reason: 'Size too small',
+  reasonVi: 'Kích cỡ quá nhỏ',
   comment: 'I usually wear a medium but this fits like a small.',
+  commentVi: 'Tôi thường mặc cỡ M nhưng cái này vừa như cỡ S.',
   customer: {
     name: 'Sarah Johnson',
     email: 'sarah.j@example.com',
@@ -57,7 +60,7 @@ const MOCK_RETURN = {
 };
 
 export default function BrandReturnDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const { id } = useParams();
   const [status, setStatus] = useState(MOCK_RETURN.status);
   const [isRejectOpen, setIsRejectOpen] = useState(false);
@@ -141,13 +144,13 @@ export default function BrandReturnDetailPage() {
             <CardContent className="space-y-4">
                <div>
                   <h4 className="text-sm font-medium text-gray-500">{v('Reason', 'Lý do')}</h4>
-                  <p className="text-gray-900 mt-1">{MOCK_RETURN.reason}</p>
+                  <p className="text-gray-900 mt-1">{lang === 'vi' ? MOCK_RETURN.reasonVi : MOCK_RETURN.reason}</p>
                </div>
                <div>
                   <h4 className="text-sm font-medium text-gray-500">{v('Customer Comment', 'Bình luận của khách hàng')}</h4>
                   <div className="mt-2 p-3 bg-gray-50 rounded-md text-sm text-gray-700 flex gap-3">
                      <MessageSquare className="h-4 w-4 shrink-0 mt-0.5 text-gray-400"/>
-                     <p>"{MOCK_RETURN.comment}"</p>
+                     <p>"{lang === 'vi' ? MOCK_RETURN.commentVi : MOCK_RETURN.comment}"</p>
                   </div>
                </div>
             </CardContent>
@@ -173,7 +176,7 @@ export default function BrandReturnDetailPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-gray-900">${item.price.toFixed(2)}</p>
+                      <p className="font-medium text-gray-900">{formatVnd(item.price)}</p>
                     </div>
                   </div>
                 ))}

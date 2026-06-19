@@ -55,6 +55,7 @@ const mockOrderDetail = {
   ],
   shipping: {
     method: 'Standard Delivery',
+    methodVi: 'Giao hàng tiêu chuẩn',
     cost: 30000,
     tracking: 'VN-TRACK-123456789',
     carrier: 'Giao Hang Nhanh',
@@ -64,11 +65,11 @@ const mockOrderDetail = {
   discount: 0,
   total: 1280000,
   timeline: [
-    { date: '2024-02-10 10:30', status: 'Order placed', description: 'Order has been placed' },
-    { date: '2024-02-10 14:15', status: 'Payment confirmed', description: 'Payment received successfully' },
-    { date: '2024-02-11 09:00', status: 'Processing', description: 'Brand is preparing your order' },
-    { date: '2024-02-11 16:45', status: 'Shipped', description: 'Order has been shipped' },
-    { date: '2024-02-13 11:20', status: 'Delivered', description: 'Order delivered successfully' },
+    { date: '2024-02-10 10:30', status: 'Order placed', statusVi: 'Đã đặt đơn', description: 'Order has been placed', descriptionVi: 'Đơn hàng đã được đặt' },
+    { date: '2024-02-10 14:15', status: 'Payment confirmed', statusVi: 'Đã xác nhận thanh toán', description: 'Payment received successfully', descriptionVi: 'Đã nhận thanh toán thành công' },
+    { date: '2024-02-11 09:00', status: 'Processing', statusVi: 'Đang xử lý', description: 'Brand is preparing your order', descriptionVi: 'Thương hiệu đang chuẩn bị đơn hàng của bạn' },
+    { date: '2024-02-11 16:45', status: 'Shipped', statusVi: 'Đã gửi', description: 'Order has been shipped', descriptionVi: 'Đơn hàng đã được gửi đi' },
+    { date: '2024-02-13 11:20', status: 'Delivered', statusVi: 'Đã giao', description: 'Order delivered successfully', descriptionVi: 'Đơn hàng đã được giao thành công' },
   ],
 };
 
@@ -82,7 +83,7 @@ const statusConfig = {
 };
 
 export default function AdminOrderDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const statusLabels: Record<string, string> = {
     pending: v('Pending', 'Đang chờ'),
     processing: v('Processing', 'Đang xử lý'),
@@ -474,7 +475,7 @@ export default function AdminOrderDetailPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      {event.status}
+                      {lang === 'vi' ? event.statusVi : event.status}
                     </p>
                     <p
                       className="text-[#6A7282]"
@@ -484,7 +485,7 @@ export default function AdminOrderDetailPage() {
                         marginBottom: '4px',
                       }}
                     >
-                      {event.description}
+                      {lang === 'vi' ? event.descriptionVi : event.description}
                     </p>
                     <p
                       className="text-[#6A7282]"
@@ -699,7 +700,7 @@ export default function AdminOrderDetailPage() {
                   className="text-[#0A0A0A]"
                   style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  {order.shipping.method}
+                  {lang === 'vi' ? order.shipping.methodVi : order.shipping.method}
                 </p>
               </div>
               <div>

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import { ArrowLeft, MapPin, Phone, Mail, Clock, Star, Navigation, ExternalLink, Share2, Heart, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { stores } from '@/app/data/wardrobeMockData';
+import { formatVnd } from '@/app/utils/currency';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 import { copyToClipboard } from '@/app/utils/clipboard';
 
@@ -85,12 +86,12 @@ export function StoreDetailPage() {
             {/* About */}
             <div className="bg-white p-6" style={{ borderRadius: '10px', border: '1px solid #e0d8cf', boxShadow: '0px 1px 3px rgba(0,0,0,0.1), 0px 1px 2px -1px rgba(0,0,0,0.1)' }}>
               <h2 style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', marginBottom: '12px', textTransform: 'uppercase' as const, letterSpacing: '0.05em' }}>{v('About', 'Giới thiệu')}</h2>
-              <p style={{ fontSize: '14px', color: '#4a4a4a', lineHeight: '1.7' }}>{store.description}</p>
+              <p style={{ fontSize: '14px', color: '#4a4a4a', lineHeight: '1.7' }}>{v(store.description, store.descriptionVi)}</p>
 
               {/* Features */}
               <div className="flex flex-wrap gap-2 mt-4">
-                {store.features.map(f => (
-                  <span key={f} className="px-3 py-1.5" style={{ fontSize: '13px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>
+                {(lang === 'vi' ? store.featuresVi : store.features).map((f, fi) => (
+                  <span key={fi} className="px-3 py-1.5" style={{ fontSize: '13px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>
                     {f}
                   </span>
                 ))}
@@ -100,8 +101,8 @@ export function StoreDetailPage() {
               <div className="mt-4 pt-4" style={{ borderTop: '1px solid #e0d8cf' }}>
                 <p style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>{v('Categories', 'Danh mục')}</p>
                 <div className="flex flex-wrap gap-2">
-                  {store.categories.map(cat => (
-                    <span key={cat} className="px-3 py-1 border border-[#e0d8cf]" style={{ fontSize: '13px', color: '#0d0d0d', borderRadius: '10px' }}>
+                  {(lang === 'vi' ? store.categoriesVi : store.categories).map((cat, ci) => (
+                    <span key={ci} className="px-3 py-1 border border-[#e0d8cf]" style={{ fontSize: '13px', color: '#0d0d0d', borderRadius: '10px' }}>
                       {cat}
                     </span>
                   ))}
@@ -122,10 +123,10 @@ export function StoreDetailPage() {
                   {store.featuredProducts.map(prod => (
                     <Link key={prod.id} to={`/product/${prod.id}`} className="group">
                       <div className="aspect-square overflow-hidden mb-2" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                        <ImageWithFallback src={prod.image} alt={prod.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        <ImageWithFallback src={prod.image} alt={v(prod.name, prod.nameVi)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                       </div>
-                      <p className="truncate" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{prod.name}</p>
-                      <p style={{ fontSize: '14px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${prod.price}</p>
+                      <p className="truncate" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{v(prod.name, prod.nameVi)}</p>
+                      <p style={{ fontSize: '14px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(prod.price)}</p>
                     </Link>
                   ))}
                 </div>
@@ -138,8 +139,8 @@ export function StoreDetailPage() {
               <div className="h-48 flex items-center justify-center relative overflow-hidden" style={{ borderRadius: '10px', backgroundColor: '#f3f0eb' }}>
                 <div className="text-center">
                   <MapPin className="w-10 h-10 mx-auto mb-2" style={{ color: '#d41c1c' }} />
-                  <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{store.address}, {store.district}</p>
-                  <p style={{ fontSize: '13px', color: '#888' }}>{store.city}</p>
+                  <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{store.address}, {v(store.district, store.districtVi)}</p>
+                  <p style={{ fontSize: '13px', color: '#888' }}>{v(store.city, store.cityVi)}</p>
                 </div>
                 {/* Grid lines to simulate map */}
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#0A0A0A 1px, transparent 1px), linear-gradient(90deg, #0A0A0A 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
@@ -171,7 +172,7 @@ export function StoreDetailPage() {
                   <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#e2b93b' }} />
                   <div>
                     <p style={{ fontSize: '14px', color: '#0d0d0d' }}>{store.address}</p>
-                    <p style={{ fontSize: '13px', color: '#888' }}>{store.district}, {store.city}</p>
+                    <p style={{ fontSize: '13px', color: '#888' }}>{v(store.district, store.districtVi)}, {v(store.city, store.cityVi)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -201,7 +202,7 @@ export function StoreDetailPage() {
                 <div className="space-y-2">
                   {store.hours.map(h => (
                     <div key={h.day} className="flex justify-between">
-                      <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{h.day}</span>
+                      <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v(h.day, h.dayVi)}</span>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{h.open} – {h.close}</span>
                     </div>
                   ))}

@@ -27,7 +27,7 @@ export function BrandProfilePage() {
       website: 'https://brandone.com',
       returnPolicy: '30-day return policy for unworn items with original tags.',
       warrantyPolicy: '1-year warranty on all leather goods.',
-      shippingPolicy: 'Free shipping on orders over $100. Standard delivery 3-5 business days.'
+      shippingPolicy: 'Free shipping on orders over 2.500.000₫. Standard delivery 3-5 business days.'
     }
   });
 
@@ -104,16 +104,16 @@ export function BrandProfilePage() {
                 {lang === 'en' ? (
                   <Textarea 
                     id="description_en" 
-                    className="min-h-[100px]" 
-                    placeholder="Describe your brand in English..."
-                    {...register('description_en')} 
+                    className="min-h-[100px]"
+                    placeholder={v('Describe your brand in English...', 'Mô tả thương hiệu bằng tiếng Anh...')}
+                    {...register('description_en')}
                   />
                 ) : (
                   <Textarea 
                     id="description_vi" 
-                    className="min-h-[100px]" 
-                    placeholder="Mô tả thương hiệu bằng tiếng Việt..."
-                    {...register('description_vi')} 
+                    className="min-h-[100px]"
+                    placeholder={v('Describe your brand in Vietnamese...', 'Mô tả thương hiệu bằng tiếng Việt...')}
+                    {...register('description_vi')}
                   />
                 )}
                 <p className="text-xs text-muted-foreground">

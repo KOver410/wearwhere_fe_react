@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { ArrowLeft, Upload, X, Plus, Image as ImageIcon, Tag, MapPin } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { products as allProducts, STYLES } from '@/app/data/mockData';
+import { formatVnd } from '@/app/utils/currency';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 
 export function OOTDCreatePage() {
@@ -181,10 +182,10 @@ export function OOTDCreatePage() {
                   if (!prod) return null;
                   return (
                     <div key={pid} className="flex items-center gap-3 p-3" style={{ borderRadius: '10px', backgroundColor: '#f3f0eb' }}>
-                      <ImageWithFallback src={prod.image} alt={prod.name} className="w-12 h-12 object-cover" style={{ borderRadius: '4px' } as any} />
+                      <ImageWithFallback src={prod.image} alt={v(prod.name, prod.nameVi)} className="w-12 h-12 object-cover" style={{ borderRadius: '4px' } as any} />
                       <div className="flex-1 min-w-0">
-                        <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{prod.name}</p>
-                        <p style={{ fontSize: '12px', color: '#888' }}>{prod.brand} · ${(prod.salePrice || prod.price).toFixed(0)}</p>
+                        <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(prod.name, prod.nameVi)}</p>
+                        <p style={{ fontSize: '12px', color: '#888' }}>{prod.brand} · {formatVnd(prod.salePrice || prod.price)}</p>
                       </div>
                       <button onClick={() => toggleProduct(pid)} className="p-1.5 hover:bg-red-50 rounded transition-colors">
                         <X className="w-4 h-4 text-[#d41c1c]" />
@@ -214,12 +215,12 @@ export function OOTDCreatePage() {
                       }`}
                       style={{ borderRadius: '10px' }}
                     >
-                      <ImageWithFallback src={prod.image} alt={prod.name} className="w-10 h-10 object-cover" style={{ borderRadius: '4px' } as any} />
+                      <ImageWithFallback src={prod.image} alt={v(prod.name, prod.nameVi)} className="w-10 h-10 object-cover" style={{ borderRadius: '4px' } as any} />
                       <div className="flex-1 min-w-0">
-                        <p className="truncate" style={{ fontSize: '13px', color: '#0d0d0d' }}>{prod.name}</p>
+                        <p className="truncate" style={{ fontSize: '13px', color: '#0d0d0d' }}>{v(prod.name, prod.nameVi)}</p>
                         <p style={{ fontSize: '12px', color: '#888' }}>{prod.brand}</p>
                       </div>
-                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>${(prod.salePrice || prod.price).toFixed(0)}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{formatVnd(prod.salePrice || prod.price)}</span>
                       {selectedProducts.includes(prod.id) && (
                         <span className="w-5 h-5 text-white rounded-full flex items-center justify-center" style={{ fontSize: '10px', backgroundColor: '#d41c1c' }}>✓</span>
                       )}

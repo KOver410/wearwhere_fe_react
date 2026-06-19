@@ -5,6 +5,7 @@ import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { currentUser, ootdPosts } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 export function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -142,7 +143,7 @@ export function ProfilePage() {
                 lineHeight: '1.5',
                 fontFamily: "'Montserrat', sans-serif",
               }}>
-                {form.bio}
+                {v(form.bio, form.bioVi)}
               </p>
             )}
           </div>
@@ -321,10 +322,10 @@ export function ProfilePage() {
                           {product.brand}
                         </p>
                         <p className="truncate" style={{ fontSize: '13px', color: '#0d0d0d', fontWeight: 500, marginTop: '2px', fontFamily: "'Montserrat', sans-serif" }}>
-                          {product.name}
+                          {v(product.name, product.nameVi)}
                         </p>
                         <p style={{ fontSize: '14px', color: '#0d0d0d', fontWeight: 700, marginTop: '4px', fontFamily: "'Montserrat', sans-serif" }}>
-                          ${product.price}
+                          {formatVnd(product.price)}
                         </p>
                       </div>
                     </Link>

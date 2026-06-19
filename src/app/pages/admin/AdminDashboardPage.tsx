@@ -69,6 +69,16 @@ const brandCategoryData = [
 
 export default function AdminDashboardPage() {
   const { v } = useLanguage();
+  const categoryLabels: Record<string, string> = {
+    Men: v('Men', 'Nam'),
+    Women: v('Women', 'Nữ'),
+    Accessories: v('Accessories', 'Phụ kiện'),
+    Shoes: v('Shoes', 'Giày dép'),
+  };
+  const localizedBrandCategoryData = brandCategoryData.map((d) => ({
+    ...d,
+    category: categoryLabels[d.category] ?? d.category,
+  }));
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
   };
@@ -262,8 +272,8 @@ export default function AdminDashboardPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               />
-              <Area type="monotone" dataKey="gmv" stroke="#6366F1" fill="#6366F1" fillOpacity={0.15} name="GMV (M)" />
-              <Area type="monotone" dataKey="revenue" stroke="#F54900" fill="#F54900" fillOpacity={0.2} name="Revenue (M)" />
+              <Area type="monotone" dataKey="gmv" stroke="#6366F1" fill="#6366F1" fillOpacity={0.15} name={v('GMV (M)', 'GMV (triệu)')} />
+              <Area type="monotone" dataKey="revenue" stroke="#F54900" fill="#F54900" fillOpacity={0.2} name={v('Revenue (M)', 'Doanh thu (triệu)')} />
             </AreaChart>
           </ResponsiveContainer>
         </Card>
@@ -287,7 +297,7 @@ export default function AdminDashboardPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               />
-              <Line type="monotone" dataKey="users" stroke="#10B981" strokeWidth={2} dot={{ fill: '#10B981', r: 4 }} name="Users" />
+              <Line type="monotone" dataKey="users" stroke="#10B981" strokeWidth={2} dot={{ fill: '#10B981', r: 4 }} name={v('Users', 'Người dùng')} />
             </LineChart>
           </ResponsiveContainer>
         </Card>
@@ -299,7 +309,7 @@ export default function AdminDashboardPage() {
           {v('Brands by Category', 'Thương hiệu theo danh mục')}
         </h2>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={brandCategoryData}>
+          <BarChart data={localizedBrandCategoryData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis dataKey="category" stroke="#6A7282" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }} />
             <YAxis stroke="#6A7282" style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }} />
@@ -312,7 +322,7 @@ export default function AdminDashboardPage() {
                 fontFamily: 'Arimo, sans-serif',
               }}
             />
-            <Bar dataKey="count" fill="#F54900" radius={[10, 10, 0, 0]} name="Count" />
+            <Bar dataKey="count" fill="#F54900" radius={[10, 10, 0, 0]} name={v('Count', 'Số lượng')} />
           </BarChart>
         </ResponsiveContainer>
       </Card>

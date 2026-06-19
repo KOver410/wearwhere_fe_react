@@ -42,6 +42,7 @@ import { Checkbox } from "@/app/components/ui/checkbox";
 import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_ORDERS = [
@@ -307,7 +308,7 @@ export default function BrandOrdersPage() {
                         {format(new Date(order.date), "MMM d, yyyy")}
                         <div className="text-xs text-gray-400">{format(new Date(order.date), "h:mm a")}</div>
                       </TableCell>
-                      <TableCell className="font-medium">${order.total.toFixed(2)}</TableCell>
+                      <TableCell className="font-medium">{formatVnd(order.total)}</TableCell>
                       <TableCell>
                         <Badge variant="secondary" className={cn("font-medium border", getStatusColor(order.status))}>
                           {getStatusLabel(order.status)}

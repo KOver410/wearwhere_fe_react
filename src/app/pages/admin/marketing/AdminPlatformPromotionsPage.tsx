@@ -38,14 +38,14 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockPromotions = [
-  { id: 'PROMO-001', name: 'Summer Sale 2024', type: 'sitewide', discount: 20, discountType: 'percentage', status: 'active', startDate: '2024-06-01', endDate: '2024-08-31', usageCount: 1250, usageLimit: null, minPurchase: 500000 },
-  { id: 'PROMO-002', name: 'New User Welcome', type: 'voucher', discount: 100000, discountType: 'fixed', status: 'active', startDate: '2024-01-01', endDate: '2024-12-31', usageCount: 456, usageLimit: null, minPurchase: 300000 },
-  { id: 'PROMO-003', name: 'Flash Sale Friday', type: 'sitewide', discount: 30, discountType: 'percentage', status: 'scheduled', startDate: '2024-02-23', endDate: '2024-02-23', usageCount: 0, usageLimit: 1000, minPurchase: 0 },
-  { id: 'PROMO-004', name: 'VIP Member Bonus', type: 'voucher', discount: 200000, discountType: 'fixed', status: 'active', startDate: '2024-02-01', endDate: '2024-02-29', usageCount: 89, usageLimit: 500, minPurchase: 1000000 },
-  { id: 'PROMO-005', name: 'Free Shipping February', type: 'sitewide', discount: 0, discountType: 'free_shipping', status: 'active', startDate: '2024-02-01', endDate: '2024-02-29', usageCount: 2340, usageLimit: null, minPurchase: 200000 },
-  { id: 'PROMO-006', name: 'Birthday Special', type: 'voucher', discount: 15, discountType: 'percentage', status: 'paused', startDate: '2024-01-01', endDate: '2024-12-31', usageCount: 234, usageLimit: null, minPurchase: 0 },
-  { id: 'PROMO-007', name: 'Valentine Sale', type: 'sitewide', discount: 25, discountType: 'percentage', status: 'expired', startDate: '2024-02-10', endDate: '2024-02-14', usageCount: 890, usageLimit: null, minPurchase: 400000 },
-  { id: 'PROMO-008', name: 'First Purchase 50K Off', type: 'voucher', discount: 50000, discountType: 'fixed', status: 'active', startDate: '2024-01-15', endDate: '2024-12-31', usageCount: 567, usageLimit: null, minPurchase: 250000 },
+  { id: 'PROMO-001', name: 'Summer Sale 2024', nameVi: 'Khuyến mãi Hè 2024', type: 'sitewide', discount: 20, discountType: 'percentage', status: 'active', startDate: '2024-06-01', endDate: '2024-08-31', usageCount: 1250, usageLimit: null, minPurchase: 500000 },
+  { id: 'PROMO-002', name: 'New User Welcome', nameVi: 'Chào mừng người dùng mới', type: 'voucher', discount: 100000, discountType: 'fixed', status: 'active', startDate: '2024-01-01', endDate: '2024-12-31', usageCount: 456, usageLimit: null, minPurchase: 300000 },
+  { id: 'PROMO-003', name: 'Flash Sale Friday', nameVi: 'Flash Sale thứ Sáu', type: 'sitewide', discount: 30, discountType: 'percentage', status: 'scheduled', startDate: '2024-02-23', endDate: '2024-02-23', usageCount: 0, usageLimit: 1000, minPurchase: 0 },
+  { id: 'PROMO-004', name: 'VIP Member Bonus', nameVi: 'Ưu đãi thành viên VIP', type: 'voucher', discount: 200000, discountType: 'fixed', status: 'active', startDate: '2024-02-01', endDate: '2024-02-29', usageCount: 89, usageLimit: 500, minPurchase: 1000000 },
+  { id: 'PROMO-005', name: 'Free Shipping February', nameVi: 'Miễn phí vận chuyển tháng Hai', type: 'sitewide', discount: 0, discountType: 'free_shipping', status: 'active', startDate: '2024-02-01', endDate: '2024-02-29', usageCount: 2340, usageLimit: null, minPurchase: 200000 },
+  { id: 'PROMO-006', name: 'Birthday Special', nameVi: 'Ưu đãi sinh nhật', type: 'voucher', discount: 15, discountType: 'percentage', status: 'paused', startDate: '2024-01-01', endDate: '2024-12-31', usageCount: 234, usageLimit: null, minPurchase: 0 },
+  { id: 'PROMO-007', name: 'Valentine Sale', nameVi: 'Khuyến mãi Valentine', type: 'sitewide', discount: 25, discountType: 'percentage', status: 'expired', startDate: '2024-02-10', endDate: '2024-02-14', usageCount: 890, usageLimit: null, minPurchase: 400000 },
+  { id: 'PROMO-008', name: 'First Purchase 50K Off', nameVi: 'Giảm 50K cho đơn đầu tiên', type: 'voucher', discount: 50000, discountType: 'fixed', status: 'active', startDate: '2024-01-15', endDate: '2024-12-31', usageCount: 567, usageLimit: null, minPurchase: 250000 },
 ];
 
 const statusConfig = {
@@ -61,7 +61,7 @@ const typeConfig = {
 };
 
 export default function AdminPlatformPromotionsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [promotions, setPromotions] = useState(mockPromotions);
   const [searchQuery, setSearchQuery] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -117,7 +117,8 @@ export default function AdminPlatformPromotionsPage() {
     const newPromo = {
       ...promo,
       id: `PROMO-${String(promotions.length + 1).padStart(3, '0')}`,
-      name: `${promo.name} (Copy)`,
+      name: `${promo.name} ${v('(Copy)', '(Bản sao)')}`,
+      nameVi: promo.nameVi ? `${promo.nameVi} ${v('(Copy)', '(Bản sao)')}` : undefined,
       usageCount: 0,
       status: 'scheduled',
     };
@@ -145,7 +146,7 @@ export default function AdminPlatformPromotionsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý promotions và vouchers toàn platform
+            {v('Manage promotions and vouchers across the platform', 'Quản lý promotions và vouchers toàn platform')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -426,7 +427,7 @@ export default function AdminPlatformPromotionsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    {promo.name}
+                    {lang === 'vi' && (promo as any).nameVi ? (promo as any).nameVi : promo.name}
                   </h3>
                   <Badge
                     className={typeConfig[promo.type as keyof typeof typeConfig].color}

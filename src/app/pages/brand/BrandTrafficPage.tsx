@@ -15,24 +15,24 @@ const trafficData = [
 ];
 
 const trafficSources = [
-  { source: 'Direct', visitors: '12,340', percent: '45%' },
-  { source: 'Google Search', visitors: '8,200', percent: '30%' },
-  { source: 'Instagram', visitors: '4,100', percent: '15%' },
-  { source: 'Facebook', visitors: '1,300', percent: '5%' },
-  { source: 'Email Marketing', visitors: '800', percent: '3%' },
-  { source: 'Referral', visitors: '560', percent: '2%' },
+  { source: 'Direct', sourceVi: 'Truy cập trực tiếp', visitors: '12,340', percent: '45%' },
+  { source: 'Google Search', sourceVi: 'Tìm kiếm Google', visitors: '8,200', percent: '30%' },
+  { source: 'Instagram', sourceVi: 'Instagram', visitors: '4,100', percent: '15%' },
+  { source: 'Facebook', sourceVi: 'Facebook', visitors: '1,300', percent: '5%' },
+  { source: 'Email Marketing', sourceVi: 'Email Marketing', visitors: '800', percent: '3%' },
+  { source: 'Referral', sourceVi: 'Giới thiệu', visitors: '560', percent: '2%' },
 ];
 
 const popularProducts = [
-  { name: 'Vintage Denim Jacket', views: '12,450', conversion: '2.4%' },
-  { name: 'Cotton Basic Tee', views: '10,200', conversion: '3.1%' },
-  { name: 'Wool Blend Coat', views: '8,900', conversion: '1.8%' },
-  { name: 'Leather Boots', views: '7,500', conversion: '2.1%' },
-  { name: 'Slim Fit Chinos', views: '6,200', conversion: '2.5%' },
+  { name: 'Vintage Denim Jacket', nameVi: 'Áo khoác denim cổ điển', views: '12,450', conversion: '2.4%' },
+  { name: 'Cotton Basic Tee', nameVi: 'Áo thun cotton cơ bản', views: '10,200', conversion: '3.1%' },
+  { name: 'Wool Blend Coat', nameVi: 'Áo khoác len pha', views: '8,900', conversion: '1.8%' },
+  { name: 'Leather Boots', nameVi: 'Bốt da', views: '7,500', conversion: '2.1%' },
+  { name: 'Slim Fit Chinos', nameVi: 'Quần chino ôm', views: '6,200', conversion: '2.5%' },
 ];
 
 export function BrandTrafficPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   return (
     <div className="space-y-8">
       <div>
@@ -135,7 +135,7 @@ export function BrandTrafficPage() {
               <TableBody>
                 {trafficSources.map((source) => (
                   <TableRow key={source.source}>
-                    <TableCell className="font-medium">{source.source}</TableCell>
+                    <TableCell className="font-medium">{lang === 'vi' ? source.sourceVi : source.source}</TableCell>
                     <TableCell className="text-right">{source.visitors}</TableCell>
                     <TableCell className="text-right">{source.percent}</TableCell>
                   </TableRow>
@@ -164,7 +164,7 @@ export function BrandTrafficPage() {
               <TableBody>
                 {popularProducts.map((product) => (
                   <TableRow key={product.name}>
-                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell className="font-medium">{lang === 'vi' ? product.nameVi : product.name}</TableCell>
                     <TableCell>{product.views}</TableCell>
                     <TableCell>{product.conversion}</TableCell>
                   </TableRow>

@@ -196,7 +196,7 @@ function TrendingPosts() {
           className="mb-10"
         >
           <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-            TRENDING
+            {v('TRENDING', 'THỊNH HÀNH')}
           </span>
           <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#0d0d0d', lineHeight: 0.95 }}>
             {lang === 'vi' ? 'BÀI ĐĂNG ĐANG THỊNH HÀNH' : 'TRENDING POSTS'}

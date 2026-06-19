@@ -167,7 +167,7 @@ export default function AdminReviewReportedOOTDPage() {
               className="text-[#4A5565]"
               style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
             >
-              {v('Review và take action on reported content', 'Xem xét và xử lý nội dung bị báo cáo')}
+              {v('Review and take action on reported content', 'Xem xét và xử lý nội dung bị báo cáo')}
             </p>
           </div>
         </div>

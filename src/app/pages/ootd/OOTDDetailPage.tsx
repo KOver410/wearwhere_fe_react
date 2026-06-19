@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router';
 import { Heart, MessageCircle, Bookmark, Share2, ArrowLeft, BadgeCheck, MapPin, Send } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { ootdPosts, currentUser } from '@/app/data/accountMockData';
+import { formatVnd } from '@/app/utils/currency';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 import { copyToClipboard } from '@/app/utils/clipboard';
 
@@ -21,7 +22,7 @@ export function OOTDDetailPage() {
     const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: v(`OOTD by ${post?.user.username}`, `OOTD của ${post?.user.username}`), text: post?.caption || '', url });
+        await navigator.share({ title: v(`OOTD by ${post?.user.username}`, `OOTD của ${post?.user.username}`), text: v(post?.caption || '', post?.captionVi || post?.caption || ''), url });
       } catch { /* user cancelled */ }
     } else {
       await copyToClipboard(url);
@@ -72,7 +73,7 @@ export function OOTDDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Image */}
           <div className="overflow-hidden" style={{ borderRadius: '10px', backgroundColor: '#f3f0eb' }}>
-            <ImageWithFallback src={post.image} alt={post.caption} className="w-full h-full object-cover" />
+            <ImageWithFallback src={post.image} alt={v(post.caption, post.captionVi)} className="w-full h-full object-cover" />
           </div>
 
           {/* Content */}
@@ -93,7 +94,7 @@ export function OOTDDetailPage() {
                   <span style={{ fontSize: '13px', color: '#888' }}>@{post.user.username}</span>
                   {post.location && (
                     <span className="flex items-center gap-0.5" style={{ fontSize: '12px', color: '#888' }}>
-                      <MapPin className="w-3 h-3" />{post.location}
+                      <MapPin className="w-3 h-3" />{v(post.location, post.locationVi ?? post.location)}
                     </span>
                   )}
                 </div>
@@ -104,7 +105,7 @@ export function OOTDDetailPage() {
             </div>
 
             {/* Caption */}
-            <p style={{ fontSize: '16px', color: '#0d0d0d', lineHeight: '1.6', marginBottom: '12px' }}>{post.caption}</p>
+            <p style={{ fontSize: '16px', color: '#0d0d0d', lineHeight: '1.6', marginBottom: '12px' }}>{v(post.caption, post.captionVi)}</p>
             <div className="flex flex-wrap gap-2 mb-4">
               {post.tags.map(tag => (
                 <Link key={tag} to={`/ootd?tag=${tag}`} className="px-3 py-1 hover:bg-[#e0d8cf] transition-colors" style={{ fontSize: '13px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>
@@ -139,12 +140,12 @@ export function OOTDDetailPage() {
                 <div className="space-y-2">
                   {post.products.map(prod => (
                     <Link key={prod.id} to={`/product/${prod.id}`} className="flex items-center gap-3 p-3 hover:bg-[#e0d8cf] transition-colors" style={{ borderRadius: '10px', backgroundColor: '#f3f0eb' }}>
-                      <ImageWithFallback src={prod.image} alt={prod.name} className="w-14 h-14 object-cover" style={{ borderRadius: '4px' } as any} />
+                      <ImageWithFallback src={prod.image} alt={v(prod.name, prod.nameVi)} className="w-14 h-14 object-cover" style={{ borderRadius: '4px' } as any} />
                       <div className="flex-1 min-w-0">
-                        <p className="line-clamp-1" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{prod.name}</p>
+                        <p className="line-clamp-1" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(prod.name, prod.nameVi)}</p>
                         <p style={{ fontSize: '12px', color: '#888' }}>{prod.brand}</p>
                       </div>
-                      <p style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${prod.price}</p>
+                      <p style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(prod.price)}</p>
                     </Link>
                   ))}
                 </div>
@@ -162,7 +163,7 @@ export function OOTDDetailPage() {
                     <ImageWithFallback src={c.user.avatar} alt={c.user.username} className="w-8 h-8 rounded-full object-cover flex-shrink-0" style={{ border: '1px solid #e0d8cf' } as any} />
                     <div>
                       <p style={{ fontSize: '14px', color: '#0d0d0d' }}>
-                        <span style={{ fontWeight: 600 }}>{c.user.username}</span> {c.text}
+                        <span style={{ fontWeight: 600 }}>{c.user.username}</span> {v(c.text, (c as any).textVi ?? c.text)}
                       </p>
                       <div className="flex items-center gap-3 mt-1">
                         <span style={{ fontSize: '12px', color: '#888' }}>{c.date}</span>

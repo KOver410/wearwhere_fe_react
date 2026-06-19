@@ -8,8 +8,8 @@ export function SmartWardrobe() {
   const { t, lang, v } = useLanguage();
 
   const formatPrice = (price: number) => {
-    if (lang === 'vi') return `${price.toLocaleString('vi-VN')}d`;
-    return `$${(price / 25000).toFixed(0)}`;
+    // Currency is always Vietnamese đồng, regardless of UI language.
+    return `${price.toLocaleString('vi-VN')}₫`;
   };
 
   const outfitRecommendations = [

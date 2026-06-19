@@ -210,10 +210,10 @@ export default function BrandProductFormPage() {
                 <div className="space-y-2">
                   <Label htmlFor="price">{v('Price', 'Giá bán')}</Label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                    <Input 
-                      id="price" 
-                      type="number" 
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₫</span>
+                    <Input
+                      id="price"
+                      type="number"
                       step="0.01"
                       className="pl-7"
                       {...register('price', { required: true, min: 0 })}
@@ -223,7 +223,7 @@ export default function BrandProductFormPage() {
                 <div className="space-y-2">
                   <Label htmlFor="compareAtPrice">{v('Compare-at Price', 'Giá so sánh')}</Label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₫</span>
                     <Input 
                       id="compareAtPrice" 
                       type="number" 
@@ -250,7 +250,7 @@ export default function BrandProductFormPage() {
                   <div className="space-y-2">
                     <Label htmlFor="costPerItem">{v('Cost per item', 'Giá vốn mỗi sản phẩm')}</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">₫</span>
                       <Input 
                         id="costPerItem" 
                         type="number" 

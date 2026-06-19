@@ -9,7 +9,7 @@ export function AddressBookPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<Partial<Address>>({});
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
 
   const setDefault = (id: string) => { setAddressList(prev => prev.map(a => ({ ...a, isDefault: a.id === id }))); };
   const deleteAddress = (id: string) => { setAddressList(prev => prev.filter(a => a.id !== id)); };
@@ -73,7 +73,7 @@ export function AddressBookPage() {
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" style={{ color: '#e2b93b' }} />
-                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{addr.label}</span>
+                  <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(addr.label, addr.labelVi)}</span>
                   {addr.isDefault && (
                     <span className="px-2 py-0.5 text-white" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: '#d41c1c', letterSpacing: '0.1em', fontFamily: "'Oswald', sans-serif" }}>{v('DEFAULT', 'MẶC ĐỊNH')}</span>
                   )}
@@ -87,8 +87,8 @@ export function AddressBookPage() {
               </div>
               <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{addr.fullName}</p>
               <p style={{ fontSize: '14px', color: '#4a4a4a', marginTop: '2px' }}>{addr.street}</p>
-              <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{addr.city}, {addr.state} {addr.zipCode}</p>
-              <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{addr.country}</p>
+              <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{v(addr.city, addr.cityVi)}, {addr.state} {addr.zipCode}</p>
+              <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{v(addr.country, addr.countryVi)}</p>
               <p style={{ fontSize: '13px', color: '#888', marginTop: '8px' }}>{addr.phone}</p>
               {!addr.isDefault && (
                 <button onClick={() => setDefault(addr.id)} className="flex items-center gap-1 mt-3 px-3 py-1.5 border-2 border-[#e0d8cf] hover:bg-[#f3f0eb] transition-colors" style={{ borderRadius: '10px', fontSize: '12px', color: '#d41c1c' }}>

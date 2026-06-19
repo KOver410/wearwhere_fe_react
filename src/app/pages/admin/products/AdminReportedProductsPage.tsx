@@ -213,7 +213,7 @@ export default function AdminReportedProductsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Xem xét và xử lý các sản phẩm bị báo cáo
+            {v('Review and handle reported products', 'Xem xét và xử lý các sản phẩm bị báo cáo')}
           </p>
         </div>
         <Link to="/admin/products">

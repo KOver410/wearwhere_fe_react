@@ -24,14 +24,14 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockDisputes = [
-  { id: 'DIS-001', orderId: 'ORD-2024-006', customer: 'Nguyen Thi F', brand: 'COS', reason: 'Item not as described', amount: 1950000, status: 'pending', priority: 'high', created: '2024-02-14', lastUpdate: '2024-02-14' },
-  { id: 'DIS-002', orderId: 'ORD-2024-008', customer: 'Le Thi H', brand: 'Uniqlo', reason: 'Damaged product', amount: 2400000, status: 'pending', priority: 'high', created: '2024-02-13', lastUpdate: '2024-02-14' },
-  { id: 'DIS-003', orderId: 'ORD-2024-012', customer: 'Tran Van K', brand: 'H&M', reason: 'Wrong size delivered', amount: 890000, status: 'under_review', priority: 'medium', created: '2024-02-12', lastUpdate: '2024-02-14' },
-  { id: 'DIS-004', orderId: 'ORD-2024-015', customer: 'Pham Thi L', brand: 'Mango', reason: 'Late delivery', amount: 650000, status: 'resolved', priority: 'low', created: '2024-02-10', lastUpdate: '2024-02-13' },
-  { id: 'DIS-005', orderId: 'ORD-2024-018', customer: 'Hoang Van M', brand: 'Zara', reason: 'Quality issues', amount: 1800000, status: 'pending', priority: 'medium', created: '2024-02-14', lastUpdate: '2024-02-14' },
-  { id: 'DIS-006', orderId: 'ORD-2024-021', customer: 'Nguyen Thi N', brand: 'COS', reason: 'Missing items', amount: 1250000, status: 'under_review', priority: 'high', created: '2024-02-13', lastUpdate: '2024-02-14' },
-  { id: 'DIS-007', orderId: 'ORD-2024-024', customer: 'Le Van O', brand: 'Uniqlo', reason: 'Color mismatch', amount: 980000, status: 'resolved', priority: 'low', created: '2024-02-09', lastUpdate: '2024-02-12' },
-  { id: 'DIS-008', orderId: 'ORD-2024-027', customer: 'Tran Thi P', brand: 'H&M', reason: 'Defective product', amount: 1150000, status: 'rejected', priority: 'medium', created: '2024-02-11', lastUpdate: '2024-02-13' },
+  { id: 'DIS-001', orderId: 'ORD-2024-006', customer: 'Nguyen Thi F', brand: 'COS', reason: 'Item not as described', reasonVi: 'Sản phẩm không đúng mô tả', amount: 1950000, status: 'pending', priority: 'high', created: '2024-02-14', lastUpdate: '2024-02-14' },
+  { id: 'DIS-002', orderId: 'ORD-2024-008', customer: 'Le Thi H', brand: 'Uniqlo', reason: 'Damaged product', reasonVi: 'Sản phẩm bị hư hỏng', amount: 2400000, status: 'pending', priority: 'high', created: '2024-02-13', lastUpdate: '2024-02-14' },
+  { id: 'DIS-003', orderId: 'ORD-2024-012', customer: 'Tran Van K', brand: 'H&M', reason: 'Wrong size delivered', reasonVi: 'Giao sai kích cỡ', amount: 890000, status: 'under_review', priority: 'medium', created: '2024-02-12', lastUpdate: '2024-02-14' },
+  { id: 'DIS-004', orderId: 'ORD-2024-015', customer: 'Pham Thi L', brand: 'Mango', reason: 'Late delivery', reasonVi: 'Giao hàng trễ', amount: 650000, status: 'resolved', priority: 'low', created: '2024-02-10', lastUpdate: '2024-02-13' },
+  { id: 'DIS-005', orderId: 'ORD-2024-018', customer: 'Hoang Van M', brand: 'Zara', reason: 'Quality issues', reasonVi: 'Vấn đề chất lượng', amount: 1800000, status: 'pending', priority: 'medium', created: '2024-02-14', lastUpdate: '2024-02-14' },
+  { id: 'DIS-006', orderId: 'ORD-2024-021', customer: 'Nguyen Thi N', brand: 'COS', reason: 'Missing items', reasonVi: 'Thiếu sản phẩm', amount: 1250000, status: 'under_review', priority: 'high', created: '2024-02-13', lastUpdate: '2024-02-14' },
+  { id: 'DIS-007', orderId: 'ORD-2024-024', customer: 'Le Van O', brand: 'Uniqlo', reason: 'Color mismatch', reasonVi: 'Sai màu sắc', amount: 980000, status: 'resolved', priority: 'low', created: '2024-02-09', lastUpdate: '2024-02-12' },
+  { id: 'DIS-008', orderId: 'ORD-2024-027', customer: 'Tran Thi P', brand: 'H&M', reason: 'Defective product', reasonVi: 'Sản phẩm lỗi', amount: 1150000, status: 'rejected', priority: 'medium', created: '2024-02-11', lastUpdate: '2024-02-13' },
 ];
 
 const statusConfig = {
@@ -48,7 +48,7 @@ const priorityConfig = {
 };
 
 export default function AdminDisputesPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const statusLabels: Record<string, string> = {
     pending: v('Pending Review', 'Chờ xem xét'),
     under_review: v('Under Review', 'Đang xem xét'),
@@ -532,7 +532,7 @@ export default function AdminDisputesPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {dispute.reason}
+                      {lang === 'vi' ? dispute.reasonVi : dispute.reason}
                     </p>
                   </td>
                   <td style={{ padding: '16px 24px' }}>

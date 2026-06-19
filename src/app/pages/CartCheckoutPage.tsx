@@ -9,13 +9,16 @@ import { Label } from '@/app/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/app/components/ui/radio-group';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 interface CartItem {
   id: number;
   name: string;
+  nameVi: string;
   image: string;
   size: string;
   color: string;
+  colorVi: string;
   price: number;
   quantity: number;
 }
@@ -49,27 +52,33 @@ export function CartCheckoutPage() {
     {
       id: 1,
       name: 'Vintage Denim Jacket',
+      nameVi: 'Áo khoác denim vintage',
       image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
       size: 'M',
       color: 'Blue',
+      colorVi: 'Xanh dương',
       price: 89.99,
       quantity: 1,
     },
     {
       id: 2,
       name: 'Classic White Sneakers',
+      nameVi: 'Giày sneaker trắng cổ điển',
       image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400',
       size: '42',
       color: 'White',
+      colorVi: 'Trắng',
       price: 129.99,
       quantity: 1,
     },
     {
       id: 3,
       name: 'Leather Crossbody Bag',
+      nameVi: 'Túi đeo chéo da',
       image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400',
       size: 'One Size',
       color: 'Brown',
+      colorVi: 'Nâu',
       price: 159.99,
       quantity: 2,
     },
@@ -90,7 +99,7 @@ export function CartCheckoutPage() {
   } = useForm<CheckoutFormData>({
     defaultValues: {
       paymentMethod: 'card',
-      country: 'United States',
+      country: 'Việt Nam',
     },
   });
 
@@ -125,7 +134,7 @@ export function CartCheckoutPage() {
 
   const onSubmit = (data: CheckoutFormData) => {
     console.log('Order data:', data);
-    alert(v('Order placed successfully! Total: $', 'Đặt hàng thành công! Tổng cộng: $') + total.toFixed(2));
+    alert(v('Order placed successfully! Total: ', 'Đặt hàng thành công! Tổng cộng: ') + formatVnd(total));
     navigate('/');
   };
 
@@ -288,13 +297,13 @@ export function CartCheckoutPage() {
                         {/* Product Info */}
                         <div className="flex-1 min-w-0">
                           <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#0d0d0d', marginBottom: '4px' }}>
-                            {item.name}
+                            {v(item.name, item.nameVi)}
                           </h3>
                           <p style={{ fontSize: '14px', color: '#888', marginBottom: '4px' }}>
-                            {v('Size', 'Cỡ')}: {item.size} | {v('Color', 'Màu')}: {item.color}
+                            {v('Size', 'Cỡ')}: {item.size} | {v('Color', 'Màu')}: {v(item.color, item.colorVi)}
                           </p>
                           <p style={{ fontSize: '18px', fontWeight: 700, color: '#0d0d0d' }}>
-                            ${item.price.toFixed(2)}
+                            {formatVnd(item.price)}
                           </p>
 
                           {/* Quantity Controls */}
@@ -336,7 +345,7 @@ export function CartCheckoutPage() {
                         {/* Item Subtotal */}
                         <div className="text-right">
                           <p style={{ fontSize: '18px', fontWeight: 700, color: '#0A0A0A' }}>
-                            ${(item.price * item.quantity).toFixed(2)}
+                            {formatVnd(item.price * item.quantity)}
                           </p>
                         </div>
                       </motion.div>
@@ -412,29 +421,29 @@ export function CartCheckoutPage() {
 
                   <div className="space-y-3 mb-6 pb-6" style={{ borderBottom: '2px solid #e0d8cf' }}>
                     <div className="flex justify-between">
-                      <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tm tính')}</span>
+                      <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tạm tính')}</span>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                        ${subtotal.toFixed(2)}
+                        {formatVnd(subtotal)}
                       </span>
                     </div>
                     {appliedVoucher && (
                       <div className="flex justify-between">
                         <span style={{ fontSize: '14px', color: '#e2b93b' }}>{v('Discount', 'Giảm giá')} ({appliedVoucher.discount}%)</span>
                         <span style={{ fontSize: '14px', fontWeight: 600, color: '#e2b93b' }}>
-                          -${discount.toFixed(2)}
+                          -{formatVnd(discount)}
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between">
                       <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Shipping', 'Vận chuyển')}</span>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                        ${shipping.toFixed(2)}
+                        {formatVnd(shipping)}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Tax (8%)', 'Thuế (8%)')}</span>
                       <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                        ${tax.toFixed(2)}
+                        {formatVnd(tax)}
                       </span>
                     </div>
                   </div>
@@ -442,7 +451,7 @@ export function CartCheckoutPage() {
                   <div className="flex justify-between mb-6">
                     <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase' }}>{v('Total', 'Tổng cộng')}</span>
                     <span style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>
-                      ${total.toFixed(2)}
+                      {formatVnd(total)}
                     </span>
                   </div>
 
@@ -862,33 +871,33 @@ export function CartCheckoutPage() {
                       <div className="flex justify-between">
                         <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tạm tính')}</span>
                         <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                          ${subtotal.toFixed(2)}
+                          {formatVnd(subtotal)}
                         </span>
                       </div>
                       {appliedVoucher && (
                         <div className="flex justify-between">
                           <span style={{ fontSize: '14px', color: '#e2b93b' }}>{v('Discount', 'Giảm giá')}</span>
                           <span style={{ fontSize: '14px', fontWeight: 600, color: '#e2b93b' }}>
-                            -${discount.toFixed(2)}
+                            -{formatVnd(discount)}
                           </span>
                         </div>
                       )}
                       <div className="flex justify-between">
                         <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Shipping', 'Vận chuyển')}</span>
                         <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                          ${shipping.toFixed(2)}
+                          {formatVnd(shipping)}
                         </span>
                       </div>
                       <div className="flex justify-between">
                         <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Tax', 'Thuế')}</span>
                         <span style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                          ${tax.toFixed(2)}
+                          {formatVnd(tax)}
                         </span>
                       </div>
                       <div className="flex justify-between pt-2" style={{ borderTop: '2px solid #e0d8cf' }}>
                         <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase' }}>{v('Total', 'Tổng cộng')}</span>
                         <span style={{ fontSize: '24px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>
-                          ${total.toFixed(2)}
+                          {formatVnd(total)}
                         </span>
                       </div>
                     </div>

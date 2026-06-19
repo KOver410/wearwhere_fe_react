@@ -24,68 +24,79 @@ import {
 import { Badge } from '@/app/components/ui/badge';
 import { Checkbox } from '@/app/components/ui/checkbox';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_PRODUCTS = [
   {
     id: '1',
     name: 'Oversized Cotton T-Shirt',
+    nameVi: 'Áo thun cotton form rộng',
     sku: 'TSH-001',
     price: 45.00,
     stock: 124,
     status: 'Active',
     category: 'Tops',
+    categoryVi: 'Áo',
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
     variants: 4
   },
   {
     id: '2',
     name: 'Slim Fit Denim Jeans',
+    nameVi: 'Quần jean denim ôm dáng',
     sku: 'JNS-023',
     price: 89.00,
     stock: 45,
     status: 'Active',
     category: 'Bottoms',
+    categoryVi: 'Quần',
     image: 'https://images.unsplash.com/photo-1542272454315-4c01d7abdf4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
     variants: 6
   },
   {
     id: '3',
     name: 'Wool Blend Coat',
+    nameVi: 'Áo khoác pha len',
     sku: 'OUT-104',
     price: 159.00,
     stock: 12,
     status: 'Low Stock',
     category: 'Outerwear',
+    categoryVi: 'Áo khoác',
     image: 'https://images.unsplash.com/photo-1539533018447-63fcce2678e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
     variants: 3
   },
   {
     id: '4',
     name: 'Leather Crossbody Bag',
+    nameVi: 'Túi đeo chéo da',
     sku: 'ACC-005',
     price: 120.00,
     stock: 0,
     status: 'Out of Stock',
     category: 'Accessories',
+    categoryVi: 'Phụ kiện',
     image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
     variants: 2
   },
   {
     id: '5',
     name: 'Summer Floral Dress',
+    nameVi: 'Váy hoa mùa hè',
     sku: 'DRS-089',
     price: 75.00,
     stock: 56,
     status: 'Draft',
     category: 'Dresses',
+    categoryVi: 'Váy đầm',
     image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
     variants: 5
   }
 ];
 
 export default function BrandProductsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -240,7 +251,7 @@ export default function BrandProductsPage() {
                         <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">{product.name}</div>
+                        <div className="font-medium text-gray-900">{lang === 'vi' ? product.nameVi : product.name}</div>
                         <div className="text-gray-500 text-xs">{product.variants} {v('variants', 'biến thể')} • {product.sku}</div>
                       </div>
                     </div>
@@ -259,10 +270,10 @@ export default function BrandProductsPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4 text-gray-500">
-                    {product.category}
+                    {lang === 'vi' ? product.categoryVi : product.category}
                   </td>
                   <td className="px-6 py-4 text-right font-medium text-gray-900">
-                    ${product.price.toFixed(2)}
+                    {formatVnd(product.price)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <DropdownMenu>

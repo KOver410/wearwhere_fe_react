@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { ChevronRight, Heart, Plus, Search, Shirt, Sparkles, Grid3X3, LayoutList, Star, Upload } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { wardrobeItems, type WardrobeItem } from '@/app/data/wardrobeMockData';
+import { styleVi, categoryVi } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 import { AccountLayout } from '@/app/components/AccountLayout';
 
@@ -136,18 +137,18 @@ export function MyWardrobePage() {
                 </button>
                 <Link to={`/product/${item.productId}`} className="block">
                   <div className="relative aspect-square overflow-hidden" style={{ backgroundColor: '#f3f0eb' }}>
-                    <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <ImageWithFallback src={item.image} alt={v(item.name, item.nameVi)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                     <span className="absolute bottom-3 left-3 px-2 py-0.5 text-white capitalize" style={{ fontSize: '10px', fontWeight: 600, borderRadius: '9999px', backgroundColor: 'rgba(212,28,28,0.8)', letterSpacing: '0.05em' }}>
-                      {item.category}
+                      {v(item.category, categoryVi(item.category))}
                     </span>
                   </div>
                 </Link>
                 <div className="p-3">
-                  <p className="truncate" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
+                  <p className="truncate" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
                   <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>{item.brand}</p>
                   <div className="flex items-center justify-between mt-2">
                     <span style={{ fontSize: '11px', color: '#888' }}>{v(`Worn ${item.wornCount}x`, `Mặc ${item.wornCount} lần`)}</span>
-                    <span className="px-2 py-0.5 capitalize" style={{ fontSize: '10px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>{item.style}</span>
+                    <span className="px-2 py-0.5 capitalize" style={{ fontSize: '10px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>{v(item.style, styleVi(item.style))}</span>
                   </div>
                 </div>
               </div>
@@ -158,11 +159,11 @@ export function MyWardrobePage() {
             {filtered.map(item => (
               <div key={item.id} className="bg-white p-4 flex items-center gap-4" style={{ borderRadius: '10px', border: '1px solid #e0d8cf' }}>
                 <div className="w-16 h-16 flex-shrink-0 overflow-hidden" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                  <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  <ImageWithFallback src={item.image} alt={v(item.name, item.nameVi)} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {item.color} · {v('Size', 'Size')} {item.size}</p>
+                  <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v(item.color, item.colorVi)} · {v('Size', 'Size')} {item.size}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <p style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{v(`Worn ${item.wornCount}x`, `Mặc ${item.wornCount} lần`)}</p>

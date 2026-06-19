@@ -44,6 +44,7 @@ const mockDeletedAccounts = [
     requestDate: '2024-02-10',
     deletionDate: '2024-02-17',
     reason: 'User requested account deletion',
+    reasonVi: 'Người dùng yêu cầu xóa tài khoản',
     status: 'pending',
     stats: {
       orders: 5,
@@ -59,6 +60,7 @@ const mockDeletedAccounts = [
     requestDate: '2024-02-08',
     deletionDate: '2024-02-15',
     reason: 'Privacy concerns',
+    reasonVi: 'Lo ngại về quyền riêng tư',
     status: 'approved',
     stats: {
       orders: 12,
@@ -74,6 +76,7 @@ const mockDeletedAccounts = [
     requestDate: '2024-02-05',
     deletionDate: null,
     reason: 'Account inactivity',
+    reasonVi: 'Tài khoản không hoạt động',
     status: 'rejected',
     stats: {
       orders: 0,
@@ -89,6 +92,7 @@ const mockDeletedAccounts = [
     requestDate: '2024-01-30',
     deletionDate: '2024-02-06',
     reason: 'Switching to another platform',
+    reasonVi: 'Chuyển sang nền tảng khác',
     status: 'completed',
     stats: {
       orders: 8,
@@ -106,7 +110,7 @@ const statusConfig = {
 };
 
 export default function AdminDeletedAccountsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedAccount, setSelectedAccount] = useState<any>(null);
@@ -180,7 +184,10 @@ export default function AdminDeletedAccountsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý yêu cầu xóa tài khoản và lịch sử xóa
+            {v(
+              'Manage account deletion requests and deletion history',
+              'Quản lý yêu cầu xóa tài khoản và lịch sử xóa'
+            )}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -565,7 +572,7 @@ export default function AdminDeletedAccountsPage() {
                         className="text-[#6A7282]"
                         style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        {account.reason}
+                        {lang === 'vi' ? account.reasonVi : account.reason}
                       </p>
                     </td>
                     <td style={{ padding: '16px 24px' }}>
@@ -788,7 +795,7 @@ export default function AdminDeletedAccountsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    {selectedAccount.reason}
+                    {lang === 'vi' ? selectedAccount.reasonVi : selectedAccount.reason}
                   </span>
                 </div>
                 <div className="flex justify-between">

@@ -4,6 +4,7 @@ import { Heart, HeartOff, ChevronRight, Trash2, ShoppingCart } from 'lucide-reac
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { products as allProducts } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 export function WishlistPage() {
   const { v } = useLanguage();
@@ -112,14 +113,14 @@ export function WishlistPage() {
                     </div>
                     <p style={{ fontSize: '12px', color: '#4a4a4a', marginBottom: '2px' }}>{product.brand}</p>
                     <Link to={`/product/${product.id}`}>
-                      <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{product.name}</p>
+                      <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{v(product.name, product.nameVi)}</p>
                     </Link>
                     <div className="flex items-center gap-2">
                       <span style={{ fontSize: '16px', fontWeight: 700, color: product.salePrice ? '#F54900' : '#0d0d0d' }}>
-                        ${(product.salePrice || product.price).toFixed(0)}
+                        {formatVnd(product.salePrice || product.price)}
                       </span>
                       {product.salePrice && (
-                        <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>${product.price}</span>
+                        <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>{formatVnd(product.price)}</span>
                       )}
                     </div>
                   </div>
@@ -142,8 +143,8 @@ export function WishlistPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
-                    <p className="line-clamp-1" style={{ fontSize: '13px', color: '#0d0d0d' }}>{product.name}</p>
-                    <p style={{ fontSize: '14px', fontWeight: 700, color: '#0d0d0d' }}>${(product.salePrice || product.price).toFixed(0)}</p>
+                    <p className="line-clamp-1" style={{ fontSize: '13px', color: '#0d0d0d' }}>{v(product.name, product.nameVi)}</p>
+                    <p style={{ fontSize: '14px', fontWeight: 700, color: '#0d0d0d' }}>{formatVnd(product.salePrice || product.price)}</p>
                   </Link>
                 ))}
               </div>

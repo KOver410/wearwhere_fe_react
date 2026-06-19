@@ -235,7 +235,7 @@ export default function AdminStyleTagsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý style tags cho AI recommendation
+            {v('Manage style tags for AI recommendations', 'Quản lý style tags cho AI recommendation')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>

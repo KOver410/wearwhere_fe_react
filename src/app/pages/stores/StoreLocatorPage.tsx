@@ -182,18 +182,18 @@ export function StoreLocatorPage() {
 
                       <div className="flex items-center gap-1 mb-2" style={{ fontSize: '13px', color: '#4a4a4a' }}>
                         <MapPin className="w-3.5 h-3.5" style={{ color: '#e2b93b' }} />
-                        {store.address}, {store.district}
+                        {store.address}, {v(store.district, store.districtVi)}
                       </div>
 
                       <div className="flex items-center gap-1 mb-3" style={{ fontSize: '13px', color: '#888' }}>
                         <Clock className="w-3.5 h-3.5" />
-                        {store.hours[0].day}: {store.hours[0].open} – {store.hours[0].close}
+                        {v(store.hours[0].day, store.hours[0].dayVi)}: {store.hours[0].open} – {store.hours[0].close}
                       </div>
 
                       {/* Categories */}
                       <div className="flex flex-wrap gap-1.5">
-                        {store.categories.slice(0, 3).map(cat => (
-                          <span key={cat} className="px-2 py-0.5" style={{ fontSize: '11px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>
+                        {(lang === 'vi' ? store.categoriesVi : store.categories).slice(0, 3).map((cat, ci) => (
+                          <span key={ci} className="px-2 py-0.5" style={{ fontSize: '11px', color: '#4a4a4a', borderRadius: '9999px', backgroundColor: '#f3f0eb' }}>
                             {cat}
                           </span>
                         ))}
@@ -209,7 +209,7 @@ export function StoreLocatorPage() {
                         <div className="flex gap-2 mt-3 pt-3" style={{ borderTop: '1px solid #e0d8cf' }}>
                           {store.featuredProducts.slice(0, 3).map(p => (
                             <div key={p.id} className="w-12 h-12 overflow-hidden flex-shrink-0" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                              <ImageWithFallback src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                              <ImageWithFallback src={p.image} alt={v(p.name, p.nameVi)} className="w-full h-full object-cover" />
                             </div>
                           ))}
                           <div className="flex items-center" style={{ fontSize: '12px', color: '#888' }}>

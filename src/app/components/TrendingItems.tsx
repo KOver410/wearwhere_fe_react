@@ -7,14 +7,14 @@ import { motion } from 'motion/react';
 import { useState } from 'react';
 
 const trendingItems = [
-  { id: 1, image: exampleImage, name: 'Stockholm Small Suede Top-Handle Bag - Blue', price: 4570000, clicks: 12400, brand: 'DEMELLIER', seller: 'MYTHERESA' },
-  { id: 2, image: 'https://images.unsplash.com/photo-1622760807301-4d2351a5a942?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbmVha2VycyUyMHByb2R1Y3QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3Njk5NjE4NjF8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Air Max Classic Sneakers - White', price: 3200000, clicks: 18750, brand: 'NIKE', seller: 'SNEAKER LAB' },
-  { id: 3, image: 'https://images.unsplash.com/photo-1639600280301-80d94f9cfe0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob29kaWUlMjBwcm9kdWN0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3MDA0NTQ0MHww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Premium Oversized Hoodie - Black', price: 1890000, clicks: 15320, brand: 'ESSENTIALS', seller: 'LOCAL STREET' },
-  { id: 4, image: 'https://images.unsplash.com/photo-1594734415578-00fc9540929b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYWNrZXQlMjBwcm9kdWN0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3MDA0NjIzMHww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Denim Trucker Jacket - Vintage Wash', price: 2450000, clicks: 9870, brand: "LEVI'S", seller: 'VINTAGE HUB' },
-  { id: 5, image: 'https://images.unsplash.com/photo-1596273501899-336404ed1701?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWNrcGFjayUyMHByb2R1Y3QlMjB3aGl0ZSUyMGJhY2tncm91bmR8ZW58MXx8fHwxNzY5OTg4NjA4fDA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Canvas Backpack - Khaki', price: 1120000, clicks: 11240, brand: 'FJALLRAVEN', seller: 'URBAN GEAR' },
-  { id: 6, image: 'https://images.unsplash.com/photo-1714218707756-173966d250b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXRjaCUyMHByb2R1Y3QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3Njk5NjAyMTJ8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Minimalist Watch - Silver Mesh', price: 2890000, clicks: 13560, brand: 'DANIEL WELLINGTON', seller: 'WATCH STORE' },
-  { id: 7, image: 'https://images.unsplash.com/photo-1711223499758-8aef018b720e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW5nbGFzc2VzJTIwcHJvZHVjdCUyMHBob3RvZ3JhcGh5fGVufDF8fHx8MTc3MDAxMTM2NXww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Aviator Sunglasses - Gold Frame', price: 890000, clicks: 8920, brand: 'RAY-BAN', seller: 'EYEWEAR CO' },
-  { id: 8, image: 'https://images.unsplash.com/photo-1562869319-a1368ba7fe75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwYmFnJTIwcHJvZHVjdCUyMHdoaXRlJTIwYmFja2dyb3VuZHxlbnwxfHx8fDE3NzAwNDYyMjl8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Leather Crossbody Bag - Brown', price: 3670000, clicks: 14580, brand: 'COACH', seller: 'LUXURY BAGS' },
+  { id: 1, image: exampleImage, name: 'Stockholm Small Suede Top-Handle Bag - Blue', nameVi: 'Túi cầm tay da lộn Stockholm nhỏ - Xanh dương', price: 4570000, clicks: 12400, brand: 'DEMELLIER', seller: 'MYTHERESA' },
+  { id: 2, image: 'https://images.unsplash.com/photo-1622760807301-4d2351a5a942?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbmVha2VycyUyMHByb2R1Y3QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3Njk5NjE4NjF8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Air Max Classic Sneakers - White', nameVi: 'Giày sneaker Air Max cổ điển - Trắng', price: 3200000, clicks: 18750, brand: 'NIKE', seller: 'SNEAKER LAB' },
+  { id: 3, image: 'https://images.unsplash.com/photo-1639600280301-80d94f9cfe0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob29kaWUlMjBwcm9kdWN0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3MDA0NTQ0MHww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Premium Oversized Hoodie - Black', nameVi: 'Áo hoodie oversize cao cấp - Đen', price: 1890000, clicks: 15320, brand: 'ESSENTIALS', seller: 'LOCAL STREET' },
+  { id: 4, image: 'https://images.unsplash.com/photo-1594734415578-00fc9540929b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqYWNrZXQlMjBwcm9kdWN0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3MDA0NjIzMHww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Denim Trucker Jacket - Vintage Wash', nameVi: 'Áo khoác denim trucker - Wash cổ điển', price: 2450000, clicks: 9870, brand: "LEVI'S", seller: 'VINTAGE HUB' },
+  { id: 5, image: 'https://images.unsplash.com/photo-1596273501899-336404ed1701?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWNrcGFjayUyMHByb2R1Y3QlMjB3aGl0ZSUyMGJhY2tncm91bmR8ZW58MXx8fHwxNzY5OTg4NjA4fDA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Canvas Backpack - Khaki', nameVi: 'Balo vải canvas - Kaki', price: 1120000, clicks: 11240, brand: 'FJALLRAVEN', seller: 'URBAN GEAR' },
+  { id: 6, image: 'https://images.unsplash.com/photo-1714218707756-173966d250b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXRjaCUyMHByb2R1Y3QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3Njk5NjAyMTJ8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Minimalist Watch - Silver Mesh', nameVi: 'Đồng hồ tối giản - Dây lưới bạc', price: 2890000, clicks: 13560, brand: 'DANIEL WELLINGTON', seller: 'WATCH STORE' },
+  { id: 7, image: 'https://images.unsplash.com/photo-1711223499758-8aef018b720e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW5nbGFzc2VzJTIwcHJvZHVjdCUyMHBob3RvZ3JhcGh5fGVufDF8fHx8MTc3MDAxMTM2NXww&ixlib=rb-4.1.0&q=80&w=1080', name: 'Aviator Sunglasses - Gold Frame', nameVi: 'Kính mát phi công - Gọng vàng', price: 890000, clicks: 8920, brand: 'RAY-BAN', seller: 'EYEWEAR CO' },
+  { id: 8, image: 'https://images.unsplash.com/photo-1562869319-a1368ba7fe75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwYmFnJTIwcHJvZHVjdCUyMHdoaXRlJTIwYmFja2dyb3VuZHxlbnwxfHx8fDE3NzAwNDYyMjl8MA&ixlib=rb-4.1.0&q=80&w=1080', name: 'Leather Crossbody Bag - Brown', nameVi: 'Túi đeo chéo da - Nâu', price: 3670000, clicks: 14580, brand: 'COACH', seller: 'LUXURY BAGS' },
 ];
 
 function ProductTile({ item, formatPrice, index }: { item: typeof trendingItems[0]; formatPrice: (p: number) => string; index: number }) {
@@ -43,7 +43,7 @@ function ProductTile({ item, formatPrice, index }: { item: typeof trendingItems[
         </div>
         <div>
           <div className="mb-1" style={{ fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 700, fontFamily: "'Oswald', sans-serif" }}>{item.brand}</div>
-          <div className="mb-2 line-clamp-2" style={{ fontSize: '15px', color: '#0d0d0d', fontWeight: 500, lineHeight: 1.4 }}>{item.name}</div>
+          <div className="mb-2 line-clamp-2" style={{ fontSize: '15px', color: '#0d0d0d', fontWeight: 500, lineHeight: 1.4 }}>{v(item.name, item.nameVi)}</div>
           <div className="flex items-baseline justify-between">
             <div style={{ fontSize: '18px', color: '#d41c1c', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{formatPrice(item.price)}</div>
             <div style={{ fontSize: '11px', color: '#888' }}>{(item.clicks / 1000).toFixed(1)}k {v('views', 'lượt xem')}</div>
@@ -55,11 +55,11 @@ function ProductTile({ item, formatPrice, index }: { item: typeof trendingItems[
 }
 
 export function TrendingItems() {
-  const { t, lang } = useLanguage();
+  const { t, lang, v } = useLanguage();
 
   const formatPrice = (price: number) => {
-    if (lang === 'vi') return `${(price / 1000).toLocaleString('vi-VN', { maximumFractionDigits: 0 })}k`;
-    return `$${(price / 25000).toFixed(0)}`;
+    // Currency is always Vietnamese đồng, regardless of UI language.
+    return `${(price / 1000).toLocaleString('vi-VN', { maximumFractionDigits: 0 })}k`;
   };
 
   const featured = trendingItems[0];
@@ -114,7 +114,7 @@ export function TrendingItems() {
                 {/* Info overlay */}
                 <div className="absolute bottom-0 left-0 right-0 p-6" style={{ background: 'linear-gradient(to top, rgba(13,13,13,0.85) 0%, transparent 100%)' }}>
                   <span className="block mb-1" style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#d41c1c', fontWeight: 700, fontFamily: "'Oswald', sans-serif" }}>{featured.brand}</span>
-                  <h4 className="text-white mb-2" style={{ fontSize: '20px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, lineHeight: 1.3, textTransform: 'uppercase' }}>{featured.name}</h4>
+                  <h4 className="text-white mb-2" style={{ fontSize: '20px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, lineHeight: 1.3, textTransform: 'uppercase' }}>{v(featured.name, featured.nameVi)}</h4>
                   <div style={{ fontSize: '22px', color: '#FFFFFF', fontWeight: 600, fontFamily: "'Oswald', sans-serif" }}>{formatPrice(featured.price)}</div>
                 </div>
               </div>

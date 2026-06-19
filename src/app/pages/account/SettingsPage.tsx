@@ -7,7 +7,7 @@ export function SettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [settings, setSettings] = useState({
     emailNotifications: true, pushNotifications: true, orderUpdates: true, promotions: false, socialNotifications: true,
-    language: 'en', currency: 'USD', profileVisibility: 'public', showOOTD: true, twoFactor: false,
+    language: 'vi', currency: 'VND', profileVisibility: 'public', showOOTD: true, twoFactor: false,
   });
 
   const toggle = (key: keyof typeof settings) => { setSettings(prev => ({ ...prev, [key]: !prev[key] })); };
@@ -88,7 +88,6 @@ export function SettingsPage() {
             <div>
               <label style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '6px', display: 'block' }}>{v('Currency', 'Tiền tệ')}</label>
               <select value={settings.currency} onChange={e => setSettings({ ...settings, currency: e.target.value })} className="w-full px-4 py-2.5 border-2 border-[#e0d8cf] bg-[#fefcfa] focus:border-[#d41c1c] focus:outline-none transition-colors appearance-none cursor-pointer" style={{ borderRadius: '10px', fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}>
-                <option value="USD">USD ($)</option>
                 <option value="VND">VND (₫)</option>
               </select>
             </div>

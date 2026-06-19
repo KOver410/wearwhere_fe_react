@@ -29,10 +29,10 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data for sent notifications
 const mockNotifications = [
-  { id: 'NOTIF-001', title: 'Flash Sale Alert!', message: 'Get 30% off on selected items. Limited time only!', audience: 'All Users', sent: 15234, opened: 8542, clicked: 3421, sentAt: '2024-02-14 10:00', status: 'sent' },
-  { id: 'NOTIF-002', title: 'New Arrivals', message: 'Check out the latest fashion trends from top brands', audience: 'VIP Members', sent: 2340, opened: 1456, clicked: 892, sentAt: '2024-02-13 15:30', status: 'sent' },
-  { id: 'NOTIF-003', title: 'Your Order is Shipped', message: 'Track your order ORD-2024-123', audience: 'Custom', sent: 1, opened: 1, clicked: 1, sentAt: '2024-02-12 09:15', status: 'sent' },
-  { id: 'NOTIF-004', title: 'Weekend Sale Coming', message: 'Get ready for amazing deals this weekend!', audience: 'All Users', sent: 0, opened: 0, clicked: 0, sentAt: '2024-02-17 08:00', status: 'scheduled' },
+  { id: 'NOTIF-001', title: 'Flash Sale Alert!', titleVi: 'Cảnh báo Flash Sale!', message: 'Get 30% off on selected items. Limited time only!', messageVi: 'Giảm 30% cho các sản phẩm chọn lọc. Chỉ trong thời gian giới hạn!', audience: 'All Users', audienceVi: 'Tất cả người dùng', sent: 15234, opened: 8542, clicked: 3421, sentAt: '2024-02-14 10:00', status: 'sent' },
+  { id: 'NOTIF-002', title: 'New Arrivals', titleVi: 'Hàng mới về', message: 'Check out the latest fashion trends from top brands', messageVi: 'Khám phá xu hướng thời trang mới nhất từ các thương hiệu hàng đầu', audience: 'VIP Members', audienceVi: 'Thành viên VIP', sent: 2340, opened: 1456, clicked: 892, sentAt: '2024-02-13 15:30', status: 'sent' },
+  { id: 'NOTIF-003', title: 'Your Order is Shipped', titleVi: 'Đơn hàng của bạn đã được giao đi', message: 'Track your order ORD-2024-123', messageVi: 'Theo dõi đơn hàng ORD-2024-123 của bạn', audience: 'Custom', audienceVi: 'Tùy chỉnh', sent: 1, opened: 1, clicked: 1, sentAt: '2024-02-12 09:15', status: 'sent' },
+  { id: 'NOTIF-004', title: 'Weekend Sale Coming', titleVi: 'Khuyến mãi cuối tuần sắp tới', message: 'Get ready for amazing deals this weekend!', messageVi: 'Sẵn sàng cho những ưu đãi tuyệt vời vào cuối tuần này!', audience: 'All Users', audienceVi: 'Tất cả người dùng', sent: 0, opened: 0, clicked: 0, sentAt: '2024-02-17 08:00', status: 'scheduled' },
 ];
 
 const statusConfig = {
@@ -42,7 +42,7 @@ const statusConfig = {
 };
 
 export default function AdminPushNotificationsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [notifications, setNotifications] = useState(mockNotifications);
   const [searchQuery, setSearchQuery] = useState('');
   const [showComposer, setShowComposer] = useState(false);
@@ -120,7 +120,7 @@ export default function AdminPushNotificationsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Gửi push notifications đến users
+            {v('Send push notifications to users', 'Gửi push notifications đến users')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -679,7 +679,7 @@ export default function AdminPushNotificationsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    {notif.title}
+                    {lang === 'vi' && (notif as any).titleVi ? (notif as any).titleVi : notif.title}
                   </h4>
                   <Badge
                     className={statusConfig[notif.status as keyof typeof statusConfig].color}
@@ -707,7 +707,7 @@ export default function AdminPushNotificationsPage() {
                     marginBottom: '16px',
                   }}
                 >
-                  {notif.message}
+                  {lang === 'vi' && (notif as any).messageVi ? (notif as any).messageVi : notif.message}
                 </p>
 
                 <div className="grid grid-cols-5" style={{ gap: '24px' }}>
@@ -726,7 +726,7 @@ export default function AdminPushNotificationsPage() {
                       className="text-[#0A0A0A]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {notif.audience}
+                      {lang === 'vi' && (notif as any).audienceVi ? (notif as any).audienceVi : notif.audience}
                     </p>
                   </div>
                   <div>

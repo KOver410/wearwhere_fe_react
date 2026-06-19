@@ -109,7 +109,7 @@ export default function AdminMonitorPage() {
             {v('Real-time Monitor', 'Giám sát thời gian thực')}
           </h1>
           <p className="text-[#4A5565]" style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}>
-            Giám sát hoạt động hệ thống theo thời gian thực
+            {v('Monitor system activity in real time', 'Giám sát hoạt động hệ thống theo thời gian thực')}
           </p>
         </div>
         <Badge
@@ -227,7 +227,7 @@ export default function AdminMonitorPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               />
-              <Area type="monotone" dataKey="activeUsers" stroke="#10B981" fill="#10B981" fillOpacity={0.15} name="Users" />
+              <Area type="monotone" dataKey="activeUsers" stroke="#10B981" fill="#10B981" fillOpacity={0.15} name={v('Users', 'Người dùng')} />
             </AreaChart>
           </ResponsiveContainer>
         </Card>
@@ -257,7 +257,7 @@ export default function AdminMonitorPage() {
                   fontFamily: 'Arimo, sans-serif',
                 }}
               />
-              <Line type="monotone" dataKey="currentOrders" stroke="#F54900" strokeWidth={2} dot={false} name="Orders" />
+              <Line type="monotone" dataKey="currentOrders" stroke="#F54900" strokeWidth={2} dot={false} name={v('Orders', 'Đơn hàng')} />
             </LineChart>
           </ResponsiveContainer>
         </Card>

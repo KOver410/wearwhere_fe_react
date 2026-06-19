@@ -4,6 +4,7 @@ import { ArrowLeft, Search, Plus, Check, Upload, Package } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { orders } from '@/app/data/accountMockData';
 import { wardrobeItems } from '@/app/data/wardrobeMockData';
+import { categoryVi } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 
 const CATEGORIES = ['tops', 'bottoms', 'outerwear', 'dresses', 'shoes', 'bags', 'accessories'];
@@ -106,11 +107,11 @@ export function WardrobeAddPage() {
                           {isSelected && <Check className="w-4 h-4 text-white" />}
                         </div>
                         <div className="w-16 h-16 flex-shrink-0 overflow-hidden" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                          <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          <ImageWithFallback src={item.image} alt={v(item.name, item.nameVi)} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {item.color} · {v('Size', 'Size')} {item.size}</p>
+                          <p className="truncate" style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
+                          <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v(item.color, item.colorVi)} · {v('Size', 'Size')} {item.size}</p>
                           <p style={{ fontSize: '11px', color: '#888', marginTop: '2px' }}>
                             {v('Order', 'Đơn hàng')} {item.orderNumber} · {new Date(item.orderDate).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { month: 'short', day: 'numeric' })}
                           </p>
@@ -168,7 +169,7 @@ export function WardrobeAddPage() {
                   style={{ borderRadius: '10px', fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}
                 >
                   <option value="">{v('Select category', 'Chọn danh mục')}</option>
-                  {CATEGORIES.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
+                  {CATEGORIES.map(c => <option key={c} value={c} className="capitalize">{v(c, categoryVi(c))}</option>)}
                 </select>
               </div>
               <div>

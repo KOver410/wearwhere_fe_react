@@ -4,6 +4,7 @@ import { Search, X, Heart, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { products as allProducts, CATEGORIES, STYLES } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 export function SearchResultsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -163,14 +164,14 @@ export function SearchResultsPage() {
                   <div className="mt-1">
                     <p style={{ fontSize: '12px', color: '#4a4a4a', marginBottom: '2px' }}>{product.brand}</p>
                     <Link to={`/product/${product.id}`}>
-                      <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{product.name}</p>
+                      <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{v(product.name, product.nameVi)}</p>
                     </Link>
                     <div className="flex items-center gap-2">
                       <span style={{ fontSize: '16px', fontWeight: 700, color: product.salePrice ? '#F54900' : '#0d0d0d' }}>
-                        ${(product.salePrice || product.price).toFixed(0)}
+                        {formatVnd(product.salePrice || product.price)}
                       </span>
                       {product.salePrice && (
-                        <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>${product.price}</span>
+                        <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>{formatVnd(product.price)}</span>
                       )}
                     </div>
                   </div>

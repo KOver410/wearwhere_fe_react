@@ -5,6 +5,7 @@ import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { orders } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 import { copyToClipboard } from '@/app/utils/clipboard';
 
 const statusSteps = ['Confirmed', 'Processing', 'Shipped', 'Delivered'];
@@ -135,24 +136,24 @@ export function OrderDetailPage() {
                   <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
                   <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{item.brand}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {item.color} | {v('Qty', 'SL')}: {item.quantity}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {v(item.color, item.colorVi)} | {v('Qty', 'SL')}: {item.quantity}</p>
                 </div>
-                <p style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d' }}>${(item.price * item.quantity).toFixed(2)}</p>
+                <p style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d' }}>{formatVnd(item.price * item.quantity)}</p>
               </div>
             ))}
           </div>
 
           {/* Summary */}
           <div className="mt-6 pt-4 space-y-2" style={{ borderTop: '2px solid #e0d8cf' }}>
-            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tạm tính')}</span><span style={{ fontSize: '14px', color: '#0d0d0d' }}>${order.subtotal.toFixed(2)}</span></div>
-            {order.discount > 0 && <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#e2b93b' }}>{v('Discount', 'Giảm giá')}</span><span style={{ fontSize: '14px', color: '#e2b93b' }}>-${order.discount.toFixed(2)}</span></div>}
-            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Shipping', 'Vận chuyển')}</span><span style={{ fontSize: '14px', color: order.shipping === 0 ? '#e2b93b' : '#0d0d0d', fontWeight: order.shipping === 0 ? 600 : 400 }}>{order.shipping === 0 ? v('FREE', 'MIỄN PHÍ') : `$${order.shipping.toFixed(2)}`}</span></div>
-            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Tax', 'Thuế')}</span><span style={{ fontSize: '14px', color: '#0d0d0d' }}>${order.tax.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tạm tính')}</span><span style={{ fontSize: '14px', color: '#0d0d0d' }}>{formatVnd(order.subtotal)}</span></div>
+            {order.discount > 0 && <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#e2b93b' }}>{v('Discount', 'Giảm giá')}</span><span style={{ fontSize: '14px', color: '#e2b93b' }}>-{formatVnd(order.discount)}</span></div>}
+            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Shipping', 'Vận chuyển')}</span><span style={{ fontSize: '14px', color: order.shipping === 0 ? '#e2b93b' : '#0d0d0d', fontWeight: order.shipping === 0 ? 600 : 400 }}>{order.shipping === 0 ? v('FREE', 'MIỄN PHÍ') : formatVnd(order.shipping)}</span></div>
+            <div className="flex justify-between"><span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Tax', 'Thuế')}</span><span style={{ fontSize: '14px', color: '#0d0d0d' }}>{formatVnd(order.tax)}</span></div>
             <div className="flex justify-between pt-3" style={{ borderTop: '2px solid #e0d8cf' }}>
               <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase' }}>{v('Total', 'Tổng cộng')}</span>
-              <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${order.total.toFixed(2)}</span>
+              <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(order.total)}</span>
             </div>
           </div>
         </Card>
@@ -162,13 +163,13 @@ export function OrderDetailPage() {
           <Card title={v('Shipping Address', 'Địa chỉ giao hàng')} icon={MapPin}>
             <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{order.shippingAddress.fullName}</p>
             <p style={{ fontSize: '14px', color: '#4a4a4a', marginTop: '4px' }}>{order.shippingAddress.street}</p>
-            <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
-            <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{order.shippingAddress.country}</p>
+            <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{v(order.shippingAddress.city, order.shippingAddress.cityVi)}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
+            <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{v(order.shippingAddress.country, order.shippingAddress.countryVi)}</p>
             <p style={{ fontSize: '14px', color: '#888', marginTop: '8px' }}>{order.shippingAddress.phone}</p>
           </Card>
           <Card title={v('Payment Method', 'Thanh toán')} icon={CreditCard}>
-            <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{order.paymentMethod}</p>
-            <p style={{ fontSize: '14px', color: '#888', marginTop: '8px' }}>{v('Amount charged:', 'Số tiền:')} <span style={{ fontWeight: 600, color: '#0d0d0d' }}>${order.total.toFixed(2)}</span></p>
+            <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(order.paymentMethod, order.paymentMethodVi)}</p>
+            <p style={{ fontSize: '14px', color: '#888', marginTop: '8px' }}>{v('Amount charged:', 'Số tiền:')} <span style={{ fontWeight: 600, color: '#0d0d0d' }}>{formatVnd(order.total)}</span></p>
           </Card>
         </div>
 

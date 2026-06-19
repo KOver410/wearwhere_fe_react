@@ -132,7 +132,7 @@ export default function AdminAutoFilterSettingsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            {v('Configure automatic content filtering và moderation rules', 'Cấu hình lọc nội dung tự động và quy tắc kiểm duyệt')}
+            {v('Configure automatic content filtering and moderation rules', 'Cấu hình lọc nội dung tự động và quy tắc kiểm duyệt')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>

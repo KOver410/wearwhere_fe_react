@@ -4,6 +4,7 @@ import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { returns } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 const statusColors: Record<string, { bg: string; text: string }> = {
   pending: { bg: '#FAF0DC', text: '#8B6914' },
@@ -63,7 +64,7 @@ export function MyReturnsPage() {
                           <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{item.name}</p>
+                          <p className="truncate" style={{ fontSize: '14px', color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
                           <p style={{ fontSize: '12px', color: '#888' }}>{item.brand} · {v('Size', 'Size')}: {item.size}</p>
                         </div>
                       </div>
@@ -72,11 +73,11 @@ export function MyReturnsPage() {
 
                   <div className="p-3" style={{ backgroundColor: '#fff9f2', borderRadius: '10px', border: '2px solid #e0d8cf' }}>
                     <div className="flex items-center justify-between mb-1">
-                      <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Reason:', 'Lý do:')} {ret.reason}</span>
+                      <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Reason:', 'Lý do:')} {v(ret.reason, ret.reasonVi)}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Refund:', 'Hoàn tiền:')} {ret.refundMethod}</span>
-                      <span style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${ret.refundAmount.toFixed(2)}</span>
+                      <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Refund:', 'Hoàn tiền:')} {v(ret.refundMethod, ret.refundMethodVi)}</span>
+                      <span style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(ret.refundAmount)}</span>
                     </div>
                   </div>
                 </div>

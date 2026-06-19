@@ -84,7 +84,7 @@ export default function AdminCreateVoucherPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Tạo voucher mới cho WearWhere platform
+            {v('Create a new voucher for the WearWhere platform', 'Tạo voucher mới cho WearWhere platform')}
           </p>
         </div>
       </div>
@@ -171,7 +171,7 @@ export default function AdminCreateVoucherPage() {
                       marginTop: '6px',
                     }}
                   >
-                    Code sẽ tự động uppercase và không có khoảng trắng
+                    {v('Code will be auto-uppercased with no spaces', 'Code sẽ tự động uppercase và không có khoảng trắng')}
                   </p>
                 </div>
 

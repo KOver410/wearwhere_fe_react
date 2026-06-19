@@ -43,6 +43,7 @@ import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
 import { toast } from "sonner";
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_ORDER = {
@@ -64,22 +65,28 @@ const MOCK_ORDER = {
   shippingAddress: {
     street: '123 Fashion Ave, Apt 4B',
     city: 'New York',
+    cityVi: 'New York',
     state: 'NY',
     zip: '10001',
-    country: 'United States'
+    country: 'United States',
+    countryVi: 'Việt Nam'
   },
   billingAddress: {
     street: '123 Fashion Ave, Apt 4B',
     city: 'New York',
+    cityVi: 'New York',
     state: 'NY',
     zip: '10001',
-    country: 'United States'
+    country: 'United States',
+    countryVi: 'Việt Nam'
   },
   items: [
     {
       id: 1,
       name: 'Essential Cotton T-Shirt',
+      nameVi: 'Áo Thun Cotton Cơ Bản',
       variant: 'Black / M',
+      variantVi: 'Đen / M',
       sku: 'TSH-BLK-M',
       price: 45.00,
       quantity: 2,
@@ -88,7 +95,9 @@ const MOCK_ORDER = {
     {
       id: 2,
       name: 'Slim Fit Denim Jeans',
+      nameVi: 'Quần Jeans Denim Ôm',
       variant: 'Blue / 32',
+      variantVi: 'Xanh / 32',
       sku: 'JNS-BLU-32',
       price: 130.00,
       quantity: 1,
@@ -99,14 +108,18 @@ const MOCK_ORDER = {
     {
       id: 1,
       title: 'Order Placed',
+      titleVi: 'Đã đặt đơn',
       description: 'Order #ORD-7782-9012 was placed by Sarah Johnson.',
+      descriptionVi: 'Đơn hàng #ORD-7782-9012 đã được đặt bởi Sarah Johnson.',
       date: '2025-06-12T10:30:00',
       icon: Package
     },
     {
       id: 2,
       title: 'Payment Confirmed',
-      description: 'Payment of $245.00 was confirmed via Stripe.',
+      titleVi: 'Đã xác nhận thanh toán',
+      description: 'Payment of 6.125.000₫ was confirmed via Stripe.',
+      descriptionVi: 'Thanh toán 6.125.000₫ đã được xác nhận qua Stripe.',
       date: '2025-06-12T10:30:05',
       icon: CreditCard
     }
@@ -114,7 +127,7 @@ const MOCK_ORDER = {
 };
 
 export default function BrandOrderDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const { id } = useParams();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isShipOpen, setIsShipOpen] = useState(false);
@@ -151,6 +164,19 @@ export default function BrandOrderDetailPage() {
     }
   };
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'pending': return v('Pending', 'Chờ xử lý');
+      case 'confirmed': return v('Confirmed', 'Đã xác nhận');
+      case 'shipped': return v('Shipped', 'Đã giao');
+      case 'delivered': return v('Delivered', 'Đã nhận');
+      case 'cancelled': return v('Cancelled', 'Đã hủy');
+      case 'paid': return v('Paid', 'Đã thanh toán');
+      case 'refunded': return v('Refunded', 'Đã hoàn tiền');
+      default: return status.charAt(0).toUpperCase() + status.slice(1);
+    }
+  };
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -165,7 +191,7 @@ export default function BrandOrderDetailPage() {
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold tracking-tight">{id || MOCK_ORDER.id}</h1>
               <Badge variant="secondary" className={cn("font-medium border", getStatusColor(orderStatus))}>
-                {orderStatus.charAt(0).toUpperCase() + orderStatus.slice(1)}
+                {getStatusLabel(orderStatus)}
               </Badge>
             </div>
             <p className="text-gray-500 text-sm mt-1">
@@ -219,15 +245,15 @@ export default function BrandOrderDetailPage() {
                         <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        <p className="text-sm text-gray-500">{item.variant}</p>
+                        <p className="font-medium text-gray-900">{lang === 'vi' ? item.nameVi : item.name}</p>
+                        <p className="text-sm text-gray-500">{lang === 'vi' ? item.variantVi : item.variant}</p>
                         <p className="text-xs text-gray-400 font-mono mt-1">{v('SKU', 'SKU')}: {item.sku}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium text-gray-900">${item.price.toFixed(2)}</p>
+                      <p className="font-medium text-gray-900">{formatVnd(item.price)}</p>
                       <p className="text-sm text-gray-500">{v('Qty', 'SL')}: {item.quantity}</p>
-                      <p className="font-medium text-gray-900 mt-1">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="font-medium text-gray-900 mt-1">{formatVnd(item.price * item.quantity)}</p>
                     </div>
                   </div>
                 ))}
@@ -235,19 +261,19 @@ export default function BrandOrderDetailPage() {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between text-gray-500">
                     <span>{v('Subtotal', 'Tạm tính')}</span>
-                    <span>${MOCK_ORDER.subtotal.toFixed(2)}</span>
+                    <span>{formatVnd(MOCK_ORDER.subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span>{v('Shipping', 'Phí vận chuyển')}</span>
-                    <span>${MOCK_ORDER.shipping.toFixed(2)}</span>
+                    <span>{formatVnd(MOCK_ORDER.shipping)}</span>
                   </div>
                   <div className="flex justify-between text-gray-500">
                     <span>{v('Tax', 'Thuế')}</span>
-                    <span>${MOCK_ORDER.tax.toFixed(2)}</span>
+                    <span>{formatVnd(MOCK_ORDER.tax)}</span>
                   </div>
                   <div className="flex justify-between font-medium text-lg text-gray-900 pt-2">
                     <span>{v('Total', 'Tổng cộng')}</span>
-                    <span>${MOCK_ORDER.total.toFixed(2)}</span>
+                    <span>{formatVnd(MOCK_ORDER.total)}</span>
                   </div>
                 </div>
               </div>
@@ -268,8 +294,8 @@ export default function BrandOrderDetailPage() {
                     </span>
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                       <div>
-                        <p className="font-medium text-gray-900">{event.title}</p>
-                        <p className="text-sm text-gray-500 mt-1">{event.description}</p>
+                        <p className="font-medium text-gray-900">{lang === 'vi' ? event.titleVi : event.title}</p>
+                        <p className="text-sm text-gray-500 mt-1">{lang === 'vi' ? event.descriptionVi : event.description}</p>
                       </div>
                       <time className="text-xs text-gray-400 mt-1 sm:mt-0 whitespace-nowrap">
                         {format(new Date(event.date), "MMM d, h:mm a")}
@@ -298,7 +324,7 @@ export default function BrandOrderDetailPage() {
                         </div>
                     </div>
                     <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                        {MOCK_ORDER.paymentStatus.toUpperCase()}
+                        {getStatusLabel(MOCK_ORDER.paymentStatus).toUpperCase()}
                     </Badge>
                 </div>
              </CardContent>
@@ -344,8 +370,8 @@ export default function BrandOrderDetailPage() {
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
                <p>{MOCK_ORDER.shippingAddress.street}</p>
-               <p>{MOCK_ORDER.shippingAddress.city}, {MOCK_ORDER.shippingAddress.state} {MOCK_ORDER.shippingAddress.zip}</p>
-               <p>{MOCK_ORDER.shippingAddress.country}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.shippingAddress.cityVi : MOCK_ORDER.shippingAddress.city}, {MOCK_ORDER.shippingAddress.state} {MOCK_ORDER.shippingAddress.zip}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.shippingAddress.countryVi : MOCK_ORDER.shippingAddress.country}</p>
             </CardContent>
           </Card>
           
@@ -357,8 +383,8 @@ export default function BrandOrderDetailPage() {
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
                <p>{MOCK_ORDER.billingAddress.street}</p>
-               <p>{MOCK_ORDER.billingAddress.city}, {MOCK_ORDER.billingAddress.state} {MOCK_ORDER.billingAddress.zip}</p>
-               <p>{MOCK_ORDER.billingAddress.country}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.billingAddress.cityVi : MOCK_ORDER.billingAddress.city}, {MOCK_ORDER.billingAddress.state} {MOCK_ORDER.billingAddress.zip}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.billingAddress.countryVi : MOCK_ORDER.billingAddress.country}</p>
             </CardContent>
           </Card>
         </div>

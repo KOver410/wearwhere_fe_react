@@ -48,6 +48,7 @@ const mockUser = {
   lastActive: '2 giờ trước',
   location: 'Hà Nội, Việt Nam',
   bio: 'Fashion enthusiast | Minimalist style lover',
+  bioVi: 'Đam mê thời trang | Yêu phong cách tối giản',
   stats: {
     totalOrders: 15,
     totalSpent: 25450000,
@@ -90,6 +91,7 @@ const mockOOTDPosts = [
     comments: 23,
     date: '2024-02-12',
     caption: 'Casual weekend vibes ✨',
+    captionVi: 'Phong cách cuối tuần thoải mái ✨',
   },
   {
     id: 2,
@@ -98,6 +100,7 @@ const mockOOTDPosts = [
     comments: 31,
     date: '2024-02-08',
     caption: 'Office look of the day 💼',
+    captionVi: 'Set đồ công sở của ngày 💼',
   },
   {
     id: 3,
@@ -106,6 +109,7 @@ const mockOOTDPosts = [
     comments: 19,
     date: '2024-02-03',
     caption: 'Street style inspiration 🌟',
+    captionVi: 'Cảm hứng phong cách đường phố 🌟',
   },
 ];
 
@@ -167,7 +171,9 @@ const mockReportedContent = [
   {
     id: 1,
     type: 'OOTD Post',
+    typeVi: 'Bài đăng OOTD',
     reason: 'Inappropriate content',
+    reasonVi: 'Nội dung không phù hợp',
     reportedBy: 3,
     date: '2024-02-10',
     status: 'pending',
@@ -175,7 +181,9 @@ const mockReportedContent = [
   {
     id: 2,
     type: 'Review',
+    typeVi: 'Đánh giá',
     reason: 'Spam',
+    reasonVi: 'Spam',
     reportedBy: 1,
     date: '2024-02-08',
     status: 'resolved',
@@ -183,7 +191,7 @@ const mockReportedContent = [
 ];
 
 export default function AdminUserDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const { id } = useParams();
   const navigate = useNavigate();
   const [banModalOpen, setBanModalOpen] = useState(false);
@@ -261,7 +269,7 @@ export default function AdminUserDetailPage() {
                   marginBottom: '16px',
                 }}
               >
-                {mockUser.bio}
+                {lang === 'vi' ? mockUser.bioVi : mockUser.bio}
               </p>
               <div className="flex flex-col" style={{ gap: '8px' }}>
                 <div className="flex items-center" style={{ gap: '8px' }}>
@@ -835,7 +843,7 @@ export default function AdminUserDetailPage() {
                       marginBottom: '12px',
                     }}
                   >
-                    {post.caption}
+                    {lang === 'vi' ? post.captionVi : post.caption}
                   </p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center" style={{ gap: '16px' }}>
@@ -919,7 +927,7 @@ export default function AdminUserDetailPage() {
                   className="text-[#6A7282]"
                   style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                 >
-                  {review.helpful} người thấy hữu ích
+                  {review.helpful} {v('people found this helpful', 'người thấy hữu ích')}
                 </p>
               </Card>
             ))}
@@ -1089,7 +1097,7 @@ export default function AdminUserDetailPage() {
                           fontFamily: 'Arimo, sans-serif',
                         }}
                       >
-                        {report.type}
+                        {lang === 'vi' ? report.typeVi : report.type}
                       </h3>
                       <Badge
                         className={
@@ -1118,7 +1126,7 @@ export default function AdminUserDetailPage() {
                         marginBottom: '8px',
                       }}
                     >
-                      {v('Reason:', 'Lý do:')} {report.reason}
+                      {v('Reason:', 'Lý do:')} {lang === 'vi' ? report.reasonVi : report.reason}
                     </p>
                     <div className="flex items-center" style={{ gap: '16px' }}>
                       <p

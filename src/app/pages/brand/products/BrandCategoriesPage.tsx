@@ -14,20 +14,21 @@ import {
 import { useLanguage } from '@/app/i18n/LanguageContext';
 
 const MOCK_CATEGORIES = [
-  { id: '1', name: 'Tops', count: 124, slug: 'tops' },
-  { id: '2', name: 'Bottoms', count: 85, slug: 'bottoms' },
-  { id: '3', name: 'Dresses', count: 42, slug: 'dresses' },
-  { id: '4', name: 'Outerwear', count: 30, slug: 'outerwear' },
-  { id: '5', name: 'Accessories', count: 56, slug: 'accessories' },
-  { id: '6', name: 'Footwear', count: 18, slug: 'footwear' },
+  { id: '1', name: 'Tops', nameVi: 'Áo', count: 124, slug: 'tops' },
+  { id: '2', name: 'Bottoms', nameVi: 'Quần', count: 85, slug: 'bottoms' },
+  { id: '3', name: 'Dresses', nameVi: 'Váy đầm', count: 42, slug: 'dresses' },
+  { id: '4', name: 'Outerwear', nameVi: 'Áo khoác', count: 30, slug: 'outerwear' },
+  { id: '5', name: 'Accessories', nameVi: 'Phụ kiện', count: 56, slug: 'accessories' },
+  { id: '6', name: 'Footwear', nameVi: 'Giày dép', count: 18, slug: 'footwear' },
 ];
 
 export default function BrandCategoriesPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredCategories = MOCK_CATEGORIES.filter(cat => 
-    cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCategories = MOCK_CATEGORIES.filter(cat =>
+    cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    cat.nameVi.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -73,7 +74,7 @@ export default function BrandCategoriesPage() {
             <tbody className="divide-y divide-gray-100">
               {filteredCategories.map((cat) => (
                 <tr key={cat.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-gray-900">{cat.name}</td>
+                  <td className="px-6 py-4 font-medium text-gray-900">{lang === 'vi' ? cat.nameVi : cat.name}</td>
                   <td className="px-6 py-4 text-gray-500">/{cat.slug}</td>
                   <td className="px-6 py-4 text-gray-500">{cat.count} {v('products', 'sản phẩm')}</td>
                   <td className="px-6 py-4 text-right">

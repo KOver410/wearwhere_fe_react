@@ -47,7 +47,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // News Slider
     'slider.slide1Title': 'Score style points',
-    'slider.slide1Desc': 'Discover vintage jerseys under $30',
+    'slider.slide1Desc': 'Discover vintage jerseys under 750.000₫',
     'slider.slide2Title': 'Fresh arrivals',
     'slider.slide2Desc': 'New styles added daily from our community',
     'slider.slide3Title': 'Streetwear essentials',
@@ -198,7 +198,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // News Slider
     'slider.slide1Title': 'Ghi điểm phong cách',
-    'slider.slide1Desc': 'Khám phá áo jersey vintage dưới 700k',
+    'slider.slide1Desc': 'Khám phá áo jersey vintage dưới 750.000₫',
     'slider.slide2Title': 'Hàng mới về',
     'slider.slide2Desc': 'Mẫu mới được thêm hàng ngày từ cộng đồng',
     'slider.slide3Title': 'Streetwear must-have',

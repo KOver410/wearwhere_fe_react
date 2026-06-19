@@ -8,6 +8,8 @@ import {
   products as allProducts, CATEGORIES, STYLES, COLORS, SIZES, PRICE_RANGES, SORT_OPTIONS,
 } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
+import { categoryVi, styleVi } from '@/app/data/mockData';
 
 export function ShopPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -554,6 +556,7 @@ function FilterSection({ title, children }: { title: string; children: React.Rea
 }
 
 function ProductGridCard({ product, isLiked, onToggleLike }: { product: typeof allProducts[0]; isLiked: boolean; onToggleLike: () => void }) {
+  const { v } = useLanguage();
   const discount = product.salePrice ? Math.round(((product.price - product.salePrice) / product.price) * 100) : 0;
   const productColors = COLORS.filter(c => product.colors.includes(c.name));
   return (
@@ -571,7 +574,7 @@ function ProductGridCard({ product, isLiked, onToggleLike }: { product: typeof a
               className="absolute top-3 right-3 px-2.5 py-1"
               style={{ backgroundColor: '#2e7d32', color: '#FFFFFF', fontSize: '12px', fontWeight: 700, borderRadius: '3px', letterSpacing: '0.3px' }}
             >
-              MỚI
+              {v('NEW', 'MỚI')}
             </span>
           )}
           {/* Discount badge — top left */}
@@ -615,7 +618,7 @@ function ProductGridCard({ product, isLiked, onToggleLike }: { product: typeof a
       {/* Product info */}
       <Link to={`/product/${product.id}`}>
         <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#222', lineHeight: 1.4, marginTop: productColors.length === 0 ? '10px' : '0', marginBottom: '4px', fontWeight: 400 }}>
-          {product.name}
+          {v(product.name, product.nameVi)}
         </p>
       </Link>
       <p style={{ fontSize: '13px', color: '#999', textTransform: 'uppercase', letterSpacing: '0.2px', marginBottom: '6px', fontWeight: 400 }}>
@@ -625,15 +628,15 @@ function ProductGridCard({ product, isLiked, onToggleLike }: { product: typeof a
         {product.salePrice ? (
           <>
             <span style={{ color: '#E7000B' }}>
-              {(product.salePrice * 25000).toLocaleString('vi-VN')}đ
+              {formatVnd(product.salePrice)}
             </span>
             {' '}
             <span className="line-through" style={{ fontSize: '12px', color: '#999' }}>
-              {(product.price * 25000).toLocaleString('vi-VN')}đ
+              {formatVnd(product.price)}
             </span>
           </>
         ) : (
-          <span>{(product.price * 25000).toLocaleString('vi-VN')}đ</span>
+          <span>{formatVnd(product.price)}</span>
         )}
       </p>
     </div>
@@ -661,18 +664,18 @@ function ProductListCard({ product, isLiked, onToggleLike }: { product: typeof a
       <div className="flex-1 min-w-0">
         <p style={{ fontSize: '12px', color: '#4a4a4a', marginBottom: '4px' }}>{product.brand}</p>
         <Link to={`/product/${product.id}`}>
-          <h3 className="hover:underline" style={{ fontSize: '16px', fontWeight: 600, color: '#0d0d0d', marginBottom: '8px' }}>{product.name}</h3>
+          <h3 className="hover:underline" style={{ fontSize: '16px', fontWeight: 600, color: '#0d0d0d', marginBottom: '8px' }}>{v(product.name, product.nameVi)}</h3>
         </Link>
         <div className="flex items-center gap-2 mb-2">
           <span style={{ fontSize: '18px', fontWeight: 700, color: product.salePrice ? '#F54900' : '#0d0d0d' }}>
-            ${(product.salePrice || product.price).toFixed(0)}
+            {formatVnd(product.salePrice || product.price)}
           </span>
           {product.salePrice && (
-            <span className="line-through" style={{ fontSize: '14px', color: '#4a4a4a' }}>${product.price}</span>
+            <span className="line-through" style={{ fontSize: '14px', color: '#4a4a4a' }}>{formatVnd(product.price)}</span>
           )}
         </div>
         <div className="flex items-center gap-3 mb-2">
-          <span style={{ fontSize: '12px', color: '#4a4a4a' }}>{product.style}</span>
+          <span style={{ fontSize: '12px', color: '#4a4a4a' }}>{v(product.style, styleVi(product.style))}</span>
           <span style={{ fontSize: '12px', color: '#4a4a4a' }}>•</span>
           <span style={{ fontSize: '12px', color: '#4a4a4a' }}>{product.likes} {v('likes', 'lượt thích')}</span>
           <span style={{ fontSize: '12px', color: '#4a4a4a' }}>•</span>

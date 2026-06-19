@@ -276,7 +276,7 @@ export default function AdminModerationQueuePage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            {v('Review reported content và take action', 'Xem xét nội dung bị báo cáo và xử lý')}
+            {v('Review reported content and take action', 'Xem xét nội dung bị báo cáo và xử lý')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>

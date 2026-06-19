@@ -5,6 +5,7 @@ import { AccountLayout } from '@/app/components/AccountLayout';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { orders } from '@/app/data/accountMockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 const reasons = ['Size doesn\'t fit', 'Product quality not as expected', 'Wrong item received', 'Product damaged during shipping', 'Changed my mind', 'Other'];
 const reasonsVi = ['Không vừa size', 'Chất lượng không như mong đợi', 'Nhận sai sản phẩm', 'Sản phẩm bị hư hỏng khi vận chuyển', 'Đổi ý', 'Lý do khác'];
@@ -83,10 +84,10 @@ export function ReturnRequestPage() {
                   <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {item.color} | {v('Qty', 'SL')}: {item.quantity}</p>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{v('Size', 'Size')}: {item.size} | {v('Color', 'Màu')}: {v(item.color, item.colorVi)} | {v('Qty', 'SL')}: {item.quantity}</p>
                 </div>
-                <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>${item.price.toFixed(2)}</p>
+                <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{formatVnd(item.price)}</p>
               </label>
             ))}
           </div>
@@ -136,7 +137,7 @@ export function ReturnRequestPage() {
             <div className="mt-4 p-4" style={{ backgroundColor: '#fff9f2', borderRadius: '10px', border: '2px solid #e0d8cf' }}>
               <div className="flex justify-between">
                 <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Estimated refund', 'Ước tính hoàn tiền')}</span>
-                <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${refundAmount.toFixed(2)}</span>
+                <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(refundAmount)}</span>
               </div>
             </div>
           )}

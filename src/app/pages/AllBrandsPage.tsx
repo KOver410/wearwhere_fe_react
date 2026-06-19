@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router';
 import { Search, MapPin, Star, ChevronRight, BadgeCheck, Users } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
-import { brands } from '@/app/data/mockData';
+import { brands, locationVi, styleVi } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 
 export function AllBrandsPage() {
@@ -142,7 +142,7 @@ export function AllBrandsPage() {
                       </div>
                       <div className="flex items-center gap-1" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.8)' }}>
                         <MapPin className="w-3 h-3" />
-                        {brand.location}
+                        {v(brand.location, locationVi(brand.location))}
                       </div>
                     </div>
                   </div>
@@ -152,12 +152,12 @@ export function AllBrandsPage() {
               {/* Info */}
               <div className="p-4">
                 <p className="line-clamp-2 mb-4" style={{ fontSize: '14px', color: '#4a4a4a' }}>
-                  {brand.shortDesc}
+                  {v(brand.shortDesc, brand.shortDescVi)}
                 </p>
                 <div className="flex flex-wrap gap-1.5 mb-4">
                   {brand.styles.map(s => (
                     <span key={s} className="px-2.5 py-1 bg-[#f3f0eb] capitalize" style={{ fontSize: '11px', borderRadius: '9999px', color: '#4a4a4a' }}>
-                      {s}
+                      {v(s, styleVi(s))}
                     </span>
                   ))}
                 </div>

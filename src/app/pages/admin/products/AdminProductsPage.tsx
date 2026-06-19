@@ -175,7 +175,12 @@ export default function AdminProductsPage() {
 
   // Bulk actions
   const handleBulkAction = (action: string) => {
-    toast.success(v(`${action} applied to ${selectedProducts.length} products`, `Đã áp dụng "${action}" cho ${selectedProducts.length} sản phẩm`));
+    const actionLabel = ({
+      Approve: 'Duyệt',
+      Suspend: 'Tạm Ngưng',
+      Delete: 'Xóa',
+    } as Record<string, string>)[action] || action;
+    toast.success(v(`${action} applied to ${selectedProducts.length} products`, `Đã áp dụng "${actionLabel}" cho ${selectedProducts.length} sản phẩm`));
     setSelectedProducts([]);
   };
 
@@ -199,7 +204,7 @@ export default function AdminProductsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý tất cả sản phẩm trên nền tảng
+            {v('Manage all products on the platform', 'Quản lý tất cả sản phẩm trên nền tảng')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>

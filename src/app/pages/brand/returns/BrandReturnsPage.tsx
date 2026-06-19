@@ -32,6 +32,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/ta
 import { format } from "date-fns";
 import { cn } from "@/app/components/ui/utils";
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_RETURNS = [
@@ -43,6 +44,7 @@ const MOCK_RETURNS = [
       email: 'sarah.j@example.com',
     },
     items: ['Essential Cotton T-Shirt'],
+    itemsVi: ['Áo thun cotton cơ bản'],
     reason: 'Size too small',
     status: 'pending',
     date: '2025-06-14T15:30:00',
@@ -56,6 +58,7 @@ const MOCK_RETURNS = [
       email: 'mike.s@example.com',
     },
     items: ['Slim Fit Denim Jeans'],
+    itemsVi: ['Quần jean denim slim fit'],
     reason: 'Defective item',
     status: 'approved',
     date: '2025-06-13T09:00:00',
@@ -69,6 +72,7 @@ const MOCK_RETURNS = [
       email: 'emily.d@example.com',
     },
     items: ['Summer Dress'],
+    itemsVi: ['Váy mùa hè'],
     reason: 'Changed mind',
     status: 'rejected',
     date: '2025-06-12T11:45:00',
@@ -85,7 +89,7 @@ const RETURN_STATUSES = [
 ];
 
 export default function BrandReturnsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -195,7 +199,7 @@ export default function BrandReturnsPage() {
                         </div>
                       </TableCell>
                        <TableCell className="text-gray-600 max-w-[200px] truncate">
-                        {ret.items.join(', ')}
+                        {(lang === 'vi' ? ret.itemsVi : ret.items).join(', ')}
                       </TableCell>
                       <TableCell className="text-gray-600">
                         {format(new Date(ret.date), "MMM d, yyyy")}
@@ -205,7 +209,7 @@ export default function BrandReturnsPage() {
                           {getStatusLabel(ret.status)}
                         </Badge>
                       </TableCell>
-                       <TableCell className="font-medium">${ret.amount.toFixed(2)}</TableCell>
+                       <TableCell className="font-medium">{formatVnd(ret.amount)}</TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>

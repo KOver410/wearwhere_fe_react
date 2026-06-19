@@ -4,6 +4,7 @@ import { OnboardingLayout } from '@/app/pages/onboarding/OnboardingLayout';
 import { Slider } from '@/app/components/ui/slider';
 import { Label } from '@/app/components/ui/label';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 export function OnboardingPricePage() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export function OnboardingPricePage() {
       <div className="max-w-md mx-auto py-12 px-4">
         <div className="mb-12 text-center">
           <span style={{ fontSize: '48px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', letterSpacing: '-0.02em' }}>
-            ${priceRange[0]} - ${priceRange[1]}
+            {formatVnd(priceRange[0])} - {formatVnd(priceRange[1])}
           </span>
           <span style={{ fontSize: '24px', color: '#888', marginLeft: '4px' }}>+</span>
         </div>
@@ -44,30 +45,30 @@ export function OnboardingPricePage() {
           />
           
           <div className="flex justify-between" style={{ fontSize: '13px', color: '#888', fontWeight: 500 }}>
-            <span>$0</span>
-            <span>$250</span>
-            <span>$500</span>
-            <span>$750</span>
-            <span>$1000+</span>
+            <span>{formatVnd(0)}</span>
+            <span>{formatVnd(250)}</span>
+            <span>{formatVnd(500)}</span>
+            <span>{formatVnd(750)}</span>
+            <span>{formatVnd(1000)}+</span>
           </div>
         </div>
 
         <div className="mt-16 grid grid-cols-2 gap-4">
           <div className="p-4 border-2 border-[#e0d8cf] text-center cursor-pointer hover:border-[#d41c1c] transition-colors" style={{ borderRadius: '10px' }} onClick={() => setPriceRange([0, 100])}>
             <div style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', marginBottom: '4px', textTransform: 'uppercase' }}>{v('Thrifty', 'Tiết kiệm')}</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>{v('Under $100', 'Dưới $100')}</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>{v(`Under ${formatVnd(100)}`, `Dưới ${formatVnd(100)}`)}</div>
           </div>
           <div className="p-4 border-2 border-[#e0d8cf] text-center cursor-pointer hover:border-[#d41c1c] transition-colors" style={{ borderRadius: '10px' }} onClick={() => setPriceRange([100, 300])}>
             <div style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', marginBottom: '4px', textTransform: 'uppercase' }}>{v('Casual', 'Bình thường')}</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>$100 - $300</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>{formatVnd(100)} - {formatVnd(300)}</div>
           </div>
           <div className="p-4 border-2 border-[#e0d8cf] text-center cursor-pointer hover:border-[#d41c1c] transition-colors" style={{ borderRadius: '10px' }} onClick={() => setPriceRange([300, 600])}>
             <div style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', marginBottom: '4px', textTransform: 'uppercase' }}>Premium</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>$300 - $600</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>{formatVnd(300)} - {formatVnd(600)}</div>
           </div>
           <div className="p-4 border-2 border-[#e0d8cf] text-center cursor-pointer hover:border-[#d41c1c] transition-colors" style={{ borderRadius: '10px' }} onClick={() => setPriceRange([600, 1000])}>
             <div style={{ fontSize: '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', marginBottom: '4px', textTransform: 'uppercase' }}>{v('Luxury', 'Cao cấp')}</div>
-            <div style={{ fontSize: '13px', color: '#888' }}>$600+</div>
+            <div style={{ fontSize: '13px', color: '#888' }}>{formatVnd(600)}+</div>
           </div>
         </div>
       </div>

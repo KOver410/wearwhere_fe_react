@@ -39,10 +39,12 @@ const mockDispute = {
     name: 'Nguyen Thi F',
     email: 'nguyenthif@gmail.com',
     claim: 'Item not as described',
+    claimVi: 'Sản phẩm không đúng mô tả',
     description: 'The blazer I received is completely different from what was shown in the product images. The color is off, the material feels cheap, and the fit is not as described. I am very disappointed with this purchase and would like a full refund.',
+    descriptionVi: 'Chiếc blazer tôi nhận được hoàn toàn khác với hình ảnh sản phẩm. Màu sắc bị sai, chất liệu cảm giác rẻ tiền và phom dáng không đúng như mô tả. Tôi rất thất vọng với lần mua hàng này và muốn được hoàn tiền toàn bộ.',
     evidence: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=300', caption: 'Received product - front view' },
-      { type: 'image', url: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660?w=300', caption: 'Received product - close up of material' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=300', caption: 'Received product - front view', captionVi: 'Sản phẩm nhận được - mặt trước' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1594938291221-94f18cbb5660?w=300', caption: 'Received product - close up of material', captionVi: 'Sản phẩm nhận được - cận cảnh chất liệu' },
     ],
     submittedAt: '2024-02-14 10:30',
   },
@@ -50,14 +52,15 @@ const mockDispute = {
     name: 'COS',
     email: 'cos@gmail.com',
     response: 'We apologize for any dissatisfaction. However, the product images on our website accurately represent the item. The color variation may be due to different screen settings. We stand by the quality of our products and believe this is within acceptable standards.',
+    responseVi: 'Chúng tôi xin lỗi vì bất kỳ sự không hài lòng nào. Tuy nhiên, hình ảnh sản phẩm trên website của chúng tôi phản ánh chính xác sản phẩm. Sự khác biệt về màu sắc có thể do thiết lập màn hình khác nhau. Chúng tôi cam kết về chất lượng sản phẩm và tin rằng điều này nằm trong tiêu chuẩn chấp nhận được.',
     evidence: [
-      { type: 'image', url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=300', caption: 'Original product listing image' },
+      { type: 'image', url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=300', caption: 'Original product listing image', captionVi: 'Hình ảnh đăng sản phẩm gốc' },
     ],
     respondedAt: '2024-02-14 15:45',
   },
   orderDetails: {
     items: [
-      { name: 'Classic Wool Blazer', sku: 'COS-BLZ-089', price: 1950000, quantity: 1 },
+      { name: 'Classic Wool Blazer', nameVi: 'Áo Blazer Len Cổ Điển', sku: 'COS-BLZ-089', price: 1950000, quantity: 1 },
     ],
     total: 1950000,
     orderDate: '2024-02-10',
@@ -72,7 +75,7 @@ const priorityConfig = {
 };
 
 export default function AdminResolveDisputePage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const priorityLabels: Record<string, string> = {
     high: v('High', 'Cao'),
     medium: v('Medium', 'Trung bình'),
@@ -310,7 +313,7 @@ export default function AdminResolveDisputePage() {
                     fontFamily: 'Arimo, sans-serif',
                   }}
                 >
-                  {item.name}
+                  {lang === 'vi' ? item.nameVi : item.name}
                 </p>
                 <p
                   className="text-[#6A7282]"
@@ -387,13 +390,13 @@ export default function AdminResolveDisputePage() {
                 marginBottom: '12px',
               }}
             >
-              {dispute.customer.claim}
+              {lang === 'vi' ? dispute.customer.claimVi : dispute.customer.claim}
             </p>
             <p
               className="text-[#0A0A0A]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', lineHeight: '1.6' }}
             >
-              {dispute.customer.description}
+              {lang === 'vi' ? dispute.customer.descriptionVi : dispute.customer.description}
             </p>
           </div>
 
@@ -425,7 +428,7 @@ export default function AdminResolveDisputePage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    {item.caption}
+                    {lang === 'vi' ? item.captionVi : item.caption}
                   </p>
                 </div>
               ))}
@@ -492,7 +495,7 @@ export default function AdminResolveDisputePage() {
               className="text-[#0A0A0A]"
               style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif', lineHeight: '1.6' }}
             >
-              {dispute.brand.response}
+              {lang === 'vi' ? dispute.brand.responseVi : dispute.brand.response}
             </p>
           </div>
 
@@ -524,7 +527,7 @@ export default function AdminResolveDisputePage() {
                     className="text-[#6A7282]"
                     style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                   >
-                    {item.caption}
+                    {lang === 'vi' ? item.captionVi : item.caption}
                   </p>
                 </div>
               ))}

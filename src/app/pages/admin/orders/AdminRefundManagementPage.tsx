@@ -35,14 +35,14 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockRefunds = [
-  { id: 'REF-001', orderId: 'ORD-2024-006', customer: 'Nguyen Thi F', brand: 'COS', amount: 1950000, reason: 'Dispute resolved', status: 'pending', requestDate: '2024-02-14', processedDate: null, method: 'original' },
-  { id: 'REF-002', orderId: 'ORD-2024-005', customer: 'Hoang Van E', brand: 'Zara', amount: 1800000, reason: 'Order cancelled', status: 'processing', requestDate: '2024-02-13', processedDate: null, method: 'original' },
-  { id: 'REF-003', orderId: 'ORD-2024-012', customer: 'Tran Van K', brand: 'H&M', amount: 890000, reason: 'Wrong size', status: 'completed', requestDate: '2024-02-10', processedDate: '2024-02-12', method: 'original' },
-  { id: 'REF-004', orderId: 'ORD-2024-018', customer: 'Pham Thi L', brand: 'Mango', amount: 650000, reason: 'Quality issues', status: 'pending', requestDate: '2024-02-14', processedDate: null, method: 'bank' },
-  { id: 'REF-005', orderId: 'ORD-2024-021', customer: 'Le Thi H', brand: 'Uniqlo', amount: 2400000, reason: 'Damaged product', status: 'processing', requestDate: '2024-02-13', processedDate: null, method: 'original' },
-  { id: 'REF-006', orderId: 'ORD-2024-024', customer: 'Nguyen Van M', brand: 'COS', amount: 1250000, reason: 'Missing items', status: 'completed', requestDate: '2024-02-09', processedDate: '2024-02-11', method: 'wallet' },
-  { id: 'REF-007', orderId: 'ORD-2024-027', customer: 'Tran Thi N', brand: 'H&M', amount: 980000, reason: 'Color mismatch', status: 'rejected', requestDate: '2024-02-11', processedDate: '2024-02-13', method: 'original' },
-  { id: 'REF-008', orderId: 'ORD-2024-030', customer: 'Le Van O', brand: 'Zara', amount: 1150000, reason: 'Late delivery', status: 'completed', requestDate: '2024-02-08', processedDate: '2024-02-10', method: 'original' },
+  { id: 'REF-001', orderId: 'ORD-2024-006', customer: 'Nguyen Thi F', brand: 'COS', amount: 1950000, reason: 'Dispute resolved', reasonVi: 'Đã giải quyết tranh chấp', status: 'pending', requestDate: '2024-02-14', processedDate: null, method: 'original' },
+  { id: 'REF-002', orderId: 'ORD-2024-005', customer: 'Hoang Van E', brand: 'Zara', amount: 1800000, reason: 'Order cancelled', reasonVi: 'Đơn hàng đã hủy', status: 'processing', requestDate: '2024-02-13', processedDate: null, method: 'original' },
+  { id: 'REF-003', orderId: 'ORD-2024-012', customer: 'Tran Van K', brand: 'H&M', amount: 890000, reason: 'Wrong size', reasonVi: 'Sai kích cỡ', status: 'completed', requestDate: '2024-02-10', processedDate: '2024-02-12', method: 'original' },
+  { id: 'REF-004', orderId: 'ORD-2024-018', customer: 'Pham Thi L', brand: 'Mango', amount: 650000, reason: 'Quality issues', reasonVi: 'Vấn đề chất lượng', status: 'pending', requestDate: '2024-02-14', processedDate: null, method: 'bank' },
+  { id: 'REF-005', orderId: 'ORD-2024-021', customer: 'Le Thi H', brand: 'Uniqlo', amount: 2400000, reason: 'Damaged product', reasonVi: 'Sản phẩm bị hư hỏng', status: 'processing', requestDate: '2024-02-13', processedDate: null, method: 'original' },
+  { id: 'REF-006', orderId: 'ORD-2024-024', customer: 'Nguyen Van M', brand: 'COS', amount: 1250000, reason: 'Missing items', reasonVi: 'Thiếu sản phẩm', status: 'completed', requestDate: '2024-02-09', processedDate: '2024-02-11', method: 'wallet' },
+  { id: 'REF-007', orderId: 'ORD-2024-027', customer: 'Tran Thi N', brand: 'H&M', amount: 980000, reason: 'Color mismatch', reasonVi: 'Màu sắc không khớp', status: 'rejected', requestDate: '2024-02-11', processedDate: '2024-02-13', method: 'original' },
+  { id: 'REF-008', orderId: 'ORD-2024-030', customer: 'Le Van O', brand: 'Zara', amount: 1150000, reason: 'Late delivery', reasonVi: 'Giao hàng trễ', status: 'completed', requestDate: '2024-02-08', processedDate: '2024-02-10', method: 'original' },
 ];
 
 const statusConfig = {
@@ -59,7 +59,7 @@ const methodConfig = {
 };
 
 export default function AdminRefundManagementPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const statusLabels: Record<string, string> = {
     pending: v('Pending Approval', 'Chờ duyệt'),
     processing: v('Processing', 'Đang xử lý'),
@@ -589,7 +589,7 @@ export default function AdminRefundManagementPage() {
                       className="text-[#6A7282]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {refund.reason}
+                      {lang === 'vi' ? refund.reasonVi : refund.reason}
                     </p>
                   </td>
                   <td style={{ padding: '16px 24px' }}>

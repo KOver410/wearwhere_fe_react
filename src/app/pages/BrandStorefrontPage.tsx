@@ -4,8 +4,9 @@ import {
   MapPin, Star, BadgeCheck, Heart, Share2, ChevronRight, Users, Package, Calendar,
 } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
-import { brands, products as allProducts, SORT_OPTIONS } from '@/app/data/mockData';
+import { brands, products as allProducts, SORT_OPTIONS, locationVi, styleVi, categoryVi } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 export function BrandStorefrontPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -95,7 +96,7 @@ export function BrandStorefrontPage() {
               </div>
               <div className="flex flex-wrap items-center gap-4" style={{ fontSize: '14px', color: '#4a4a4a' }}>
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />{brand.location}
+                  <MapPin className="w-4 h-4" />{v(brand.location, locationVi(brand.location))}
                 </span>
                 <span className="flex items-center gap-1">
                   <Star className="w-4 h-4 fill-[#d41c1c] text-[#d41c1c]" />{brand.rating} {v('rating', 'đánh giá')}
@@ -148,7 +149,7 @@ export function BrandStorefrontPage() {
                 className="px-3 py-1.5 bg-[#f3f0eb] hover:bg-[#ede8e0] transition-colors capitalize"
                 style={{ fontSize: '13px', borderRadius: '9999px', color: '#4a4a4a' }}
               >
-                {s}
+                {v(s, styleVi(s))}
               </Link>
             ))}
             {brand.categories.map(c => (
@@ -158,7 +159,7 @@ export function BrandStorefrontPage() {
                 className="px-3 py-1.5 border-2 border-[#e0d8cf] hover:bg-[#f3f0eb] transition-colors capitalize"
                 style={{ fontSize: '13px', borderRadius: '9999px', color: '#4a4a4a' }}
               >
-                {c}
+                {v(c, categoryVi(c))}
               </Link>
             ))}
           </div>
@@ -185,7 +186,7 @@ export function BrandStorefrontPage() {
                 }`}
                 style={{ borderRadius: '9999px', fontSize: '14px' }}
               >
-                {cat}
+                {v(cat, categoryVi(cat))}
               </button>
             ))}
           </div>
@@ -219,7 +220,7 @@ export function BrandStorefrontPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {product.isNew && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#d41c1c] text-white" style={{ fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>NEW</span>
+                        <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#d41c1c] text-white" style={{ fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>{v('NEW', 'MỚI')}</span>
                       )}
                       {discount > 0 && (
                         <span className="absolute top-3 px-2.5 py-1" style={{ left: product.isNew ? '60px' : '12px', backgroundColor: '#E7000B', color: '#FFF', fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>
@@ -237,14 +238,14 @@ export function BrandStorefrontPage() {
                 </div>
                 <div>
                   <Link to={`/product/${product.id}`}>
-                    <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{product.name}</p>
+                    <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{v(product.name, product.nameVi)}</p>
                   </Link>
                   <div className="flex items-center gap-2">
                     <span style={{ fontSize: '16px', fontWeight: 700, color: product.salePrice ? '#F54900' : '#0d0d0d' }}>
-                      ${(product.salePrice || product.price).toFixed(0)}
+                      {formatVnd(product.salePrice || product.price)}
                     </span>
                     {product.salePrice && (
-                      <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>${product.price}</span>
+                      <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>{formatVnd(product.price)}</span>
                     )}
                   </div>
                   <p style={{ fontSize: '12px', color: '#4a4a4a', marginTop: '2px' }}>{product.likes} {v('likes', 'lượt thích')}</p>

@@ -4,6 +4,7 @@ import { Heart, ChevronRight, Sparkles } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { products as allProducts, STYLES, SORT_OPTIONS } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 const styleBanners: Record<string, { title: string; titleVi: string; subtitle: string; subtitleVi: string; gradient: string }> = {
   streetwear: { title: 'Streetwear', titleVi: 'Đường phố', subtitle: 'Bold, urban, unapologetic. Express yourself through street culture.', subtitleVi: 'Mạnh mẽ, đô thị, không ngại. Thể hiện bản thân qua văn hóa đường phố.', gradient: 'from-[#0d0d0d] to-[#333]' },
@@ -124,7 +125,7 @@ export function StylePage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       {product.isNew && (
-                        <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#d41c1c] text-white" style={{ fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>NEW</span>
+                        <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#d41c1c] text-white" style={{ fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>{v('NEW', 'MỚI')}</span>
                       )}
                       {discount > 0 && (
                         <span className="absolute top-3 px-2.5 py-1" style={{ left: product.isNew ? '60px' : '12px', backgroundColor: '#E7000B', color: '#FFF', fontSize: '11px', fontWeight: 700, borderRadius: '9999px' }}>
@@ -143,14 +144,14 @@ export function StylePage() {
                 <div>
                   <p style={{ fontSize: '12px', color: '#4a4a4a', marginBottom: '2px' }}>{product.brand}</p>
                   <Link to={`/product/${product.id}`}>
-                    <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{product.name}</p>
+                    <p className="line-clamp-2 hover:underline" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '4px' }}>{v(product.name, product.nameVi)}</p>
                   </Link>
                   <div className="flex items-center gap-2">
                     <span style={{ fontSize: '16px', fontWeight: 700, color: product.salePrice ? '#F54900' : '#0d0d0d' }}>
-                      ${(product.salePrice || product.price).toFixed(0)}
+                      {formatVnd(product.salePrice || product.price)}
                     </span>
                     {product.salePrice && (
-                      <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>${product.price}</span>
+                      <span className="line-through" style={{ fontSize: '13px', color: '#4a4a4a' }}>{formatVnd(product.price)}</span>
                     )}
                   </div>
                 </div>

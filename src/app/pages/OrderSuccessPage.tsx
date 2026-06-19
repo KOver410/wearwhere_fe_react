@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { products as allProducts } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 import { copyToClipboard } from '@/app/utils/clipboard';
 
 export function OrderSuccessPage() {
@@ -13,9 +14,9 @@ export function OrderSuccessPage() {
   const estimatedDelivery = 'Feb 27 - Mar 01, 2026';
 
   const orderedItems = [
-    { ...allProducts[0], quantity: 1, size: 'M', selectedColor: 'Brown' },
-    { ...allProducts[1], quantity: 1, size: 'L', selectedColor: 'White' },
-    { ...allProducts[10], quantity: 2, size: 'One Size', selectedColor: 'Brown' },
+    { ...allProducts[0], quantity: 1, size: 'M', selectedColor: v('Brown', 'Nâu') },
+    { ...allProducts[1], quantity: 1, size: 'L', selectedColor: v('White', 'Trắng') },
+    { ...allProducts[10], quantity: 2, size: 'One Size', selectedColor: v('Brown', 'Nâu') },
   ];
 
   const subtotal = orderedItems.reduce((sum, item) => sum + (item.salePrice || item.price) * item.quantity, 0);
@@ -107,7 +108,7 @@ export function OrderSuccessPage() {
               <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v('Estimated Delivery', 'Dự kiến giao hàng')}</p>
               <p style={{ fontSize: '14px', color: '#4a4a4a' }}>{estimatedDelivery}</p>
               <p style={{ fontSize: '13px', color: '#888', marginTop: '4px' }}>
-                123 Nguyen Hue Street, District 1, Ho Chi Minh City
+                {v('123 Nguyen Hue Street, District 1, Ho Chi Minh City', '123 Đường Nguyễn Huệ, Quận 1, TP. Hồ Chí Minh')}
               </p>
             </div>
           </div>
@@ -132,7 +133,7 @@ export function OrderSuccessPage() {
                   <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
                   <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
                     {v('Size', 'Kích cỡ')}: {item.size} | {v('Color', 'Màu')}: {item.selectedColor} | {v('Qty', 'SL')}: {item.quantity}
                   </p>
@@ -140,11 +141,11 @@ export function OrderSuccessPage() {
                 </div>
                 <div className="text-right">
                   <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>
-                    ${((item.salePrice || item.price) * item.quantity).toFixed(2)}
+                    {formatVnd((item.salePrice || item.price) * item.quantity)}
                   </p>
                   {item.salePrice && (
                     <p className="line-through" style={{ fontSize: '12px', color: '#888' }}>
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatVnd(item.price * item.quantity)}
                     </p>
                   )}
                 </div>
@@ -156,11 +157,11 @@ export function OrderSuccessPage() {
           <div className="mt-6 pt-4 space-y-2" style={{ borderTop: '2px solid #e0d8cf' }}>
             <div className="flex justify-between">
               <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Subtotal', 'Tạm tính')}</span>
-              <span style={{ fontSize: '14px', color: '#0d0d0d' }}>${subtotal.toFixed(2)}</span>
+              <span style={{ fontSize: '14px', color: '#0d0d0d' }}>{formatVnd(subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span style={{ fontSize: '14px', color: '#e2b93b' }}>{v('Discount (10%)', 'Giảm giá (10%)')}</span>
-              <span style={{ fontSize: '14px', color: '#e2b93b' }}>-${discount.toFixed(2)}</span>
+              <span style={{ fontSize: '14px', color: '#e2b93b' }}>-{formatVnd(discount)}</span>
             </div>
             <div className="flex justify-between">
               <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Shipping', 'Phí vận chuyển')}</span>
@@ -168,11 +169,11 @@ export function OrderSuccessPage() {
             </div>
             <div className="flex justify-between">
               <span style={{ fontSize: '14px', color: '#4a4a4a' }}>{v('Tax', 'Thuế')}</span>
-              <span style={{ fontSize: '14px', color: '#0d0d0d' }}>${tax.toFixed(2)}</span>
+              <span style={{ fontSize: '14px', color: '#0d0d0d' }}>{formatVnd(tax)}</span>
             </div>
             <div className="flex justify-between pt-3" style={{ borderTop: '2px solid #e0d8cf' }}>
               <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase' }}>{v('Total', 'Tổng cộng')}</span>
-              <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>${total.toFixed(2)}</span>
+              <span style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#d41c1c' }}>{formatVnd(total)}</span>
             </div>
           </div>
         </div>
@@ -212,9 +213,9 @@ export function OrderSuccessPage() {
                   />
                 </div>
                 <p style={{ fontSize: '12px', color: '#888' }}>{product.brand}</p>
-                <p className="line-clamp-1" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '2px' }}>{product.name}</p>
+                <p className="line-clamp-1" style={{ fontSize: '14px', color: '#0d0d0d', marginBottom: '2px' }}>{v(product.name, product.nameVi)}</p>
                 <p style={{ fontSize: '14px', fontWeight: 700, color: '#d41c1c' }}>
-                  ${(product.salePrice || product.price).toFixed(0)}
+                  {formatVnd(product.salePrice || product.price)}
                 </p>
               </Link>
             ))}

@@ -4,6 +4,7 @@ import { productImage } from './productImages';
 export interface Product {
   id: number;
   name: string;
+  nameVi: string;
   price: number;
   salePrice?: number;
   image: string;
@@ -32,6 +33,7 @@ export interface Brand {
   banner: string;
   description: string;
   shortDesc: string;
+  shortDescVi: string;
   location: string;
   followers: number;
   productCount: number;
@@ -46,7 +48,9 @@ export interface Voucher {
   id: number;
   code: string;
   title: string;
+  titleVi: string;
   description: string;
+  descriptionVi: string;
   discount: number;
   discountType: 'percentage' | 'fixed';
   minOrder: number;
@@ -106,11 +110,11 @@ export const COLORS = [
 export const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
 export const PRICE_RANGES = [
-  { label: 'Under $50', labelVi: 'Dưới 1.250k', min: 0, max: 50 },
-  { label: '$50 - $100', labelVi: '1.250k - 2.500k', min: 50, max: 100 },
-  { label: '$100 - $200', labelVi: '2.500k - 5.000k', min: 100, max: 200 },
-  { label: '$200 - $500', labelVi: '5.000k - 12.500k', min: 200, max: 500 },
-  { label: 'Over $500', labelVi: 'Trên 12.500k', min: 500, max: 9999 },
+  { label: 'Under 1.250.000₫', labelVi: 'Dưới 1.250.000₫', min: 0, max: 50 },
+  { label: '1.250.000₫ - 2.500.000₫', labelVi: '1.250.000₫ - 2.500.000₫', min: 50, max: 100 },
+  { label: '2.500.000₫ - 5.000.000₫', labelVi: '2.500.000₫ - 5.000.000₫', min: 100, max: 200 },
+  { label: '5.000.000₫ - 12.500.000₫', labelVi: '5.000.000₫ - 12.500.000₫', min: 200, max: 500 },
+  { label: 'Over 12.500.000₫', labelVi: 'Trên 12.500.000₫', min: 500, max: 9999 },
 ];
 
 export const SORT_OPTIONS = [
@@ -121,6 +125,36 @@ export const SORT_OPTIONS = [
   { value: 'rating', label: 'Highest Rated', labelVi: 'Đánh giá cao nhất' },
 ];
 
+// ---- Vietnamese localization helpers for data-driven fields ----
+export const LOCATION_VI: Record<string, string> = {
+  'Ho Chi Minh City': 'TP. Hồ Chí Minh',
+  'Hanoi': 'Hà Nội',
+  'Ha Noi': 'Hà Nội',
+  'Da Nang': 'Đà Nẵng',
+};
+
+export const SUBCATEGORY_VI: Record<string, string> = {
+  Dresses: 'Váy đầm', Tops: 'Áo', Pants: 'Quần', Skirts: 'Chân váy',
+  Jackets: 'Áo khoác', Activewear: 'Đồ thể thao', 'T-Shirts': 'Áo thun',
+  Shirts: 'Áo sơ mi', Suits: 'Vest', Boys: 'Bé trai', Girls: 'Bé gái',
+  Toddler: 'Trẻ tập đi', Baby: 'Em bé', Watches: 'Đồng hồ', Jewelry: 'Trang sức',
+  Sunglasses: 'Kính mát', Hats: 'Mũ nón', Scarves: 'Khăn choàng',
+  Sneakers: 'Giày sneaker', Boots: 'Bốt', Sandals: 'Sandal', Heels: 'Giày cao gót',
+  Loafers: 'Giày lười', Handbags: 'Túi xách', Backpacks: 'Ba lô',
+  Crossbody: 'Túi đeo chéo', Tote: 'Túi tote', Clutch: 'Ví cầm tay',
+  Running: 'Chạy bộ', Yoga: 'Yoga', Training: 'Tập luyện', Outdoor: 'Dã ngoại',
+  Outerwear: 'Áo khoác ngoài', Sweaters: 'Áo len',
+};
+
+/** Localized city/region name; falls back to the original if unmapped. */
+export const locationVi = (loc: string): string => LOCATION_VI[loc] ?? loc;
+/** Localized style label by slug (e.g. 'streetwear' -> 'Đường phố'). */
+export const styleVi = (slug: string): string => STYLES.find(s => s.slug === slug)?.nameVi ?? slug;
+/** Localized category label by slug (e.g. 'women' -> 'Nữ'). */
+export const categoryVi = (slug: string): string => CATEGORIES.find(c => c.slug === slug)?.nameVi ?? slug;
+/** Localized subcategory label; falls back to the original if unmapped. */
+export const subcategoryVi = (name: string): string => SUBCATEGORY_VI[name] ?? name;
+
 export const brands: Brand[] = [
   {
     id: 1,
@@ -130,6 +164,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1757802714327-4f22292651c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwYnJhbmQlMjBzdG9yZSUyMGJhbm5lciUyMG1pbmltYWx8ZW58MXx8fHwxNzcxNzQ1MzA2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Urban Studio là thương hiệu streetwear Việt Nam, kết hợp giữa văn hóa đường phố và nghệ thuật đương đại. Chúng tôi tin rằng thời trang là cách thể hiện bản thân mạnh mẽ nhất.',
     shortDesc: 'Vietnamese streetwear meets contemporary art',
+    shortDescVi: 'Streetwear Việt giao thoa nghệ thuật đương đại',
     location: 'Ho Chi Minh City',
     followers: 24500,
     productCount: 186,
@@ -147,6 +182,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1767715380018-c2287192f6ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsaXN0JTIwZmFzaGlvbiUyMGJyYW5kJTIwYWVzdGhldGljfGVufDF8fHx8MTc3MTc0NTMwN3ww&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Minimal Atelier theo đuổi triết lý "less is more". Mỗi sản phẩm được thiết kế với đường nét tinh tế, chất liệu cao cấp và bảng màu trung tính nhã nhặn.',
     shortDesc: 'Clean lines, premium fabrics, timeless pieces',
+    shortDescVi: 'Đường nét tinh tế, chất liệu cao cấp, thiết kế vượt thời gian',
     location: 'Hanoi',
     followers: 18200,
     productCount: 124,
@@ -164,6 +200,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1766895585085-ea14a47209db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwZmFzaGlvbiUyMHJldHJvJTIwY2xvdGhpbmclMjBzdG9yZXxlbnwxfHx8fDE3NzE3NDUzMDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Retro Vault mang đến những item vintage cổ điển từ thập niên 70s-90s, được chọn lọc kỹ lưỡng và phục chế lại. Mỗi món đồ đều mang một câu chuyện riêng.',
     shortDesc: 'Curated vintage from the 70s to 90s',
+    shortDescVi: 'Đồ vintage tuyển chọn từ thập niên 70 đến 90',
     location: 'Da Nang',
     followers: 12800,
     productCount: 298,
@@ -181,6 +218,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1765009433753-c7462637d21f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBmYXNoaW9uJTIwYm91dGlxdWUlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NzE2NzEzOTR8MA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Luxe Collective chuyên về thời trang cao cấp và phụ kiện sang trọng. Chúng tôi hợp tác với các nghệ nhân hàng đầu để tạo ra những sản phẩm chất lượng vượt trội.',
     shortDesc: 'Premium fashion & luxury accessories',
+    shortDescVi: 'Thời trang cao cấp & phụ kiện sang trọng',
     location: 'Ho Chi Minh City',
     followers: 31000,
     productCount: 92,
@@ -198,6 +236,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1749813991859-8953e5b4dd26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdXN0YWluYWJsZSUyMGZhc2hpb24lMjBlY28lMjBjbG90aGluZ3xlbnwxfHx8fDE3NzE3NDUzMDh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Eco Thread cam kết với thời trang bền vững. Tất cả sản phẩm được làm từ vật liệu tái chế và organic, sản xuất theo quy trình thân thiện môi trường.',
     shortDesc: 'Sustainable fashion for a better tomorrow',
+    shortDescVi: 'Thời trang bền vững vì ngày mai tốt đẹp hơn',
     location: 'Hanoi',
     followers: 15600,
     productCount: 156,
@@ -215,6 +254,7 @@ export const brands: Brand[] = [
     banner: 'https://images.unsplash.com/photo-1663766976204-ead9fb54d388?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrb3JlYW4lMjBmYXNoaW9uJTIwa3BvcCUyMHN0eWxlJTIwb3V0Zml0fGVufDF8fHx8MTc3MTc0NTMxM3ww&ixlib=rb-4.1.0&q=80&w=1080',
     description: 'Seoul Vibes mang phong cách K-Fashion đến Việt Nam. Từ những set đồ dễ thương đến outfit cool ngầu, chúng tôi có tất cả.',
     shortDesc: 'K-Fashion inspired, Vietnamese made',
+    shortDescVi: 'Cảm hứng K-Fashion, sản xuất tại Việt Nam',
     location: 'Ho Chi Minh City',
     followers: 28900,
     productCount: 210,
@@ -230,6 +270,7 @@ const productsRaw: Product[] = [
   {
     id: 1,
     name: 'Vintage Brown Leather Jacket',
+    nameVi: 'Áo khoác da nâu vintage',
     price: 189,
     salePrice: 149,
     image: 'https://images.unsplash.com/photo-1728241965139-cf300d490f7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwY2xvdGhpbmclMjB2aW50YWdlfGVufDF8fHx8MTc3MDA0MzE5MHww&ixlib=rb-4.1.0&q=80&w=1080',
@@ -251,6 +292,7 @@ const productsRaw: Product[] = [
   {
     id: 2,
     name: 'Classic White Sneakers',
+    nameVi: 'Giày sneaker trắng cổ điển',
     price: 129,
     image: 'https://images.unsplash.com/photo-1723776964688-8d2eb30327c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbmVha2VycyUyMHN0cmVldHdlYXJ8ZW58MXx8fHwxNzY5OTY2MTM3fDA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1723776964688-8d2eb30327c7?w=800'],
@@ -270,6 +312,7 @@ const productsRaw: Product[] = [
   {
     id: 3,
     name: 'Vintage Denim Jacket',
+    nameVi: 'Áo khoác denim vintage',
     price: 95,
     salePrice: 75,
     image: 'https://images.unsplash.com/photo-1556041068-5874261f23e5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aW50YWdlJTIwamFja2V0JTIwZGVuaW18ZW58MXx8fHwxNzcwMDQzMTkxfDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -291,6 +334,7 @@ const productsRaw: Product[] = [
   {
     id: 4,
     name: 'Designer Leather Handbag',
+    nameVi: 'Túi xách da thiết kế',
     price: 320,
     image: 'https://images.unsplash.com/photo-1601924928357-22d3b3abfcfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNpZ25lciUyMGhhbmRiYWd8ZW58MXx8fHwxNzcwMDEyNzIyfDA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1601924928357-22d3b3abfcfb?w=800'],
@@ -311,6 +355,7 @@ const productsRaw: Product[] = [
   {
     id: 5,
     name: 'Floral Summer Dress',
+    nameVi: 'Váy hoa mùa hè',
     price: 78,
     salePrice: 58,
     image: 'https://images.unsplash.com/photo-1602303894456-398ce544d90b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBkcmVzcyUyMGZhc2hpb258ZW58MXx8fHwxNzY5OTkxNDA1fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -331,6 +376,7 @@ const productsRaw: Product[] = [
   {
     id: 6,
     name: 'Vintage Round Sunglasses',
+    nameVi: 'Kính mát gọng tròn vintage',
     price: 45,
     image: 'https://images.unsplash.com/photo-1766928102358-86e329eef03b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW5nbGFzc2VzJTIwYWNjZXNzb3JpZXN8ZW58MXx8fHwxNzcwMDQwNTM2fDA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1766928102358-86e329eef03b?w=800'],
@@ -350,6 +396,7 @@ const productsRaw: Product[] = [
   {
     id: 7,
     name: 'Classic Leather Boots',
+    nameVi: 'Bốt da cổ điển',
     price: 225,
     image: 'https://images.unsplash.com/photo-1652474590303-b4d72bf9f61a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZWF0aGVyJTIwYm9vdHMlMjBmYXNoaW9ufGVufDF8fHx8MTc3MDAyNTIyMXww&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1652474590303-b4d72bf9f61a?w=800'],
@@ -369,6 +416,7 @@ const productsRaw: Product[] = [
   {
     id: 8,
     name: 'Graphic Print T-Shirt',
+    nameVi: 'Áo thun in hình',
     price: 38,
     image: 'https://images.unsplash.com/photo-1768489038502-795fce66002e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFwaGljJTIwdHNoaXJ0JTIwc3RyZWV0d2VhcnxlbnwxfHx8fDE3NzAwNDMxOTN8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1768489038502-795fce66002e?w=800'],
@@ -389,6 +437,7 @@ const productsRaw: Product[] = [
   {
     id: 9,
     name: 'Oversized Striped Sweater',
+    nameVi: 'Áo len kẻ sọc oversize',
     price: 72,
     image: 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800',
     images: ['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=800'],
@@ -408,6 +457,7 @@ const productsRaw: Product[] = [
   {
     id: 10,
     name: 'Oversized Denim Shirt',
+    nameVi: 'Áo sơ mi denim oversize',
     price: 65,
     image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800',
     images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800'],
@@ -427,6 +477,7 @@ const productsRaw: Product[] = [
   {
     id: 11,
     name: 'Mini Crossbody Bag',
+    nameVi: 'Túi đeo chéo mini',
     price: 155,
     salePrice: 119,
     image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800',
@@ -448,6 +499,7 @@ const productsRaw: Product[] = [
   {
     id: 12,
     name: 'High-Top Canvas Shoes',
+    nameVi: 'Giày vải cổ cao',
     price: 88,
     image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800',
     images: ['https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800'],
@@ -467,6 +519,7 @@ const productsRaw: Product[] = [
   {
     id: 13,
     name: 'Eco Cotton Tee',
+    nameVi: 'Áo thun cotton thân thiện môi trường',
     price: 42,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800',
     images: ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800'],
@@ -486,6 +539,7 @@ const productsRaw: Product[] = [
   {
     id: 14,
     name: 'Korean Oversized Blazer',
+    nameVi: 'Áo blazer oversize phong cách Hàn Quốc',
     price: 135,
     image: 'https://images.unsplash.com/photo-1598033067000-6a57d614b183?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW4lMjBjYXN1YWwlMjBibGF6ZXIlMjBvdXRmaXR8ZW58MXx8fHwxNzcxNzQ1MzExfDA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1598033067000-6a57d614b183?w=800'],
@@ -506,6 +560,7 @@ const productsRaw: Product[] = [
   {
     id: 15,
     name: 'Gold Chain Necklace',
+    nameVi: 'Dây chuyền vàng',
     price: 89,
     image: 'https://images.unsplash.com/photo-1724896728499-2e7ecef652a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwYWNjZXNzb3JpZXMlMjBqZXdlbHJ5JTIwZ29sZHxlbnwxfHx8fDE3NzE3NDUzMTJ8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1724896728499-2e7ecef652a8?w=800'],
@@ -526,6 +581,7 @@ const productsRaw: Product[] = [
   {
     id: 16,
     name: 'Running Performance Shoes',
+    nameVi: 'Giày chạy bộ hiệu năng cao',
     price: 165,
     salePrice: 129,
     image: 'https://images.unsplash.com/photo-1762943107238-a87f6f7bf6a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdGhsZXRpYyUyMHNwb3J0c3dlYXIlMjBydW5uaW5nJTIwc2hvZXN8ZW58MXx8fHwxNzcxNzQyNjA5fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -546,6 +602,7 @@ const productsRaw: Product[] = [
   {
     id: 17,
     name: 'Linen Wide Leg Pants',
+    nameVi: 'Quần ống rộng vải lanh',
     price: 68,
     image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800',
     images: ['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800'],
@@ -565,6 +622,7 @@ const productsRaw: Product[] = [
   {
     id: 18,
     name: 'Canvas Tote Bag',
+    nameVi: 'Túi tote vải canvas',
     price: 49,
     image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800',
     images: ['https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800'],
@@ -584,6 +642,7 @@ const productsRaw: Product[] = [
   {
     id: 19,
     name: 'Y2K Crop Top',
+    nameVi: 'Áo croptop phong cách Y2K',
     price: 32,
     image: 'https://images.unsplash.com/photo-1763559008868-f5d0f308253b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21lbiUyMHN1bW1lciUyMGRyZXNzJTIwY29sbGVjdGlvbnxlbnwxfHx8fDE3NzE3NDUzMTF8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1763559008868-f5d0f308253b?w=800'],
@@ -604,6 +663,7 @@ const productsRaw: Product[] = [
   {
     id: 20,
     name: 'Slim Fit Chino Pants',
+    nameVi: 'Quần kaki chino ôm dáng',
     price: 75,
     image: 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=800',
     images: ['https://images.unsplash.com/photo-1542272604-787c3835535d?w=800'],
@@ -623,6 +683,7 @@ const productsRaw: Product[] = [
   {
     id: 21,
     name: 'Oversized Streetwear Hoodie',
+    nameVi: 'Áo hoodie oversize phong cách đường phố',
     price: 68,
     salePrice: 52,
     image: 'https://images.unsplash.com/photo-1622866654199-d36cf0709720?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW4lMjBzdHJlZXR3ZWFyJTIwaG9vZGllJTIwZmFzaGlvbnxlbnwxfHx8fDE3NzMwNTc3Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -644,6 +705,7 @@ const productsRaw: Product[] = [
   {
     id: 22,
     name: 'Tailored Blazer Jacket',
+    nameVi: 'Áo blazer may đo',
     price: 145,
     image: 'https://images.unsplash.com/photo-1674044018578-5db0f70729e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21lbiUyMGJsYXplciUyMG91dGZpdCUyMGZvcm1hbHxlbnwxfHx8fDE3NzMwNTc3Mjh8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1674044018578-5db0f70729e7?w=800'],
@@ -663,6 +725,7 @@ const productsRaw: Product[] = [
   {
     id: 23,
     name: 'Washed Denim Trucker Jacket',
+    nameVi: 'Áo khoác denim wash',
     price: 95,
     salePrice: 79,
     image: 'https://images.unsplash.com/photo-1711477270970-14340bee9000?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZW5pbSUyMGphY2tldCUyMGZhc2hpb24lMjBzdHJlZXR8ZW58MXx8fHwxNzczMDU3NzI4fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -684,6 +747,7 @@ const productsRaw: Product[] = [
   {
     id: 24,
     name: 'Premium Linen Summer Shirt',
+    nameVi: 'Áo sơ mi vải lanh cao cấp mùa hè',
     price: 62,
     image: 'https://images.unsplash.com/photo-1766113482305-c372c204b5ad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsaW5lbiUyMHNoaXJ0JTIwbWVuJTIwc3VtbWVyfGVufDF8fHx8MTc3MzA1NzcyOXww&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1766113482305-c372c204b5ad?w=800'],
@@ -703,6 +767,7 @@ const productsRaw: Product[] = [
   {
     id: 25,
     name: 'Chunky Knit Oversized Sweater',
+    nameVi: 'Áo len dệt thô oversize',
     price: 78,
     salePrice: 59,
     image: 'https://images.unsplash.com/photo-1687275159654-13e292177bfc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21lbiUyMGtuaXQlMjBzd2VhdGVyJTIwY296eXxlbnwxfHx8fDE3NzMwNTc3Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -724,6 +789,7 @@ const productsRaw: Product[] = [
   {
     id: 26,
     name: 'Tactical Cargo Pants',
+    nameVi: 'Quần cargo túi hộp',
     price: 85,
     image: 'https://images.unsplash.com/photo-1612653705360-34f2a2e17098?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHBhbnRzJTIwc3RyZWV0d2VhciUyMG1lbnxlbnwxfHx8fDE3NzMwNTc3Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1612653705360-34f2a2e17098?w=800'],
@@ -743,6 +809,7 @@ const productsRaw: Product[] = [
   {
     id: 27,
     name: 'Flowy Maxi Wrap Skirt',
+    nameVi: 'Chân váy maxi quấn bồng bềnh',
     price: 58,
     salePrice: 45,
     image: 'https://images.unsplash.com/photo-1615898290907-0ad011905389?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21lbiUyMG1heGklMjBza2lydCUyMGZhc2hpb258ZW58MXx8fHwxNzczMDU3NzMwfDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -763,6 +830,7 @@ const productsRaw: Product[] = [
   {
     id: 28,
     name: 'Retro Graphic Print Tee',
+    nameVi: 'Áo thun in hình retro',
     price: 38,
     image: 'https://images.unsplash.com/photo-1763598363324-cd072a67dc61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFwaGljJTIwdGVlJTIwc2hpcnQlMjB1cmJhbnxlbnwxfHx8fDE3NzMwNTc3MzB8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1763598363324-cd072a67dc61?w=800'],
@@ -783,6 +851,7 @@ const productsRaw: Product[] = [
   {
     id: 29,
     name: 'Classic Trench Coat',
+    nameVi: 'Áo măng tô cổ điển',
     price: 168,
     salePrice: 135,
     image: 'https://images.unsplash.com/photo-1666513241353-14a198830381?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21lbiUyMHRyZW5jaCUyMGNvYXQlMjBhdXR1bW58ZW58MXx8fHwxNzczMDU3NzMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -804,6 +873,7 @@ const productsRaw: Product[] = [
   {
     id: 30,
     name: 'Relaxed Fit Polo Shirt',
+    nameVi: 'Áo polo dáng rộng thoải mái',
     price: 48,
     image: 'https://images.unsplash.com/photo-1759596450534-0a960be607e1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW4lMjBwb2xvJTIwc2hpcnQlMjBjYXN1YWx8ZW58MXx8fHwxNzcyOTk0ODIwfDA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1759596450534-0a960be607e1?w=800'],
@@ -823,6 +893,7 @@ const productsRaw: Product[] = [
   {
     id: 31,
     name: 'Kids Colorful Graphic Tee',
+    nameVi: 'Áo thun in hình nhiều màu cho bé',
     price: 28,
     salePrice: 22,
     image: 'https://images.unsplash.com/photo-1767604014151-3772a908e8a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMGtpZHMlMjBmYXNoaW9uJTIwb3V0Zml0JTIwY29sb3JmdWx8ZW58MXx8fHwxNzczMDYzODU5fDA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -844,6 +915,7 @@ const productsRaw: Product[] = [
   {
     id: 32,
     name: 'Girls Summer Floral Dress',
+    nameVi: 'Váy hoa mùa hè cho bé gái',
     price: 42,
     image: 'https://images.unsplash.com/photo-1644894894314-a11bee102766?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMGNsb3RoaW5nJTIwY3V0ZSUyMHN1bW1lciUyMGRyZXNzfGVufDF8fHx8MTc3MzA2Mzg1OXww&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1644894894314-a11bee102766?w=800'],
@@ -863,6 +935,7 @@ const productsRaw: Product[] = [
   {
     id: 33,
     name: 'Toddler Casual Outfit Set',
+    nameVi: 'Set đồ thường ngày cho bé tập đi',
     price: 35,
     salePrice: 29,
     image: 'https://images.unsplash.com/photo-1728163807630-0f30b4eb9390?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b2RkbGVyJTIwYm95JTIwY2FzdWFsJTIwb3V0Zml0JTIwc3R5bGlzaHxlbnwxfHx8fDE3NzMwNjM4NTl8MA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -883,6 +956,7 @@ const productsRaw: Product[] = [
   {
     id: 34,
     name: 'Kids Denim Jacket Streetwear',
+    nameVi: 'Áo khoác denim phong cách đường phố cho bé',
     price: 55,
     image: 'https://images.unsplash.com/photo-1558140275-6b7b7bf2cfa1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwZGVuaW0lMjBqYWNrZXQlMjB0cmVuZHklMjBzdHJlZXR3ZWFyfGVufDF8fHx8MTc3MzA2Mzg1OXww&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1558140275-6b7b7bf2cfa1?w=800'],
@@ -903,6 +977,7 @@ const productsRaw: Product[] = [
   {
     id: 35,
     name: 'Girls Floral Spring Dress',
+    nameVi: 'Váy hoa mùa xuân cho bé gái',
     price: 38,
     salePrice: 30,
     image: 'https://images.unsplash.com/photo-1760025549638-377f40e35357?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsaXR0bGUlMjBnaXJsJTIwZmxvcmFsJTIwZHJlc3MlMjBzcHJpbmclMjBmYXNoaW9ufGVufDF8fHx8MTc3MzA2Mzg2MXww&ixlib=rb-4.1.0&q=80&w=1080',
@@ -924,6 +999,7 @@ const productsRaw: Product[] = [
   {
     id: 36,
     name: 'Kids Colorful Sneakers',
+    nameVi: 'Giày sneaker nhiều màu cho bé',
     price: 45,
     image: 'https://images.unsplash.com/photo-1669762162480-fb67378e307b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaGlsZHJlbiUyMHNuZWFrZXJzJTIwY29sb3JmdWwlMjBzaG9lc3xlbnwxfHx8fDE3NzMwNjM4NjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1669762162480-fb67378e307b?w=800'],
@@ -943,6 +1019,7 @@ const productsRaw: Product[] = [
   {
     id: 37,
     name: 'Kids Casual Hoodie',
+    nameVi: 'Áo hoodie thường ngày cho bé',
     price: 32,
     salePrice: 25,
     image: 'https://images.unsplash.com/photo-1737029526341-05b80fc5cbf5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwaG9vZGllJTIwY2FzdWFsJTIwcGxheWZ1bCUyMG91dGZpdHxlbnwxfHx8fDE3NzMwNjM4NjF8MA&ixlib=rb-4.1.0&q=80&w=1080',
@@ -964,6 +1041,7 @@ const productsRaw: Product[] = [
   {
     id: 38,
     name: 'Baby Cotton Outfit Set',
+    nameVi: 'Set đồ cotton cho em bé',
     price: 25,
     image: 'https://images.unsplash.com/photo-1766918780914-e19d9de76d85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiYWJ5JTIwdG9kZGxlciUyMGNsb3RoaW5nJTIwY290dG9uJTIwc2V0fGVufDF8fHx8MTc3MzA2Mzg2M3ww&ixlib=rb-4.1.0&q=80&w=1080',
     images: ['https://images.unsplash.com/photo-1766918780914-e19d9de76d85?w=800'],
@@ -995,7 +1073,9 @@ export const vouchers: Voucher[] = [
     id: 1,
     code: 'WELCOME20',
     title: 'Welcome Discount',
+    titleVi: 'Ưu đãi chào mừng',
     description: 'Get 20% off on your first order',
+    descriptionVi: 'Giảm 20% cho đơn hàng đầu tiên',
     discount: 20,
     discountType: 'percentage',
     minOrder: 50,
@@ -1009,7 +1089,9 @@ export const vouchers: Voucher[] = [
     id: 2,
     code: 'FREESHIP',
     title: 'Free Shipping',
+    titleVi: 'Miễn phí vận chuyển',
     description: 'Free shipping on orders over $30',
+    descriptionVi: 'Miễn phí vận chuyển cho đơn từ 750.000₫',
     discount: 15,
     discountType: 'fixed',
     minOrder: 30,
@@ -1022,7 +1104,9 @@ export const vouchers: Voucher[] = [
     id: 3,
     code: 'URBAN10',
     title: 'Urban Studio Special',
+    titleVi: 'Ưu đãi đặc biệt Urban Studio',
     description: '10% off on all Urban Studio products',
+    descriptionVi: 'Giảm 10% cho tất cả sản phẩm Urban Studio',
     discount: 10,
     discountType: 'percentage',
     minOrder: 80,
@@ -1038,7 +1122,9 @@ export const vouchers: Voucher[] = [
     id: 4,
     code: 'LUXE50',
     title: '$50 Off Luxe Collective',
+    titleVi: 'Giảm 1.250.000₫ Luxe Collective',
     description: '$50 discount on orders above $200',
+    descriptionVi: 'Giảm 1.250.000₫ cho đơn trên 5.000.000₫',
     discount: 50,
     discountType: 'fixed',
     minOrder: 200,
@@ -1053,7 +1139,9 @@ export const vouchers: Voucher[] = [
     id: 5,
     code: 'SUMMER15',
     title: 'Summer Sale',
+    titleVi: 'Khuyến mãi mùa hè',
     description: '15% off on summer collection',
+    descriptionVi: 'Giảm 15% cho bộ sưu tập mùa hè',
     discount: 15,
     discountType: 'percentage',
     minOrder: 60,
@@ -1067,7 +1155,9 @@ export const vouchers: Voucher[] = [
     id: 6,
     code: 'FLASH30',
     title: 'Flash Sale',
+    titleVi: 'Flash Sale',
     description: '30% off everything - limited time',
+    descriptionVi: 'Giảm 30% cho tất cả - thời gian có hạn',
     discount: 30,
     discountType: 'percentage',
     minOrder: 100,

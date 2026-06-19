@@ -8,6 +8,7 @@ import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import * as Tabs from '@radix-ui/react-tabs';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 import { useAuth } from '@/app/contexts/AuthContext';
+import { formatVnd } from '@/app/utils/currency';
 
 interface Product {
   id: number;
@@ -243,14 +244,14 @@ export function ProductDetailPage() {
             {/* Price */}
             <div className="flex items-center gap-3 mb-8">
               <span style={{ fontSize: '36px', fontWeight: 700, color: '#0d0d0d' }}>
-                ${currentPrice.toFixed(2)}
+                {formatVnd(currentPrice)}
               </span>
               {product.salePrice && (
                 <span
                   className="line-through"
                   style={{ fontSize: '24px', fontWeight: 400, color: '#888' }}
                 >
-                  ${product.price.toFixed(2)}
+                  {formatVnd(product.price)}
                 </span>
               )}
             </div>
@@ -443,7 +444,7 @@ export function ProductDetailPage() {
                 <Truck className="w-5 h-5 mt-0.5" style={{ color: '#e2b93b' }} />
                 <div>
                   <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v('Free Shipping', 'Miễn phí vận chuyển')}</p>
-                  <p style={{ fontSize: '12px', color: '#888' }}>{v('On orders over $100', 'Cho đơn hàng trên $100')}</p>
+                  <p style={{ fontSize: '12px', color: '#888' }}>{v('On orders over ', 'Cho đơn hàng trên ')}{formatVnd(100)}</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -553,7 +554,7 @@ export function ProductDetailPage() {
                     {v('Shipping Information', 'Thông tin vận chuyển')}
                   </h3>
                   <p style={{ fontSize: '14px', color: '#4a4a4a', lineHeight: '1.6' }}>
-                    {v('We offer free standard shipping on all orders over $100. Orders are processed within 1-2 business days and typically arrive within 5-7 business days.', 'Chúng tôi miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên $100. Đơn hàng được xử lý trong 1-2 ngày làm việc và thường giao trong 5-7 ngày làm việc.')}
+                    {v('We offer free standard shipping on all orders over ', 'Chúng tôi miễn phí vận chuyển tiêu chuẩn cho đơn hàng trên ')}{formatVnd(100)}{v('. Orders are processed within 1-2 business days and typically arrive within 5-7 business days.', '. Đơn hàng được xử lý trong 1-2 ngày làm việc và thường giao trong 5-7 ngày làm việc.')}
                   </p>
                 </div>
                 <div>
@@ -690,7 +691,7 @@ export function ProductDetailPage() {
                   {item.name}
                 </h3>
                 <p style={{ fontSize: '16px', fontWeight: 700, color: '#d41c1c' }}>
-                  ${item.price.toFixed(2)}
+                  {formatVnd(item.price)}
                 </p>
               </Link>
             ))}
@@ -719,7 +720,7 @@ export function ProductDetailPage() {
                   {item.name}
                 </h3>
                 <p style={{ fontSize: '16px', fontWeight: 700, color: '#d41c1c' }}>
-                  ${item.price.toFixed(2)}
+                  {formatVnd(item.price)}
                 </p>
               </Link>
             ))}

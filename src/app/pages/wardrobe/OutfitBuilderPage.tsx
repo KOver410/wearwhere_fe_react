@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { ArrowLeft, Plus, X, Save, Shuffle, ChevronDown, ChevronUp } from 'lucide-react';
 import { ImageWithFallback } from '@/app/components/figma/ImageWithFallback';
 import { wardrobeItems, type WardrobeItem } from '@/app/data/wardrobeMockData';
+import { styleVi } from '@/app/data/mockData';
 import { useLanguage } from '@/app/i18n/LanguageContext';
 
 const SLOTS_DATA = [
@@ -100,7 +101,7 @@ export function OutfitBuilderPage() {
                       {item ? (
                         <div className="relative group">
                           <div className="aspect-square overflow-hidden mb-1" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                            <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            <ImageWithFallback src={item.image} alt={v(item.name, item.nameVi)} className="w-full h-full object-cover" />
                           </div>
                           <button
                             onClick={() => removeItem(slot.key)}
@@ -139,7 +140,7 @@ export function OutfitBuilderPage() {
                         <>
                           <div className="flex justify-between">
                             <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Dominant Style', 'Phong cách chủ đạo')}</span>
-                            <span className="capitalize" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{dominant[0]?.[0] || '—'}</span>
+                            <span className="capitalize" style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{dominant[0]?.[0] ? v(dominant[0][0], styleVi(dominant[0][0])) : '—'}</span>
                           </div>
                           <div className="flex justify-between">
                             <span style={{ fontSize: '13px', color: '#4a4a4a' }}>{v('Style Cohesion', 'Độ đồng nhất')}</span>
@@ -195,11 +196,11 @@ export function OutfitBuilderPage() {
                                   style={{ borderRadius: '10px' }}
                                 >
                                   <div className="aspect-square overflow-hidden" style={{ backgroundColor: '#f3f0eb' }}>
-                                    <ImageWithFallback src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                    <ImageWithFallback src={item.image} alt={v(item.name, item.nameVi)} className="w-full h-full object-cover" />
                                   </div>
                                   <div className="p-2">
-                                    <p className="truncate" style={{ fontSize: '11px', fontWeight: 600, color: '#0d0d0d' }}>{item.name}</p>
-                                    <p style={{ fontSize: '10px', color: '#888' }}>{item.color} · {item.size}</p>
+                                    <p className="truncate" style={{ fontSize: '11px', fontWeight: 600, color: '#0d0d0d' }}>{v(item.name, item.nameVi)}</p>
+                                    <p style={{ fontSize: '10px', color: '#888' }}>{v(item.color, item.colorVi)} · {item.size}</p>
                                   </div>
                                 </button>
                               );

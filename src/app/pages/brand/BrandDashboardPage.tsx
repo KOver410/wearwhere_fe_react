@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { ArrowUpRight, ArrowDownRight, DollarSign, ShoppingBag, Users, Star, Plus, Package, MessageSquare, TrendingUp } from 'lucide-react';
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 const revenueData = [
   { name: 'Mon', revenue: 4000 },
@@ -27,15 +28,15 @@ const ordersData = [
 ];
 
 const recentOrders = [
-  { id: 'ORD-001', customer: 'Alice Smith', product: 'Vintage Denim Jacket', amount: '$129.00', status: 'Completed', date: 'Today, 2:34 PM' },
-  { id: 'ORD-002', customer: 'Bob Jones', product: 'Cotton Basic Tee', amount: '$29.00', status: 'Processing', date: 'Today, 1:12 PM' },
-  { id: 'ORD-003', customer: 'Charlie Brown', product: 'Wool Blend Coat', amount: '$299.00', status: 'Completed', date: 'Yesterday' },
-  { id: 'ORD-004', customer: 'Diana Prince', product: 'Leather Boots', amount: '$189.00', status: 'Pending', date: 'Yesterday' },
-  { id: 'ORD-005', customer: 'Evan Wright', product: 'Slim Fit Chinos', amount: '$59.00', status: 'Completed', date: 'Feb 7, 2026' },
+  { id: 'ORD-001', customer: 'Alice Smith', product: 'Vintage Denim Jacket', productVi: 'Áo khoác denim cổ điển', amount: 129.00, status: 'Completed', date: 'Today, 2:34 PM' },
+  { id: 'ORD-002', customer: 'Bob Jones', product: 'Cotton Basic Tee', productVi: 'Áo thun cotton cơ bản', amount: 29.00, status: 'Processing', date: 'Today, 1:12 PM' },
+  { id: 'ORD-003', customer: 'Charlie Brown', product: 'Wool Blend Coat', productVi: 'Áo khoác pha len', amount: 299.00, status: 'Completed', date: 'Yesterday' },
+  { id: 'ORD-004', customer: 'Diana Prince', product: 'Leather Boots', productVi: 'Bốt da', amount: 189.00, status: 'Pending', date: 'Yesterday' },
+  { id: 'ORD-005', customer: 'Evan Wright', product: 'Slim Fit Chinos', productVi: 'Quần chinos ôm', amount: 59.00, status: 'Completed', date: 'Feb 7, 2026' },
 ];
 
 export function BrandDashboardPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   return (
     <div className="space-y-8">
       <div>
@@ -53,7 +54,7 @@ export function BrandDashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0F172A]">$45,231.89</div>
+            <div className="text-2xl font-bold text-[#0F172A]">{formatVnd(45231.89)}</div>
             <p className="text-xs flex items-center mt-1">
               <span className="text-emerald-600 flex items-center mr-1 font-medium">
                 +20.1% <ArrowUpRight className="h-3 w-3 ml-0.5" />
@@ -142,7 +143,7 @@ export function BrandDashboardPage() {
                     fontSize={12} 
                     tickLine={false} 
                     axisLine={false} 
-                    tickFormatter={(value) => `$${value}`} 
+                    tickFormatter={(value) => formatVnd(value)}
                   />
                   <Tooltip 
                     contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', backgroundColor: '#0F172A', color: '#fff' }}
@@ -230,7 +231,7 @@ export function BrandDashboardPage() {
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{order.customer}</TableCell>
-                  <TableCell>{order.product}</TableCell>
+                  <TableCell>{lang === 'vi' ? order.productVi : order.product}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       order.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' :
@@ -243,7 +244,7 @@ export function BrandDashboardPage() {
                        order.status}
                     </span>
                   </TableCell>
-                  <TableCell>{order.amount}</TableCell>
+                  <TableCell>{formatVnd(order.amount)}</TableCell>
                   <TableCell className="text-right text-muted-foreground">{order.date}</TableCell>
                 </TableRow>
               ))}

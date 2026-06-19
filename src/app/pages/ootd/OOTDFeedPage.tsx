@@ -123,6 +123,7 @@ export function OOTDFeedPage() {
                 <PostCard
                   key={post.id}
                   post={post}
+                  caption={v(post.caption, post.captionVi)}
                   onToggleLike={() => toggleLike(post.id)}
                 />
               ))}
@@ -178,14 +179,14 @@ function TabButton({ label, active, onClick }: { label: string; active: boolean;
 }
 
 /* ─── Post Card (KREAM minimal style) ─── */
-function PostCard({ post, onToggleLike }: { post: OOTDPost; onToggleLike: () => void }) {
+function PostCard({ post, caption, onToggleLike }: { post: OOTDPost; caption: string; onToggleLike: () => void }) {
   return (
     <div className="group" style={{ paddingBottom: '24px' }}>
       {/* Image */}
       <Link to={`/ootd/${post.id}`} className="block relative overflow-hidden" style={{ borderRadius: '8px' }}>
         <ImageWithFallback
           src={post.image}
-          alt={post.caption}
+          alt={caption}
           className="w-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
           style={{ display: 'block', minHeight: '180px' } as any}
         />
@@ -220,9 +221,9 @@ function PostCard({ post, onToggleLike }: { post: OOTDPost; onToggleLike: () => 
       </div>
 
       {/* Caption (short, 2 lines max) */}
-      {post.caption && (
+      {caption && (
         <p className="line-clamp-2" style={{ fontSize: '13px', color: '#333', lineHeight: 1.4, marginTop: '6px' }}>
-          {post.caption}
+          {caption}
         </p>
       )}
     </div>

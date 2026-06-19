@@ -43,6 +43,8 @@ const mockBrand = {
   website: 'https://zara.vn',
   description:
     'Zara is a Spanish fast fashion retailer. We offer trendy clothing and accessories for men, women, and children.',
+  descriptionVi:
+    'Zara là nhà bán lẻ thời trang nhanh của Tây Ban Nha. Chúng tôi cung cấp quần áo và phụ kiện thời thượng cho nam, nữ và trẻ em.',
   status: 'active',
   verified: true,
   subscriptionTier: 'premium',
@@ -125,7 +127,7 @@ const mockTopProducts = [
 ];
 
 export default function AdminBrandDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -453,7 +455,7 @@ export default function AdminBrandDetailPage() {
                     marginBottom: '24px',
                   }}
                 >
-                  {mockBrand.description}
+                  {lang === 'vi' ? mockBrand.descriptionVi : mockBrand.description}
                 </p>
                 <div className="grid grid-cols-2" style={{ gap: '20px' }}>
                   <div>

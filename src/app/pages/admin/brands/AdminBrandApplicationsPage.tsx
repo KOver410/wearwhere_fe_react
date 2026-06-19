@@ -57,6 +57,7 @@ const mockApplications = [
       identityCard: true,
     },
     description: 'Streetwear brand focusing on Vietnamese youth culture...',
+    descriptionVi: 'Thương hiệu streetwear tập trung vào văn hóa giới trẻ Việt Nam...',
   },
   {
     id: 3,
@@ -74,6 +75,7 @@ const mockApplications = [
       identityCard: true,
     },
     description: 'High-end fashion boutique specializing in designer brands...',
+    descriptionVi: 'Cửa hàng thời trang cao cấp chuyên các thương hiệu nhà thiết kế...',
   },
   {
     id: 4,
@@ -91,7 +93,9 @@ const mockApplications = [
       identityCard: true,
     },
     description: 'Sustainable fashion brand using eco-friendly materials...',
+    descriptionVi: 'Thương hiệu thời trang bền vững sử dụng vật liệu thân thiện môi trường...',
     reviewNote: 'All documents verified. Approved for Business tier.',
+    reviewNoteVi: 'Đã xác minh tất cả hồ sơ. Đã duyệt gói Doanh nghiệp.',
   },
   {
     id: 5,
@@ -109,7 +113,9 @@ const mockApplications = [
       identityCard: true,
     },
     description: 'Fashion for teenagers...',
+    descriptionVi: 'Thời trang dành cho thanh thiếu niên...',
     reviewNote: 'Incomplete documents. Business license required.',
+    reviewNoteVi: 'Hồ sơ chưa đầy đủ. Cần giấy phép kinh doanh.',
   },
 ];
 
@@ -127,7 +133,7 @@ const tierConfig = {
 };
 
 export default function AdminBrandApplicationsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const statusLabel = (key: keyof typeof statusConfig) =>
     ({
       pending: v('Pending Review', 'Chờ duyệt'),
@@ -525,7 +531,7 @@ export default function AdminBrandApplicationsPage() {
                       marginBottom: '16px',
                     }}
                   >
-                    {app.description}
+                    {lang === 'vi' && (app as any).descriptionVi ? (app as any).descriptionVi : app.description}
                   </p>
 
                   {/* Documents Status */}
@@ -611,7 +617,7 @@ export default function AdminBrandApplicationsPage() {
                         className="text-[#0A0A0A]"
                         style={{ fontSize: '12px', fontFamily: 'Arimo, sans-serif' }}
                       >
-                        {app.reviewNote}
+                        {lang === 'vi' && (app as any).reviewNoteVi ? (app as any).reviewNoteVi : app.reviewNote}
                       </p>
                     </div>
                   )}

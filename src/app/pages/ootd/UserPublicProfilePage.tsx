@@ -90,7 +90,7 @@ export function UserPublicProfilePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {userPosts.map(post => (
               <Link key={post.id} to={`/ootd/${post.id}`} className="group relative overflow-hidden aspect-square" style={{ borderRadius: '10px', backgroundColor: '#f3f0eb' }}>
-                <ImageWithFallback src={post.image} alt={post.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <ImageWithFallback src={post.image} alt={v(post.caption, post.captionVi)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex items-center gap-4 text-white">
                     <div className="flex items-center gap-1.5">

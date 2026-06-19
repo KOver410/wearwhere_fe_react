@@ -194,7 +194,7 @@ export default function AdminCategoriesPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý danh mục sản phẩm toàn hệ thống
+            {v('Manage product categories across the system', 'Quản lý danh mục sản phẩm toàn hệ thống')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>

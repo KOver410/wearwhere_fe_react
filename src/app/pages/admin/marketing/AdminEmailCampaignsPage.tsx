@@ -36,13 +36,13 @@ import { useLanguage } from '@/app/i18n/LanguageContext';
 
 // Mock data
 const mockCampaigns = [
-  { id: 'CAMP-001', name: 'Welcome Series', subject: 'Welcome to WearWhere!', audience: 'New Users', sent: 1234, opened: 892, clicked: 456, revenue: 45600000, status: 'active', sentAt: '2024-02-14 10:00', type: 'automated' },
-  { id: 'CAMP-002', name: 'Flash Sale February', subject: 'Flash Sale: 30% Off Everything!', audience: 'All Users', sent: 15234, opened: 9542, clicked: 4321, revenue: 234500000, status: 'sent', sentAt: '2024-02-13 09:00', type: 'promotional' },
-  { id: 'CAMP-003', name: 'Cart Abandonment', subject: 'You left something behind...', audience: 'Cart Abandoners', sent: 890, opened: 567, clicked: 234, revenue: 12300000, status: 'active', sentAt: '2024-02-12 14:30', type: 'automated' },
-  { id: 'CAMP-004', name: 'VIP Exclusive Offer', subject: 'Special offer just for you', audience: 'VIP Members', sent: 2340, opened: 1876, clicked: 982, revenue: 89400000, status: 'sent', sentAt: '2024-02-10 11:00', type: 'promotional' },
-  { id: 'CAMP-005', name: 'Product Recommendations', subject: 'Styles we think you\'ll love', audience: 'Active Users', sent: 8765, opened: 5234, clicked: 2345, revenue: 67800000, status: 'active', sentAt: '2024-02-09 16:00', type: 'automated' },
-  { id: 'CAMP-006', name: 'Weekend Sale Preview', subject: 'Get ready for weekend deals!', audience: 'All Users', sent: 0, opened: 0, clicked: 0, revenue: 0, status: 'scheduled', sentAt: '2024-02-17 08:00', type: 'promotional' },
-  { id: 'CAMP-007', name: 'Brand Spotlight: Zara', subject: 'New arrivals from Zara', audience: 'Fashion Enthusiasts', sent: 0, opened: 0, clicked: 0, revenue: 0, status: 'draft', sentAt: null, type: 'promotional' },
+  { id: 'CAMP-001', name: 'Welcome Series', nameVi: 'Chuỗi chào mừng', subject: 'Welcome to WearWhere!', subjectVi: 'Chào mừng đến với WearWhere!', audience: 'New Users', audienceVi: 'Người dùng mới', sent: 1234, opened: 892, clicked: 456, revenue: 45600000, status: 'active', sentAt: '2024-02-14 10:00', type: 'automated' },
+  { id: 'CAMP-002', name: 'Flash Sale February', nameVi: 'Flash Sale tháng Hai', subject: 'Flash Sale: 30% Off Everything!', subjectVi: 'Flash Sale: Giảm 30% toàn bộ!', audience: 'All Users', audienceVi: 'Tất cả người dùng', sent: 15234, opened: 9542, clicked: 4321, revenue: 234500000, status: 'sent', sentAt: '2024-02-13 09:00', type: 'promotional' },
+  { id: 'CAMP-003', name: 'Cart Abandonment', nameVi: 'Bỏ quên giỏ hàng', subject: 'You left something behind...', subjectVi: 'Bạn đã bỏ quên thứ gì đó...', audience: 'Cart Abandoners', audienceVi: 'Người bỏ quên giỏ hàng', sent: 890, opened: 567, clicked: 234, revenue: 12300000, status: 'active', sentAt: '2024-02-12 14:30', type: 'automated' },
+  { id: 'CAMP-004', name: 'VIP Exclusive Offer', nameVi: 'Ưu đãi độc quyền VIP', subject: 'Special offer just for you', subjectVi: 'Ưu đãi đặc biệt dành riêng cho bạn', audience: 'VIP Members', audienceVi: 'Thành viên VIP', sent: 2340, opened: 1876, clicked: 982, revenue: 89400000, status: 'sent', sentAt: '2024-02-10 11:00', type: 'promotional' },
+  { id: 'CAMP-005', name: 'Product Recommendations', nameVi: 'Gợi ý sản phẩm', subject: 'Styles we think you\'ll love', subjectVi: 'Những phong cách chúng tôi nghĩ bạn sẽ thích', audience: 'Active Users', audienceVi: 'Người dùng hoạt động', sent: 8765, opened: 5234, clicked: 2345, revenue: 67800000, status: 'active', sentAt: '2024-02-09 16:00', type: 'automated' },
+  { id: 'CAMP-006', name: 'Weekend Sale Preview', nameVi: 'Xem trước khuyến mãi cuối tuần', subject: 'Get ready for weekend deals!', subjectVi: 'Sẵn sàng cho ưu đãi cuối tuần!', audience: 'All Users', audienceVi: 'Tất cả người dùng', sent: 0, opened: 0, clicked: 0, revenue: 0, status: 'scheduled', sentAt: '2024-02-17 08:00', type: 'promotional' },
+  { id: 'CAMP-007', name: 'Brand Spotlight: Zara', nameVi: 'Tiêu điểm thương hiệu: Zara', subject: 'New arrivals from Zara', subjectVi: 'Hàng mới về từ Zara', audience: 'Fashion Enthusiasts', audienceVi: 'Người đam mê thời trang', sent: 0, opened: 0, clicked: 0, revenue: 0, status: 'draft', sentAt: null, type: 'promotional' },
 ];
 
 const statusConfig = {
@@ -59,7 +59,7 @@ const typeConfig = {
 };
 
 export default function AdminEmailCampaignsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [campaigns, setCampaigns] = useState(mockCampaigns);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -121,7 +121,8 @@ export default function AdminEmailCampaignsPage() {
     const newCampaign = {
       ...campaign,
       id: `CAMP-${String(campaigns.length + 1).padStart(3, '0')}`,
-      name: `${campaign.name} (Copy)`,
+      name: `${campaign.name} ${v('(Copy)', '(Bản sao)')}`,
+      nameVi: campaign.nameVi ? `${campaign.nameVi} ${v('(Copy)', '(Bản sao)')}` : undefined,
       sent: 0,
       opened: 0,
       clicked: 0,
@@ -153,7 +154,7 @@ export default function AdminEmailCampaignsPage() {
             className="text-[#4A5565]"
             style={{ fontSize: '16px', fontFamily: 'Arimo, sans-serif' }}
           >
-            Quản lý email marketing campaigns
+            {v('Manage email marketing campaigns', 'Quản lý email marketing campaigns')}
           </p>
         </div>
         <div className="flex items-center" style={{ gap: '12px' }}>
@@ -417,7 +418,7 @@ export default function AdminEmailCampaignsPage() {
                       fontFamily: 'Arimo, sans-serif',
                     }}
                   >
-                    {campaign.name}
+                    {lang === 'vi' && (campaign as any).nameVi ? (campaign as any).nameVi : campaign.name}
                   </h3>
                   <Badge
                     className={typeConfig[campaign.type as keyof typeof typeConfig].color}
@@ -453,7 +454,7 @@ export default function AdminEmailCampaignsPage() {
                     marginBottom: '16px',
                   }}
                 >
-                  {v('Subject:', 'Tiêu đề:')} {campaign.subject}
+                  {v('Subject:', 'Tiêu đề:')} {lang === 'vi' && (campaign as any).subjectVi ? (campaign as any).subjectVi : campaign.subject}
                 </p>
 
                 <div className="grid grid-cols-6" style={{ gap: '24px' }}>
@@ -472,7 +473,7 @@ export default function AdminEmailCampaignsPage() {
                       className="text-[#0A0A0A]"
                       style={{ fontSize: '14px', fontFamily: 'Arimo, sans-serif' }}
                     >
-                      {campaign.audience}
+                      {lang === 'vi' && (campaign as any).audienceVi ? (campaign as any).audienceVi : campaign.audience}
                     </p>
                   </div>
                   <div>

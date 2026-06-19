@@ -31,6 +31,7 @@ import { toast } from "sonner";
 import { cn } from "@/app/components/ui/utils";
 import { format } from "date-fns";
 import { useLanguage } from '@/app/i18n/LanguageContext';
+import { formatVnd } from '@/app/utils/currency';
 
 // Mock Data
 const MOCK_PAYOUTS = [
@@ -252,7 +253,7 @@ export default function BrandSettingsPage() {
                     <TableRow key={payout.id}>
                       <TableCell className="font-medium text-gray-900">{payout.id}</TableCell>
                       <TableCell className="text-gray-600">{format(new Date(payout.date), "MMM d, yyyy")}</TableCell>
-                      <TableCell className="font-medium">${payout.amount.toFixed(2)}</TableCell>
+                      <TableCell className="font-medium">{formatVnd(payout.amount)}</TableCell>
                       <TableCell>
                         <Badge variant="secondary" className={cn("font-medium border", getStatusColor(payout.status))}>
                           {getStatusLabel(payout.status)}
