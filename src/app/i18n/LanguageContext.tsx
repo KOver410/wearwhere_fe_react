@@ -163,6 +163,9 @@ const translations: Record<Language, Record<string, string>> = {
     'item.limitedSneakers': 'Limited Sneakers',
     'item.premiumHoodie': 'Premium Hoodie',
     'item.designerTee': 'Designer Tee',
+    'item.toteBag': 'Tote Bag',
+    'item.linenPants': 'Linen Pants',
+    'item.bucketHat': 'Bucket Hat',
   },
   vi: {
     // Header - utility bar
@@ -314,6 +317,9 @@ const translations: Record<Language, Record<string, string>> = {
     'item.limitedSneakers': 'Limited Sneakers',
     'item.premiumHoodie': 'Premium Hoodie',
     'item.designerTee': 'Designer Tee',
+    'item.toteBag': 'Túi Tote',
+    'item.linenPants': 'Quần Linen',
+    'item.bucketHat': 'Mũ Bucket',
   },
 };
 

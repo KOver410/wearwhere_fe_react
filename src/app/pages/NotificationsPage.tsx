@@ -15,7 +15,7 @@ const typeConfig: Record<string, { icon: any; color: string; bgColor: string; la
 export function NotificationsPage() {
   const [notifs, setNotifs] = useState<Notification[]>(initialNotifications);
   const [filter, setFilter] = useState<string>('all');
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
 
   const filtered = filter === 'all' ? notifs : notifs.filter(n => n.type === filter);
   const unreadCount = notifs.filter(n => !n.read).length;
@@ -44,7 +44,7 @@ export function NotificationsPage() {
     if (diffMins < 60) return `${diffMins} ${v('min ago', 'phút trước')}`;
     if (diffHours < 24) return `${diffHours} ${v('hours ago', 'giờ trước')}`;
     if (diffDays < 7) return `${diffDays} ${v('days ago', 'ngày trước')}`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
   return (
@@ -199,10 +199,10 @@ export function NotificationsPage() {
                           </span>
                         </div>
                         <p style={{ fontSize: '14px', fontWeight: notif.read ? 400 : 600, color: '#0d0d0d', marginBottom: '2px' }}>
-                          {notif.title}
+                          {v(notif.title, notif.titleVi)}
                         </p>
                         <p className="line-clamp-2" style={{ fontSize: '13px', color: '#4a4a4a', lineHeight: 1.5 }}>
-                          {notif.message}
+                          {v(notif.message, notif.messageVi)}
                         </p>
                       </div>
 

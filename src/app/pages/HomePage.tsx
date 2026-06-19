@@ -308,12 +308,12 @@ export function HomePage() {
     <>
       <HeroSection />
       <EditorialMarquee />
+      {isLoggedIn && <SmartWardrobe />}
       <TrendingPosts />
       <EditorialCollections />
       <OutfitSuggestions />
       <FeaturedArtisans />
       {isLoggedIn && <NearbyShops />}
-      {isLoggedIn && <SmartWardrobe />}
       <HeritageCTA />
     </>
   );
