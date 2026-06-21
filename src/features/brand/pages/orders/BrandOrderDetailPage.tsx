@@ -68,7 +68,7 @@ const MOCK_ORDER = {
     state: 'NY',
     zip: '10001',
     country: 'United States',
-    countryVi: 'Việt Nam'
+    countryVi: 'Hoa Kỳ'
   },
   billingAddress: {
     street: '123 Fashion Ave, Apt 4B',
@@ -77,7 +77,7 @@ const MOCK_ORDER = {
     state: 'NY',
     zip: '10001',
     country: 'United States',
-    countryVi: 'Việt Nam'
+    countryVi: 'Hoa Kỳ'
   },
   items: [
     {
