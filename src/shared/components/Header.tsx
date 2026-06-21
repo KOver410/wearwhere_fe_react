@@ -104,10 +104,10 @@ export function Header({}: HeaderProps) {
               {/* Desktop Nav */}
               <nav className="hidden md:flex items-center">
                 {[
-                  { to: '/', label: 'HOME', active: currentPath === '/' },
-                  { to: '/shop', label: 'SHOP', active: isActive('/shop') },
-                  { to: '/ootd', label: 'STYLE', active: isActive('/ootd') || isActive('/style') },
-                  { to: '/brands', label: 'BRAND', active: isActive('/brands') },
+                  { to: '/', label: v('HOME', 'TRANG CHỦ'), active: currentPath === '/' },
+                  { to: '/shop', label: v('SHOP', 'CỬA HÀNG'), active: isActive('/shop') },
+                  { to: '/ootd', label: 'OOTD', active: isActive('/ootd') || isActive('/style') },
+                  { to: '/brands', label: v('BRAND', 'THƯƠNG HIỆU'), active: isActive('/brands') },
                 ].map((item) => (
                   <Link
                     key={item.to}
@@ -218,7 +218,7 @@ export function Header({}: HeaderProps) {
             {[
               { to: '/', label: v('Home', 'Trang Chủ') },
               { to: '/shop', label: v('Shop', 'Cửa Hàng') },
-              { to: '/ootd', label: v('Style', 'Phong Cách') },
+              { to: '/ootd', label: 'OOTD' },
               { to: '/brands', label: v('Brands', 'Thương Hiệu') },
             ].map((item) => (
               <Link key={item.to} to={item.to} onClick={() => setMobileMenuOpen(false)}
