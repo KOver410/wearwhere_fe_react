@@ -13,6 +13,15 @@ import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const DAY_LABELS_VI: Record<string, string> = {
+  Monday: 'Thứ Hai',
+  Tuesday: 'Thứ Ba',
+  Wednesday: 'Thứ Tư',
+  Thursday: 'Thứ Năm',
+  Friday: 'Thứ Sáu',
+  Saturday: 'Thứ Bảy',
+  Sunday: 'Chủ Nhật',
+};
 
 export function BrandLocationFormPage() {
   const navigate = useNavigate();
@@ -132,7 +141,7 @@ export function BrandLocationFormPage() {
           <CardContent className="space-y-4">
             {DAYS.map((day, index) => (
               <div key={day} className="flex items-center gap-4 py-2 border-b last:border-0 border-gray-100">
-                <div className="w-32 font-medium">{day}</div>
+                <div className="w-32 font-medium">{v(day, DAY_LABELS_VI[day])}</div>
                 <Controller
                   name={`schedule.${index}.isOpen`}
                   control={control}

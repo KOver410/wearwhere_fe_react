@@ -79,7 +79,7 @@ export function BrandLocationsPage() {
                       </div>
                       <div>
                         <div className="font-semibold">{location.name}</div>
-                        <div className="text-xs text-muted-foreground">{location.type}</div>
+                        <div className="text-xs text-muted-foreground">{location.type === 'Store' ? v('Store', 'Cửa hàng') : location.type === 'Popup' ? v('Popup', 'Popup') : location.type}</div>
                       </div>
                     </div>
                   </TableCell>
@@ -92,7 +92,7 @@ export function BrandLocationsPage() {
                   </TableCell>
                   <TableCell>
                     <Badge variant={location.status === 'Active' ? 'default' : 'secondary'}>
-                      {location.status}
+                      {location.status === 'Active' ? v('Active', 'Đang hoạt động') : location.status === 'Inactive' ? v('Inactive', 'Ngừng hoạt động') : location.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">

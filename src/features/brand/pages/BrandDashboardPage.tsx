@@ -237,7 +237,10 @@ export function BrandDashboardPage() {
                       order.status === 'Processing' ? 'bg-blue-100 text-blue-700' :
                       'bg-amber-100 text-amber-700'
                     }`}>
-                      {order.status}
+                      {order.status === 'Completed' ? v('Completed', 'Hoàn thành') :
+                       order.status === 'Processing' ? v('Processing', 'Đang xử lý') :
+                       order.status === 'Pending' ? v('Pending', 'Chờ xử lý') :
+                       order.status}
                     </span>
                   </TableCell>
                   <TableCell>{order.amount}</TableCell>

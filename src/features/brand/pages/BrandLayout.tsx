@@ -51,7 +51,7 @@ export function BrandLayout() {
             const isActive = location.pathname.startsWith(item.href);
             return (
               <Link
-                key={item.name}
+                key={item.href}
                 to={item.href}
                 className={cn(
                   "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 group",

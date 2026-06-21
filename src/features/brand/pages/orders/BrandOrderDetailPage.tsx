@@ -137,19 +137,19 @@ export default function BrandOrderDetailPage() {
   const handleConfirmOrder = () => {
     setOrderStatus('confirmed');
     setIsConfirmOpen(false);
-    toast.success("Order confirmed successfully");
+    toast.success(v("Order confirmed successfully", "Đã xác nhận đơn hàng thành công"));
   };
 
   const handleShipOrder = () => {
     setOrderStatus('shipped');
     setIsShipOpen(false);
-    toast.success("Order shipped successfully");
+    toast.success(v("Order shipped successfully", "Đã giao đơn hàng thành công"));
   };
 
   const handleCancelOrder = () => {
     setOrderStatus('cancelled');
     setIsCancelOpen(false);
-    toast.error("Order cancelled");
+    toast.error(v("Order cancelled", "Đã hủy đơn hàng"));
   };
 
   const getStatusColor = (status: string) => {
@@ -323,7 +323,7 @@ export default function BrandOrderDetailPage() {
                         </div>
                     </div>
                     <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                        {MOCK_ORDER.paymentStatus.toUpperCase()}
+                        {getStatusLabel(MOCK_ORDER.paymentStatus)}
                     </Badge>
                 </div>
              </CardContent>
