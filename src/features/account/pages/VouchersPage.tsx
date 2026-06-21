@@ -5,6 +5,7 @@ import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
 import { vouchers } from '@/shared/data/mockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { copyToClipboard } from '@/shared/utils/clipboard';
+import { formatVnd } from '@/shared/utils/currency';
 import { AccountLayout } from '@/shared/components/AccountLayout';
 
 export function VouchersPage() {
@@ -147,11 +148,11 @@ export function VouchersPage() {
                 <div className="flex">
                   {/* Left accent */}
                   <div
-                    className="w-24 flex-shrink-0 flex flex-col items-center justify-center p-4"
+                    className="w-28 flex-shrink-0 flex flex-col items-center justify-center p-3 text-center"
                     style={{ backgroundColor: voucher.status === 'active' ? '#d41c1c' : '#4a4a4a', color: '#FFFFFF' }}
                   >
-                    <span style={{ fontSize: '28px', fontFamily: "'Oswald', sans-serif", fontWeight: 700 }}>
-                      {voucher.discountType === 'percentage' ? `${voucher.discount}%` : `$${voucher.discount}`}
+                    <span style={{ fontSize: voucher.discountType === 'percentage' ? '28px' : '16px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, lineHeight: 1.1, width: '100%', wordBreak: 'break-word' }}>
+                      {voucher.discountType === 'percentage' ? `${voucher.discount}%` : formatVnd(voucher.discount)}
                     </span>
                     <span style={{ fontSize: '11px', opacity: 0.8, fontFamily: "'Oswald', sans-serif", textTransform: 'uppercase' }}>
                       OFF
@@ -197,11 +198,11 @@ export function VouchersPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: '12px', color: '#888' }}>
-                          {v('Min. order', 'Đơn tối thiểu')}: ${voucher.minOrder}
+                          {v('Min. order', 'Đơn tối thiểu')}: {formatVnd(voucher.minOrder)}
                         </span>
                         {voucher.maxDiscount && (
                           <span style={{ fontSize: '12px', color: '#888' }}>
-                            Max: ${voucher.maxDiscount}
+                            {v('Max', 'Tối đa')}: {formatVnd(voucher.maxDiscount)}
                           </span>
                         )}
                       </div>

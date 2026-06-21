@@ -7,3 +7,5 @@ const vndFormatter = new Intl.NumberFormat('vi-VN', {
 export function formatVND(value: number | string): string {
   return vndFormatter.format(Number(value))
 }
+
+export const formatVnd = formatVND
