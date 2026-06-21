@@ -73,6 +73,7 @@ function renderPage() {
 }
 
 beforeEach(() => {
+  localStorage.setItem('ww-lang', 'en')
   listAddressesMock.mockReset()
   createAddressMock.mockReset()
   updateAddressMock.mockReset()
@@ -98,7 +99,7 @@ describe('AddressBookPage', () => {
     expect(await screen.findByText('Nguyen Van A')).toBeInTheDocument()
     expect(screen.getByText('123 Le Loi')).toBeInTheDocument()
     expect(screen.getByText('+84901234567')).toBeInTheDocument()
-    expect(screen.getByText(/DEFAULT|MẶC ĐỊNH/)).toBeInTheDocument()
+    expect(screen.getByText('DEFAULT')).toBeInTheDocument()
   })
 
   it('renders an empty state when there are no addresses', async () => {
@@ -107,7 +108,7 @@ describe('AddressBookPage', () => {
     renderPage()
 
     expect(
-      await screen.findByText(/no addresses yet|chưa có địa chỉ/i),
+      await screen.findByText(/no addresses yet/i),
     ).toBeInTheDocument()
   })
 
@@ -120,7 +121,7 @@ describe('AddressBookPage', () => {
     expect(await screen.findByText('Boom')).toBeInTheDocument()
 
     listAddressesMock.mockResolvedValueOnce({ items: [makeAddress()] })
-    await user.click(screen.getByRole('button', { name: /retry|thử lại/i }))
+    await user.click(screen.getByRole('button', { name: /retry/i }))
 
     expect(await screen.findByText('Nguyen Van A')).toBeInTheDocument()
     expect(listAddressesMock).toHaveBeenCalledTimes(2)
@@ -133,22 +134,22 @@ describe('AddressBookPage', () => {
 
     renderPage()
 
-    await screen.findByText(/no addresses yet|chưa có địa chỉ/i)
+    await screen.findByText(/no addresses yet/i)
 
-    await user.click(screen.getByRole('button', { name: /add address|thêm địa chỉ/i }))
+    await user.click(screen.getByRole('button', { name: /add address/i }))
 
-    await user.type(screen.getByLabelText(/nhãn/i), 'Home')
-    await user.type(screen.getByLabelText(/tên người nhận/i), 'Nguyen Van A')
-    await user.type(screen.getByLabelText(/số điện thoại/i), '+84901234567')
-    await user.type(screen.getByLabelText(/^địa chỉ$/i), '123 Le Loi')
-    await user.type(screen.getByLabelText(/phường/i), 'Ben Nghe')
-    await user.type(screen.getByLabelText(/quận/i), 'District 1')
-    await user.type(screen.getByLabelText(/tỉnh \/ tp/i), 'Ho Chi Minh City')
+    await user.type(screen.getByLabelText(/label/i), 'Home')
+    await user.type(screen.getByLabelText(/recipient name/i), 'Nguyen Van A')
+    await user.type(screen.getByLabelText(/recipient phone/i), '+84901234567')
+    await user.type(screen.getByLabelText(/address line/i), '123 Le Loi')
+    await user.type(screen.getByLabelText(/^ward/i), 'Ben Nghe')
+    await user.type(screen.getByLabelText(/district/i), 'District 1')
+    await user.type(screen.getByLabelText(/^city/i), 'Ho Chi Minh City')
     // country defaults to VN
-    await user.click(screen.getByLabelText(/đặt làm địa chỉ mặc định/i))
+    await user.click(screen.getByLabelText(/set as default address/i))
 
     listAddressesMock.mockResolvedValue({ items: [makeAddress()] })
-    await user.click(screen.getByRole('button', { name: /^save$|^lưu$/i }))
+    await user.click(screen.getByRole('button', { name: /^save$/i }))
 
     await waitFor(() => expect(createAddressMock).toHaveBeenCalledTimes(1))
     expect(createAddressMock).toHaveBeenCalledWith({
@@ -174,24 +175,24 @@ describe('AddressBookPage', () => {
 
     renderPage()
 
-    await screen.findByText(/no addresses yet|chưa có địa chỉ/i)
+    await screen.findByText(/no addresses yet/i)
 
-    await user.click(screen.getByRole('button', { name: /add address|thêm địa chỉ/i }))
-    await user.type(screen.getByLabelText(/nhãn/i), 'Home')
-    await user.type(screen.getByLabelText(/tên người nhận/i), 'Nguyen Van A')
-    await user.type(screen.getByLabelText(/số điện thoại/i), '0901234567')
-    await user.type(screen.getByLabelText(/^địa chỉ$/i), '123 Le Loi')
-    await user.type(screen.getByLabelText(/phường/i), 'Ben Nghe')
-    await user.type(screen.getByLabelText(/quận/i), 'District 1')
-    await user.type(screen.getByLabelText(/tỉnh \/ tp/i), 'Ho Chi Minh City')
+    await user.click(screen.getByRole('button', { name: /add address/i }))
+    await user.type(screen.getByLabelText(/label/i), 'Home')
+    await user.type(screen.getByLabelText(/recipient name/i), 'Nguyen Van A')
+    await user.type(screen.getByLabelText(/recipient phone/i), '0901234567')
+    await user.type(screen.getByLabelText(/address line/i), '123 Le Loi')
+    await user.type(screen.getByLabelText(/^ward/i), 'Ben Nghe')
+    await user.type(screen.getByLabelText(/district/i), 'District 1')
+    await user.type(screen.getByLabelText(/^city/i), 'Ho Chi Minh City')
 
-    await user.click(screen.getByRole('button', { name: /^save$|^lưu$/i }))
+    await user.click(screen.getByRole('button', { name: /^save$/i }))
 
     await waitFor(() =>
       expect(toastErrorMock).toHaveBeenCalledWith('recipient_phone must be E.164'),
     )
     // No fake address created locally; the empty state remains.
-    expect(screen.getByText(/no addresses yet|chưa có địa chỉ/i)).toBeInTheDocument()
+    expect(screen.getByText(/no addresses yet/i)).toBeInTheDocument()
     // Only the initial mount fetch happened (no re-fetch on failure).
     expect(listAddressesMock).toHaveBeenCalledTimes(1)
   })
@@ -207,7 +208,7 @@ describe('AddressBookPage', () => {
     await screen.findByText('Nguyen Van A')
 
     listAddressesMock.mockResolvedValue({ items: [] })
-    await user.click(screen.getByRole('button', { name: /delete address|xóa địa chỉ/i }))
+    await user.click(screen.getByRole('button', { name: /delete address/i }))
 
     await waitFor(() => expect(deleteAddressMock).toHaveBeenCalledWith(ADDRESS_ID))
     await waitFor(() => expect(toastSuccessMock).toHaveBeenCalled())
@@ -225,18 +226,18 @@ describe('AddressBookPage', () => {
 
     await screen.findByText('Nguyen Van A')
 
-    await user.click(screen.getByRole('button', { name: /edit address|sửa địa chỉ/i }))
+    await user.click(screen.getByRole('button', { name: /edit address/i }))
 
     // Form is pre-populated from the existing address.
-    const labelInput = screen.getByLabelText(/nhãn/i) as HTMLInputElement
+    const labelInput = screen.getByLabelText(/label/i) as HTMLInputElement
     expect(labelInput.value).toBe('Home')
-    expect((screen.getByLabelText(/tên người nhận/i) as HTMLInputElement).value).toBe('Nguyen Van A')
+    expect((screen.getByLabelText(/recipient name/i) as HTMLInputElement).value).toBe('Nguyen Van A')
 
     await user.clear(labelInput)
     await user.type(labelInput, 'House')
 
     listAddressesMock.mockResolvedValue({ items: [makeAddress({ label: 'House' })] })
-    await user.click(screen.getByRole('button', { name: /^update$|^cập nhật$/i }))
+    await user.click(screen.getByRole('button', { name: /^update$/i }))
 
     await waitFor(() => expect(updateAddressMock).toHaveBeenCalledTimes(1))
     expect(updateAddressMock).toHaveBeenCalledWith(
@@ -257,7 +258,7 @@ describe('AddressBookPage', () => {
     await screen.findByText('Nguyen Van A')
 
     listAddressesMock.mockResolvedValue({ items: [makeAddress({ is_default: true })] })
-    await user.click(screen.getByRole('button', { name: /set as default|đặt làm mặc định/i }))
+    await user.click(screen.getByRole('button', { name: /set as default/i }))
 
     await waitFor(() =>
       expect(updateAddressMock).toHaveBeenCalledWith(ADDRESS_ID, { is_default: true }),
@@ -276,7 +277,7 @@ describe('AddressBookPage', () => {
 
     await screen.findByText('Nguyen Van A')
 
-    await user.click(screen.getByRole('button', { name: /delete address|xóa địa chỉ/i }))
+    await user.click(screen.getByRole('button', { name: /delete address/i }))
 
     expect(confirmSpy).toHaveBeenCalled()
     expect(deleteAddressMock).not.toHaveBeenCalled()
@@ -297,7 +298,7 @@ describe('AddressBookPage', () => {
     await screen.findByText('Nguyen Van A')
 
     listAddressesMock.mockResolvedValue({ items: [] })
-    await user.click(screen.getByRole('button', { name: /delete address|xóa địa chỉ/i }))
+    await user.click(screen.getByRole('button', { name: /delete address/i }))
 
     await waitFor(() => expect(deleteAddressMock).toHaveBeenCalledWith(ADDRESS_ID))
     await waitFor(() => expect(listAddressesMock).toHaveBeenCalledTimes(2))
@@ -312,18 +313,18 @@ describe('AddressBookPage', () => {
 
     renderPage()
 
-    await screen.findByText(/no addresses yet|chưa có địa chỉ/i)
+    await screen.findByText(/no addresses yet/i)
 
-    await user.click(screen.getByRole('button', { name: /add address|thêm địa chỉ/i }))
-    await user.type(screen.getByLabelText(/nhãn/i), 'Office')
-    await user.type(screen.getByLabelText(/tên người nhận/i), 'Tran Thi B')
-    await user.type(screen.getByLabelText(/số điện thoại/i), '+84909999999')
-    await user.type(screen.getByLabelText(/^địa chỉ$/i), '99 Nguyen Hue')
-    await user.type(screen.getByLabelText(/phường/i), 'Ben Nghe')
-    await user.type(screen.getByLabelText(/quận/i), 'District 1')
-    await user.type(screen.getByLabelText(/tỉnh \/ tp/i), 'Ho Chi Minh City')
+    await user.click(screen.getByRole('button', { name: /add address/i }))
+    await user.type(screen.getByLabelText(/label/i), 'Office')
+    await user.type(screen.getByLabelText(/recipient name/i), 'Tran Thi B')
+    await user.type(screen.getByLabelText(/recipient phone/i), '+84909999999')
+    await user.type(screen.getByLabelText(/address line/i), '99 Nguyen Hue')
+    await user.type(screen.getByLabelText(/^ward/i), 'Ben Nghe')
+    await user.type(screen.getByLabelText(/district/i), 'District 1')
+    await user.type(screen.getByLabelText(/^city/i), 'Ho Chi Minh City')
 
-    await user.click(screen.getByRole('button', { name: /^save$|^lưu$/i }))
+    await user.click(screen.getByRole('button', { name: /^save$/i }))
 
     await waitFor(() => expect(createAddressMock).toHaveBeenCalledTimes(1))
     expect(createAddressMock.mock.calls[0][0]).toMatchObject({ is_default: false })
