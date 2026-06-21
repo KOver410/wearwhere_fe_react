@@ -1,5 +1,6 @@
 import { ProductCard } from './ProductCard';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
+import { productImage } from '@/shared/data/productImages';
 
 const products = [
   {
@@ -146,8 +147,8 @@ export function ProductGrid() {
         <p className="mt-2" style={{ fontSize: '15px', color: '#4a4a4a' }}>{v('Curated by our community of sellers', 'Được tuyển chọn bởi cộng đồng người bán của chúng tôi')}</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+        {products.map((product, i) => (
+          <ProductCard key={product.id} {...product} image={productImage(i)} />
         ))}
       </div>
     </div>
