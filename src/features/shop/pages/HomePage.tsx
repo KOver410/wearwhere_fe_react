@@ -12,6 +12,7 @@ import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
 import { StarburstBadge } from '@/shared/components/StarburstBadge';
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router';
 
 /* ═══ MARQUEE ═══ */
 function EditorialMarquee() {
@@ -51,7 +52,7 @@ function EditorialMarquee() {
 
 /* ═══ TRENDING POSTS ═══ */
 function TrendingPosts() {
-  const { lang } = useLanguage();
+  const { lang, v } = useLanguage();
 
   const posts = [
     {
@@ -196,7 +197,7 @@ function TrendingPosts() {
           className="mb-10"
         >
           <span style={{ fontFamily: "'Oswald', sans-serif", fontSize: '14px', letterSpacing: '0.3em', color: '#d41c1c' }}>
-            TRENDING
+            {v('TRENDING', 'THỊNH HÀNH')}
           </span>
           <h2 className="mt-2" style={{ fontFamily: "'Oswald', sans-serif", fontSize: 'clamp(40px, 6vw, 64px)', color: '#0d0d0d', lineHeight: 0.95 }}>
             {lang === 'vi' ? 'BÀI ĐĂNG ĐANG THỊNH HÀNH' : 'TRENDING POSTS'}
@@ -221,6 +222,7 @@ function TrendingPosts() {
                 className="flex-shrink-0 snap-start relative group cursor-pointer overflow-hidden"
                 style={{ width: `${CARD_WIDTH}px`, aspectRatio: '3/4.5', borderRadius: '6px' }}
               >
+                <Link to={`/ootd/${((post.id - 1) % 8) + 1}`} className="block w-full h-full">
                 {/* Image */}
                 <ImageWithFallback
                   src={post.image}
@@ -254,6 +256,7 @@ function TrendingPosts() {
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
                   style={{ backgroundColor: 'rgba(212,28,28,0.15)' }}>
                 </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -269,7 +272,7 @@ function TrendingPosts() {
                 boxShadow: '0px 4px 12px rgba(0,0,0,0.3)',
                 border: '2px solid rgba(255,249,242,0.2)',
               }}
-              aria-label="Scroll left"
+              aria-label={v('Scroll left', 'Cuộn sang trái')}
             >
               <ChevronLeft size={22} />
             </button>
@@ -286,7 +289,7 @@ function TrendingPosts() {
                 boxShadow: '0px 4px 12px rgba(0,0,0,0.3)',
                 border: '2px solid rgba(255,249,242,0.2)',
               }}
-              aria-label="Scroll right"
+              aria-label={v('Scroll right', 'Cuộn sang phải')}
             >
               <ChevronRight size={22} />
             </button>
@@ -305,12 +308,12 @@ export function HomePage() {
     <>
       <HeroSection />
       <EditorialMarquee />
+      {isLoggedIn && <SmartWardrobe />}
       <TrendingPosts />
       <EditorialCollections />
       <OutfitSuggestions />
       <FeaturedArtisans />
       {isLoggedIn && <NearbyShops />}
-      {isLoggedIn && <SmartWardrobe />}
       <HeritageCTA />
     </>
   );
