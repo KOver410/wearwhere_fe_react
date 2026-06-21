@@ -23,24 +23,24 @@ const monthlyData = [
 ];
 
 const categoryData = [
-  { name: 'Apparel', value: 400 },
-  { name: 'Footwear', value: 300 },
-  { name: 'Accessories', value: 200 },
-  { name: 'Sale', value: 100 },
+  { name: 'Apparel', nameVi: 'Quần áo', value: 400 },
+  { name: 'Footwear', nameVi: 'Giày dép', value: 300 },
+  { name: 'Accessories', nameVi: 'Phụ kiện', value: 200 },
+  { name: 'Sale', nameVi: 'Khuyến mãi', value: 100 },
 ];
 
 const COLORS = ['#F54900', '#4F46E5', '#10B981', '#F59E0B'];
 
 const productPerformance = [
-  { name: 'Vintage Denim Jacket', category: 'Apparel', revenue: '$12,340', growth: '+12%' },
-  { name: 'Cotton Basic Tee', category: 'Apparel', revenue: '$8,200', growth: '+5%' },
-  { name: 'Leather Boots', category: 'Footwear', revenue: '$6,500', growth: '-2%' },
-  { name: 'Wool Blend Coat', category: 'Apparel', revenue: '$5,400', growth: '+18%' },
-  { name: 'Classic Sneakers', category: 'Footwear', revenue: '$4,200', growth: '+3%' },
+  { name: 'Vintage Denim Jacket', nameVi: 'Áo khoác denim cổ điển', category: 'Apparel', categoryVi: 'Quần áo', revenue: '$12,340', growth: '+12%' },
+  { name: 'Cotton Basic Tee', nameVi: 'Áo thun cotton cơ bản', category: 'Apparel', categoryVi: 'Quần áo', revenue: '$8,200', growth: '+5%' },
+  { name: 'Leather Boots', nameVi: 'Bốt da', category: 'Footwear', categoryVi: 'Giày dép', revenue: '$6,500', growth: '-2%' },
+  { name: 'Wool Blend Coat', nameVi: 'Áo khoác len pha', category: 'Apparel', categoryVi: 'Quần áo', revenue: '$5,400', growth: '+18%' },
+  { name: 'Classic Sneakers', nameVi: 'Giày sneaker cổ điển', category: 'Footwear', categoryVi: 'Giày dép', revenue: '$4,200', growth: '+3%' },
 ];
 
 export function BrandSalesPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const [period, setPeriod] = useState('year');
 
   return (
@@ -112,7 +112,7 @@ export function BrandSalesPage() {
               <ResponsiveContainer width="100%" height={300}>
                 <PieChart>
                   <Pie
-                    data={categoryData}
+                    data={categoryData.map((d) => ({ ...d, name: lang === 'vi' ? d.nameVi : d.name }))}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -152,8 +152,8 @@ export function BrandSalesPage() {
               <TableBody>
                 {productPerformance.map((product) => (
                   <TableRow key={product.name}>
-                    <TableCell className="font-medium">{product.name}</TableCell>
-                    <TableCell>{product.category}</TableCell>
+                    <TableCell className="font-medium">{lang === 'vi' ? product.nameVi : product.name}</TableCell>
+                    <TableCell>{lang === 'vi' ? product.categoryVi : product.category}</TableCell>
                     <TableCell>{product.revenue}</TableCell>
                     <TableCell className={`text-right ${product.growth.startsWith('+') ? 'text-emerald-600' : 'text-red-600'}`}>
                       {product.growth}

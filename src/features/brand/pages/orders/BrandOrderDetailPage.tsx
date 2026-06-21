@@ -64,22 +64,28 @@ const MOCK_ORDER = {
   shippingAddress: {
     street: '123 Fashion Ave, Apt 4B',
     city: 'New York',
+    cityVi: 'New York',
     state: 'NY',
     zip: '10001',
-    country: 'United States'
+    country: 'United States',
+    countryVi: 'Việt Nam'
   },
   billingAddress: {
     street: '123 Fashion Ave, Apt 4B',
     city: 'New York',
+    cityVi: 'New York',
     state: 'NY',
     zip: '10001',
-    country: 'United States'
+    country: 'United States',
+    countryVi: 'Việt Nam'
   },
   items: [
     {
       id: 1,
       name: 'Essential Cotton T-Shirt',
+      nameVi: 'Áo Thun Cotton Cơ Bản',
       variant: 'Black / M',
+      variantVi: 'Đen / M',
       sku: 'TSH-BLK-M',
       price: 45.00,
       quantity: 2,
@@ -88,7 +94,9 @@ const MOCK_ORDER = {
     {
       id: 2,
       name: 'Slim Fit Denim Jeans',
+      nameVi: 'Quần Jeans Denim Ôm',
       variant: 'Blue / 32',
+      variantVi: 'Xanh / 32',
       sku: 'JNS-BLU-32',
       price: 130.00,
       quantity: 1,
@@ -99,14 +107,18 @@ const MOCK_ORDER = {
     {
       id: 1,
       title: 'Order Placed',
+      titleVi: 'Đã đặt đơn',
       description: 'Order #ORD-7782-9012 was placed by Sarah Johnson.',
+      descriptionVi: 'Đơn hàng #ORD-7782-9012 đã được đặt bởi Sarah Johnson.',
       date: '2025-06-12T10:30:00',
       icon: Package
     },
     {
       id: 2,
       title: 'Payment Confirmed',
+      titleVi: 'Đã xác nhận thanh toán',
       description: 'Payment of $245.00 was confirmed via Stripe.',
+      descriptionVi: 'Thanh toán $245.00 đã được xác nhận qua Stripe.',
       date: '2025-06-12T10:30:05',
       icon: CreditCard
     }
@@ -114,7 +126,7 @@ const MOCK_ORDER = {
 };
 
 export default function BrandOrderDetailPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   const { id } = useParams();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isShipOpen, setIsShipOpen] = useState(false);
@@ -232,8 +244,8 @@ export default function BrandOrderDetailPage() {
                         <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        <p className="text-sm text-gray-500">{item.variant}</p>
+                        <p className="font-medium text-gray-900">{lang === 'vi' ? item.nameVi : item.name}</p>
+                        <p className="text-sm text-gray-500">{lang === 'vi' ? item.variantVi : item.variant}</p>
                         <p className="text-xs text-gray-400 font-mono mt-1">{v('SKU', 'SKU')}: {item.sku}</p>
                       </div>
                     </div>
@@ -281,8 +293,8 @@ export default function BrandOrderDetailPage() {
                     </span>
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                       <div>
-                        <p className="font-medium text-gray-900">{event.title}</p>
-                        <p className="text-sm text-gray-500 mt-1">{event.description}</p>
+                        <p className="font-medium text-gray-900">{lang === 'vi' ? event.titleVi : event.title}</p>
+                        <p className="text-sm text-gray-500 mt-1">{lang === 'vi' ? event.descriptionVi : event.description}</p>
                       </div>
                       <time className="text-xs text-gray-400 mt-1 sm:mt-0 whitespace-nowrap">
                         {format(new Date(event.date), "MMM d, h:mm a")}
@@ -357,8 +369,8 @@ export default function BrandOrderDetailPage() {
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
                <p>{MOCK_ORDER.shippingAddress.street}</p>
-               <p>{MOCK_ORDER.shippingAddress.city}, {MOCK_ORDER.shippingAddress.state} {MOCK_ORDER.shippingAddress.zip}</p>
-               <p>{MOCK_ORDER.shippingAddress.country}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.shippingAddress.cityVi : MOCK_ORDER.shippingAddress.city}, {MOCK_ORDER.shippingAddress.state} {MOCK_ORDER.shippingAddress.zip}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.shippingAddress.countryVi : MOCK_ORDER.shippingAddress.country}</p>
             </CardContent>
           </Card>
 
@@ -370,8 +382,8 @@ export default function BrandOrderDetailPage() {
             <CardContent className="text-sm text-gray-600 space-y-1">
                <p className="font-medium text-gray-900">{MOCK_ORDER.customer.name}</p>
                <p>{MOCK_ORDER.billingAddress.street}</p>
-               <p>{MOCK_ORDER.billingAddress.city}, {MOCK_ORDER.billingAddress.state} {MOCK_ORDER.billingAddress.zip}</p>
-               <p>{MOCK_ORDER.billingAddress.country}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.billingAddress.cityVi : MOCK_ORDER.billingAddress.city}, {MOCK_ORDER.billingAddress.state} {MOCK_ORDER.billingAddress.zip}</p>
+               <p>{lang === 'vi' ? MOCK_ORDER.billingAddress.countryVi : MOCK_ORDER.billingAddress.country}</p>
             </CardContent>
           </Card>
         </div>

@@ -12,6 +12,7 @@ const locations = [
     id: 1,
     name: 'WearWhere Flagship Store',
     address: '123 Fashion St, District 1, HCMC',
+    addressVi: '123 Đường Thời Trang, Quận 1, TP. Hồ Chí Minh',
     phone: '+84 28 1234 5678',
     status: 'Active',
     type: 'Store'
@@ -20,6 +21,7 @@ const locations = [
     id: 2,
     name: 'WearWhere Hanoi Branch',
     address: '456 Style Ave, Ba Dinh, Hanoi',
+    addressVi: '456 Đại lộ Phong Cách, Ba Đình, Hà Nội',
     phone: '+84 24 8765 4321',
     status: 'Active',
     type: 'Store'
@@ -28,6 +30,7 @@ const locations = [
     id: 3,
     name: 'Da Nang Popup',
     address: '789 Coastal Rd, Da Nang',
+    addressVi: '789 Đường Ven Biển, Đà Nẵng',
     phone: '+84 23 6543 2198',
     status: 'Inactive',
     type: 'Popup'
@@ -35,7 +38,7 @@ const locations = [
 ];
 
 export function BrandLocationsPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -80,7 +83,7 @@ export function BrandLocationsPage() {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>{location.address}</TableCell>
+                  <TableCell>{lang === 'vi' ? location.addressVi : location.address}</TableCell>
                   <TableCell>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Phone className="mr-2 h-3 w-3" />

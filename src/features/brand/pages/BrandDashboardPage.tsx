@@ -27,15 +27,15 @@ const ordersData = [
 ];
 
 const recentOrders = [
-  { id: 'ORD-001', customer: 'Alice Smith', product: 'Vintage Denim Jacket', amount: '$129.00', status: 'Completed', date: 'Today, 2:34 PM' },
-  { id: 'ORD-002', customer: 'Bob Jones', product: 'Cotton Basic Tee', amount: '$29.00', status: 'Processing', date: 'Today, 1:12 PM' },
-  { id: 'ORD-003', customer: 'Charlie Brown', product: 'Wool Blend Coat', amount: '$299.00', status: 'Completed', date: 'Yesterday' },
-  { id: 'ORD-004', customer: 'Diana Prince', product: 'Leather Boots', amount: '$189.00', status: 'Pending', date: 'Yesterday' },
-  { id: 'ORD-005', customer: 'Evan Wright', product: 'Slim Fit Chinos', amount: '$59.00', status: 'Completed', date: 'Feb 7, 2026' },
+  { id: 'ORD-001', customer: 'Alice Smith', product: 'Vintage Denim Jacket', productVi: 'Áo khoác denim cổ điển', amount: '$129.00', status: 'Completed', date: 'Today, 2:34 PM' },
+  { id: 'ORD-002', customer: 'Bob Jones', product: 'Cotton Basic Tee', productVi: 'Áo thun cotton cơ bản', amount: '$29.00', status: 'Processing', date: 'Today, 1:12 PM' },
+  { id: 'ORD-003', customer: 'Charlie Brown', product: 'Wool Blend Coat', productVi: 'Áo khoác pha len', amount: '$299.00', status: 'Completed', date: 'Yesterday' },
+  { id: 'ORD-004', customer: 'Diana Prince', product: 'Leather Boots', productVi: 'Bốt da', amount: '$189.00', status: 'Pending', date: 'Yesterday' },
+  { id: 'ORD-005', customer: 'Evan Wright', product: 'Slim Fit Chinos', productVi: 'Quần chinos ôm', amount: '$59.00', status: 'Completed', date: 'Feb 7, 2026' },
 ];
 
 export function BrandDashboardPage() {
-  const { v } = useLanguage();
+  const { v, lang } = useLanguage();
   return (
     <div className="space-y-8">
       <div>
@@ -230,7 +230,7 @@ export function BrandDashboardPage() {
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{order.customer}</TableCell>
-                  <TableCell>{order.product}</TableCell>
+                  <TableCell>{lang === 'vi' ? order.productVi : order.product}</TableCell>
                   <TableCell>
                     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       order.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' :
