@@ -167,7 +167,7 @@ export function WardrobeAddPage() {
                   className="w-full px-4 py-2.5 border border-[#e0d8cf] bg-[#fff9f2] focus:border-[#d41c1c] focus:outline-none transition-colors appearance-none cursor-pointer capitalize"
                   style={{ borderRadius: '10px', fontSize: '14px', fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  <option value="">{v('Select category', 'Chn danh mục')}</option>
+                  <option value="">{v('Select category', 'Chọn danh mục')}</option>
                   {CATEGORIES.map(c => <option key={c} value={c} className="capitalize">{c}</option>)}
                 </select>
               </div>
@@ -199,7 +199,7 @@ export function WardrobeAddPage() {
                   type="text"
                   value={manualForm.size}
                   onChange={e => setManualForm({ ...manualForm, size: e.target.value })}
-                  placeholder="e.g. M"
+                  placeholder={v('e.g. M', 'VD: M')}
                   className="w-full px-4 py-2.5 border border-[#e0d8cf] focus:border-[#d41c1c] focus:outline-none transition-colors"
                   style={{ borderRadius: '10px', fontSize: '14px', backgroundColor: '#fff9f2', fontFamily: "'Montserrat', sans-serif" }}
                 />
