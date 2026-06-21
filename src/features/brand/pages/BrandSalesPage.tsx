@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart, Pie, Cell } from 'recharts';
 import { Calendar as CalendarIcon, Download } from 'lucide-react';
+import { useLanguage } from '@/shared/i18n/LanguageContext';
 
 const monthlyData = [
   { name: 'Jan', revenue: 4000, previous: 2400 },
@@ -39,21 +40,22 @@ const productPerformance = [
 ];
 
 export function BrandSalesPage() {
+  const { v } = useLanguage();
   const [period, setPeriod] = useState('year');
 
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">Sales Analytics</h2>
-          <p className="text-[#64748B]">Detailed breakdown of your revenue and sales performance.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A]">{v('Sales Analytics', 'Phân tích bán hàng')}</h2>
+          <p className="text-[#64748B]">{v('Detailed breakdown of your revenue and sales performance.', 'Phân tích chi tiết doanh thu và hiệu suất bán hàng của bạn.')}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="h-9" onClick={() => alert('Date range picker coming soon')}>
+          <Button variant="outline" className="h-9" onClick={() => alert(v('Date range picker coming soon', 'Bộ chọn khoảng thời gian sắp ra mắt'))}>
             <CalendarIcon className="mr-2 h-4 w-4" />
             Jan 1, 2025 - Dec 31, 2025
           </Button>
-          <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => alert('Sales report downloaded!')}>
+          <Button variant="outline" size="icon" className="h-9 w-9" onClick={() => alert(v('Sales report downloaded!', 'Đã tải báo cáo doanh số!'))}>
             <Download className="h-4 w-4" />
           </Button>
         </div>
@@ -63,18 +65,18 @@ export function BrandSalesPage() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Revenue Overview</CardTitle>
-            <CardDescription>Comparing current period vs previous period</CardDescription>
+            <CardTitle>{v('Revenue Overview', 'Tổng quan doanh thu')}</CardTitle>
+            <CardDescription>{v('Comparing current period vs previous period', 'So sánh kỳ hiện tại với kỳ trước')}</CardDescription>
           </div>
           <Select value={period} onValueChange={setPeriod}>
             <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Select period" />
+              <SelectValue placeholder={v('Select period', 'Chọn kỳ')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="week">Last 7 Days</SelectItem>
-              <SelectItem value="month">Last 30 Days</SelectItem>
-              <SelectItem value="quarter">This Quarter</SelectItem>
-              <SelectItem value="year">This Year</SelectItem>
+              <SelectItem value="week">{v('Last 7 Days', '7 ngày qua')}</SelectItem>
+              <SelectItem value="month">{v('Last 30 Days', '30 ngày qua')}</SelectItem>
+              <SelectItem value="quarter">{v('This Quarter', 'Quý này')}</SelectItem>
+              <SelectItem value="year">{v('This Year', 'Năm nay')}</SelectItem>
             </SelectContent>
           </Select>
         </CardHeader>
@@ -85,13 +87,13 @@ export function BrandSalesPage() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
-                <Tooltip 
+                <Tooltip
                   cursor={{fill: 'transparent'}}
                   contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                 />
                 <Legend />
-                <Bar name="Current Period" dataKey="revenue" fill="#F54900" radius={[4, 4, 0, 0]} />
-                <Bar name="Previous Period" dataKey="previous" fill="#CBD5E1" radius={[4, 4, 0, 0]} />
+                <Bar name={v('Current Period', 'Kỳ hiện tại')} dataKey="revenue" fill="#F54900" radius={[4, 4, 0, 0]} />
+                <Bar name={v('Previous Period', 'Kỳ trước')} dataKey="previous" fill="#CBD5E1" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -102,8 +104,8 @@ export function BrandSalesPage() {
         {/* Category Breakdown */}
         <Card className="lg:col-span-1">
           <CardHeader>
-            <CardTitle>Sales by Category</CardTitle>
-            <CardDescription>Revenue distribution across categories</CardDescription>
+            <CardTitle>{v('Sales by Category', 'Doanh số theo danh mục')}</CardTitle>
+            <CardDescription>{v('Revenue distribution across categories', 'Phân bổ doanh thu theo các danh mục')}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full" style={{ minWidth: '1px', minHeight: '300px' }}>
@@ -134,17 +136,17 @@ export function BrandSalesPage() {
         {/* Top Products */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Top Performing Products</CardTitle>
-            <CardDescription>Best selling items by revenue</CardDescription>
+            <CardTitle>{v('Top Performing Products', 'Sản phẩm hiệu suất cao')}</CardTitle>
+            <CardDescription>{v('Best selling items by revenue', 'Các sản phẩm bán chạy nhất theo doanh thu')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Product Name</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Revenue</TableHead>
-                  <TableHead className="text-right">Growth</TableHead>
+                  <TableHead>{v('Product Name', 'Tên sản phẩm')}</TableHead>
+                  <TableHead>{v('Category', 'Danh mục')}</TableHead>
+                  <TableHead>{v('Revenue', 'Doanh thu')}</TableHead>
+                  <TableHead className="text-right">{v('Growth', 'Tăng trưởng')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
