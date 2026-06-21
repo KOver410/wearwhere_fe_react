@@ -106,7 +106,7 @@ export function OrderSuccessPage() {
             <button
               onClick={copyOrderNumber}
               className="p-1 hover:bg-[#f3f0eb] rounded transition-colors"
-              title="Copy order number"
+              title={v('Copy order number', 'Sao chép mã đơn hàng')}
             >
               <Copy className="w-4 h-4 text-[#888]" />
             </button>
