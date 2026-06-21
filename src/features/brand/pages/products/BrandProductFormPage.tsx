@@ -2,9 +2,9 @@ import React, { useState, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 import { Link, useNavigate } from 'react-router';
-import { 
-  ArrowLeft, Upload, X, Plus, Trash2, 
-  HelpCircle, AlertCircle, Save 
+import {
+  ArrowLeft, Upload, X, Plus, Trash2,
+  HelpCircle, AlertCircle, Save
 } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
@@ -27,6 +27,7 @@ import {
 } from "@/shared/ui/card";
 import { toast } from 'sonner';
 import { cn } from '@/shared/ui/utils';
+import { useLanguage } from '@/shared/i18n/LanguageContext';
 
 interface ProductFormValues {
   name: string;
@@ -45,11 +46,12 @@ interface ProductFormValues {
 }
 
 export default function BrandProductFormPage() {
+  const { v } = useLanguage();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [images, setImages] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  
+
   // Variants state (simplified)
   const [hasVariants, setHasVariants] = useState(false);
   const [options, setOptions] = useState<{name: string, values: string[]}[]>([
@@ -94,7 +96,7 @@ export default function BrandProductFormPage() {
     setTimeout(() => {
       console.log('Form Data:', data);
       console.log('Images:', images);
-      toast.success('Product created successfully');
+      toast.success(v('Product created successfully', 'Tạo sản phẩm thành công'));
       setIsLoading(false);
       navigate('/brand/products');
     }, 1000);
@@ -109,15 +111,15 @@ export default function BrandProductFormPage() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">Add New Product</h1>
-          <p className="text-sm text-[#64748B]">Create a new product for your store.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-[#0F172A]">{v('Add New Product', 'Thêm sản phẩm mới')}</h1>
+          <p className="text-sm text-[#64748B]">{v('Create a new product for your store.', 'Tạo một sản phẩm mới cho cửa hàng của bạn.')}</p>
         </div>
         <div className="ml-auto flex gap-3">
           <Link to="/brand/products">
-            <Button variant="outline">Discard</Button>
+            <Button variant="outline">{v('Discard', 'Hủy bỏ')}</Button>
           </Link>
           <Button type="submit" className="bg-[#F54900] text-white hover:bg-[#E04400]" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save Product'}
+            {isLoading ? v('Saving...', 'Đang lưu...') : v('Save Product', 'Lưu sản phẩm')}
           </Button>
         </div>
       </div>
@@ -128,25 +130,25 @@ export default function BrandProductFormPage() {
           {/* Basic Info */}
           <Card>
             <CardHeader>
-              <CardTitle>Product Details</CardTitle>
+              <CardTitle>{v('Product Details', 'Chi tiết sản phẩm')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Title</Label>
-                <Input 
-                  id="name" 
-                  placeholder="e.g. Oversized Cotton T-Shirt" 
-                  {...register('name', { required: 'Product name is required' })}
+                <Label htmlFor="name">{v('Title', 'Tiêu đề')}</Label>
+                <Input
+                  id="name"
+                  placeholder={v('e.g. Oversized Cotton T-Shirt', 'VD: Áo thun cotton form rộng')}
+                  {...register('name', { required: v('Product name is required', 'Tên sản phẩm là bắt buộc') })}
                   className={errors.name ? 'border-red-300' : ''}
                 />
                 {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
               </div>
-              
+
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea 
-                  id="description" 
-                  placeholder="Describe your product..." 
+                <Label htmlFor="description">{v('Description', 'Mô tả')}</Label>
+                <Textarea
+                  id="description"
+                  placeholder={v('Describe your product...', 'Mô tả sản phẩm của bạn...')}
                   className="min-h-[120px]"
                   {...register('description')}
                 />
@@ -157,12 +159,12 @@ export default function BrandProductFormPage() {
           {/* Media */}
           <Card>
             <CardHeader>
-              <CardTitle>Media</CardTitle>
-              <CardDescription>Upload images or videos of your product.</CardDescription>
+              <CardTitle>{v('Media', 'Hình ảnh & video')}</CardTitle>
+              <CardDescription>{v('Upload images or videos of your product.', 'Tải lên hình ảnh hoặc video sản phẩm của bạn.')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div 
-                {...getRootProps()} 
+              <div
+                {...getRootProps()}
                 className={cn(
                   "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
                   isDragActive ? "border-[#F54900] bg-[#F54900]/5" : "border-gray-200 hover:border-gray-300"
@@ -173,8 +175,8 @@ export default function BrandProductFormPage() {
                   <div className="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                     <Upload className="h-6 w-6 text-gray-500" />
                   </div>
-                  <p className="text-sm font-medium text-gray-900">Click to upload or drag and drop</p>
-                  <p className="text-xs text-gray-500 mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+                  <p className="text-sm font-medium text-gray-900">{v('Click to upload or drag and drop', 'Nhấn để tải lên hoặc kéo thả')}</p>
+                  <p className="text-xs text-gray-500 mt-1">{v('SVG, PNG, JPG or GIF (max. 5MB)', 'SVG, PNG, JPG hoặc GIF (tối đa 5MB)')}</p>
                 </div>
               </div>
 
@@ -201,17 +203,17 @@ export default function BrandProductFormPage() {
           {/* Pricing */}
           <Card>
             <CardHeader>
-              <CardTitle>Pricing</CardTitle>
+              <CardTitle>{v('Pricing', 'Giá')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price</Label>
+                  <Label htmlFor="price">{v('Price', 'Giá bán')}</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                    <Input 
-                      id="price" 
-                      type="number" 
+                    <Input
+                      id="price"
+                      type="number"
                       step="0.01"
                       className="pl-7"
                       {...register('price', { required: true, min: 0 })}
@@ -219,12 +221,12 @@ export default function BrandProductFormPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="compareAtPrice">Compare-at Price</Label>
+                  <Label htmlFor="compareAtPrice">{v('Compare-at Price', 'Giá so sánh')}</Label>
                   <div className="relative">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                    <Input 
-                      id="compareAtPrice" 
-                      type="number" 
+                    <Input
+                      id="compareAtPrice"
+                      type="number"
                       step="0.01"
                       className="pl-7"
                       {...register('compareAtPrice')}
@@ -232,35 +234,35 @@ export default function BrandProductFormPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-2 pt-2">
                 <Checkbox id="tax" defaultChecked />
                 <label
                   htmlFor="tax"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Charge tax on this product
+                  {v('Charge tax on this product', 'Tính thuế cho sản phẩm này')}
                 </label>
               </div>
 
               <div className="border-t border-gray-100 pt-4 mt-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="costPerItem">Cost per item</Label>
+                    <Label htmlFor="costPerItem">{v('Cost per item', 'Giá vốn mỗi sản phẩm')}</Label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
-                      <Input 
-                        id="costPerItem" 
-                        type="number" 
+                      <Input
+                        id="costPerItem"
+                        type="number"
                         step="0.01"
                         className="pl-7"
                         {...register('costPerItem')}
                       />
                     </div>
-                    <p className="text-xs text-gray-500">Customers won't see this</p>
+                    <p className="text-xs text-gray-500">{v("Customers won't see this", 'Khách hàng sẽ không thấy thông tin này')}</p>
                   </div>
                   <div className="space-y-2">
-                    <Label>Profit</Label>
+                    <Label>{v('Profit', 'Lợi nhuận')}</Label>
                     <div className="h-10 px-3 py-2 text-sm text-gray-500 border border-transparent flex items-center">
                       --
                     </div>
@@ -273,21 +275,21 @@ export default function BrandProductFormPage() {
           {/* Inventory */}
           <Card>
             <CardHeader>
-              <CardTitle>Inventory</CardTitle>
+              <CardTitle>{v('Inventory', 'Kho hàng')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="sku">SKU (Stock Keeping Unit)</Label>
-                  <Input 
-                    id="sku" 
+                  <Label htmlFor="sku">{v('SKU (Stock Keeping Unit)', 'SKU (Mã quản lý hàng hóa)')}</Label>
+                  <Input
+                    id="sku"
                     {...register('sku')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="barcode">Barcode (ISBN, UPC, GTIN, etc.)</Label>
-                  <Input 
-                    id="barcode" 
+                  <Label htmlFor="barcode">{v('Barcode (ISBN, UPC, GTIN, etc.)', 'Mã vạch (ISBN, UPC, GTIN, v.v.)')}</Label>
+                  <Input
+                    id="barcode"
                     {...register('barcode')}
                   />
                 </div>
@@ -298,20 +300,20 @@ export default function BrandProductFormPage() {
                   name="trackQuantity"
                   control={control}
                   render={({ field }) => (
-                    <Switch 
-                      id="trackQuantity" 
-                      checked={field.value} 
-                      onCheckedChange={field.onChange} 
+                    <Switch
+                      id="trackQuantity"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
                     />
                   )}
                 />
-                <Label htmlFor="trackQuantity">Track quantity</Label>
+                <Label htmlFor="trackQuantity">{v('Track quantity', 'Theo dõi số lượng')}</Label>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="quantity">Quantity</Label>
-                <Input 
-                  id="quantity" 
+                <Label htmlFor="quantity">{v('Quantity', 'Số lượng')}</Label>
+                <Input
+                  id="quantity"
                   type="number"
                   {...register('quantity')}
                 />
@@ -322,20 +324,20 @@ export default function BrandProductFormPage() {
           {/* Variants */}
           <Card>
             <CardHeader>
-              <CardTitle>Variants</CardTitle>
-              <CardDescription>Add variations like size or color.</CardDescription>
+              <CardTitle>{v('Variants', 'Biến thể')}</CardTitle>
+              <CardDescription>{v('Add variations like size or color.', 'Thêm các biến thể như kích cỡ hoặc màu sắc.')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-gray-50">
                  <div className="flex items-center gap-3">
                    <Plus className="h-5 w-5 text-gray-500" />
                    <div>
-                     <p className="font-medium text-gray-900">Add options like size or color</p>
-                     <p className="text-sm text-gray-500">This product has multiple options</p>
+                     <p className="font-medium text-gray-900">{v('Add options like size or color', 'Thêm tùy chọn như kích cỡ hoặc màu sắc')}</p>
+                     <p className="text-sm text-gray-500">{v('This product has multiple options', 'Sản phẩm này có nhiều tùy chọn')}</p>
                    </div>
                  </div>
                  <Button variant="outline" size="sm" onClick={() => setHasVariants(!hasVariants)}>
-                   {hasVariants ? 'Cancel' : 'Add Options'}
+                   {hasVariants ? v('Cancel', 'Hủy') : v('Add Options', 'Thêm tùy chọn')}
                  </Button>
                </div>
 
@@ -344,14 +346,14 @@ export default function BrandProductFormPage() {
                    {/* Simplified Variant UI */}
                    {options.map((option, idx) => (
                      <div key={idx} className="space-y-3 pb-4 border-b border-gray-100 last:border-0">
-                       <Label>Option Name</Label>
+                       <Label>{v('Option Name', 'Tên tùy chọn')}</Label>
                        <Input value={option.name} readOnly className="bg-gray-50" />
-                       <Label>Option Values</Label>
-                       <Input placeholder="Separate values with comma (e.g. Small, Medium, Large)" />
+                       <Label>{v('Option Values', 'Giá trị tùy chọn')}</Label>
+                       <Input placeholder={v('Separate values with comma (e.g. Small, Medium, Large)', 'Ngăn cách các giá trị bằng dấu phẩy (VD: Nhỏ, Vừa, Lớn)')} />
                      </div>
                    ))}
-                   <Button variant="ghost" className="text-sm text-gray-600" onClick={() => alert('Adding custom option...')}>
-                     <Plus className="h-4 w-4 mr-2" /> Add another option
+                   <Button variant="ghost" className="text-sm text-gray-600" onClick={() => alert(v('Adding custom option...', 'Đang thêm tùy chọn tùy chỉnh...'))}>
+                     <Plus className="h-4 w-4 mr-2" /> {v('Add another option', 'Thêm tùy chọn khác')}
                    </Button>
                  </div>
                )}
@@ -363,7 +365,7 @@ export default function BrandProductFormPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Status</CardTitle>
+              <CardTitle>{v('Status', 'Trạng thái')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Controller
@@ -372,42 +374,42 @@ export default function BrandProductFormPage() {
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
+                      <SelectValue placeholder={v('Select status', 'Chọn trạng thái')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="active">{v('Active', 'Đang bán')}</SelectItem>
+                      <SelectItem value="draft">{v('Draft', 'Bản nháp')}</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
               />
               <p className="text-xs text-gray-500 mt-2">
-                Active products are available to customers.
+                {v('Active products are available to customers.', 'Sản phẩm đang bán sẽ hiển thị với khách hàng.')}
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Organization</CardTitle>
+              <CardTitle>{v('Organization', 'Phân loại')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="category">{v('Category', 'Danh mục')}</Label>
                  <Controller
                   name="category"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
+                        <SelectValue placeholder={v('Select category', 'Chọn danh mục')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="tops">Tops</SelectItem>
-                        <SelectItem value="bottoms">Bottoms</SelectItem>
-                        <SelectItem value="dresses">Dresses</SelectItem>
-                        <SelectItem value="outerwear">Outerwear</SelectItem>
-                        <SelectItem value="accessories">Accessories</SelectItem>
+                        <SelectItem value="tops">{v('Tops', 'Áo')}</SelectItem>
+                        <SelectItem value="bottoms">{v('Bottoms', 'Quần')}</SelectItem>
+                        <SelectItem value="dresses">{v('Dresses', 'Váy đầm')}</SelectItem>
+                        <SelectItem value="outerwear">{v('Outerwear', 'Áo khoác')}</SelectItem>
+                        <SelectItem value="accessories">{v('Accessories', 'Phụ kiện')}</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -415,22 +417,22 @@ export default function BrandProductFormPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="productType">Product Type</Label>
-                <Input 
-                  id="productType" 
-                  placeholder="e.g. T-Shirt"
-                  {...register('productType')} 
+                <Label htmlFor="productType">{v('Product Type', 'Loại sản phẩm')}</Label>
+                <Input
+                  id="productType"
+                  placeholder={v('e.g. T-Shirt', 'VD: Áo thun')}
+                  {...register('productType')}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tags">Tags</Label>
-                <Input 
-                  id="tags" 
-                  placeholder="e.g. Summer, Cotton, Vintage"
-                  {...register('tags')} 
+                <Label htmlFor="tags">{v('Tags', 'Thẻ')}</Label>
+                <Input
+                  id="tags"
+                  placeholder={v('e.g. Summer, Cotton, Vintage', 'VD: Mùa hè, Cotton, Vintage')}
+                  {...register('tags')}
                 />
-                <p className="text-xs text-gray-500">Comma separated</p>
+                <p className="text-xs text-gray-500">{v('Comma separated', 'Ngăn cách bằng dấu phẩy')}</p>
               </div>
             </CardContent>
           </Card>
@@ -443,11 +445,11 @@ export default function BrandProductFormPage() {
 // Helper component for checkbox
 function Checkbox({ id, ...props }: any) {
   return (
-    <input 
-      type="checkbox" 
-      id={id} 
-      className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black" 
-      {...props} 
+    <input
+      type="checkbox"
+      id={id}
+      className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+      {...props}
     />
   )
 }
