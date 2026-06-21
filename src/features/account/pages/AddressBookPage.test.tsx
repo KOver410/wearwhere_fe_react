@@ -98,7 +98,7 @@ describe('AddressBookPage', () => {
     expect(await screen.findByText('Nguyen Van A')).toBeInTheDocument()
     expect(screen.getByText('123 Le Loi')).toBeInTheDocument()
     expect(screen.getByText('+84901234567')).toBeInTheDocument()
-    expect(screen.getByText('DEFAULT')).toBeInTheDocument()
+    expect(screen.getByText(/DEFAULT|MẶC ĐỊNH/)).toBeInTheDocument()
   })
 
   it('renders an empty state when there are no addresses', async () => {

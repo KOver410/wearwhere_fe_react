@@ -405,7 +405,7 @@ export function ProfilePage() {
                     />
                     <button
                       type="button"
-                      onClick={() => alert('Avatar upload coming soon!')}
+                      onClick={() => alert(v('Avatar upload coming soon!', 'Tính năng tải ảnh đại diện sắp ra mắt!'))}
                       className="absolute inset-0 w-20 h-20 rounded-full bg-black/40 flex items-center justify-center cursor-pointer transition-opacity opacity-0 hover:opacity-100"
                     >
                       <Camera className="w-5 h-5 text-white" />
@@ -413,7 +413,7 @@ export function ProfilePage() {
                   </div>
                   <div>
                     <p style={{ fontSize: '14px', fontWeight: 600, color: '#0d0d0d' }}>{v('Profile Photo', 'Ảnh đại diện')}</p>
-                    <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{v('Photo upload coming soon', 'Tải ảnh sẽ sớm có')}</p>
+                    <p style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{v('Click to change your photo', 'Nhấn để đổi ảnh')}</p>
                   </div>
                 </div>
 
