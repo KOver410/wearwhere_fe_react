@@ -3,14 +3,13 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
-import { currentUser } from '@/shared/data/accountMockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { useAuth } from '@/shared/contexts/AuthContext';
 
 export function AccountLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const { v } = useLanguage();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const menuItems = [
     { path: '/account/profile', label: v('My Profile', 'Hồ sơ'), icon: User },
@@ -37,11 +36,11 @@ export function AccountLayout({ children }: { children: React.ReactNode }) {
           <aside className="w-full lg:w-72 flex-shrink-0">
             <div className="p-6 mb-4 bg-white" style={{ border: '1px solid #e0d8cf' }}>
               <div className="flex items-center gap-3 mb-6 pb-6" style={{ borderBottom: '1px solid #e0d8cf' }}>
-                <ImageWithFallback src={currentUser.avatar} alt={currentUser.fullName}
+                <ImageWithFallback src={user?.avatar_url ?? undefined} alt={user?.name ?? ''}
                   className="w-14 h-14 rounded-full object-cover" style={{ border: '2px solid #d41c1c' } as any} />
                 <div className="min-w-0">
-                  <p style={{ fontSize: '16px', fontWeight: 800, color: '#0d0d0d' }} className="truncate">{currentUser.fullName}</p>
-                  <p style={{ fontSize: '13px', color: '#888' }}>@{currentUser.username}</p>
+                  <p style={{ fontSize: '16px', fontWeight: 800, color: '#0d0d0d' }} className="truncate">{user?.name}</p>
+                  {user?.email && <p style={{ fontSize: '13px', color: '#888' }} className="truncate">{user.email}</p>}
                 </div>
               </div>
 

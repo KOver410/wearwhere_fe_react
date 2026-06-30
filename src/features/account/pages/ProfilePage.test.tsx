@@ -103,3 +103,22 @@ describe('ProfilePage edit', () => {
     expect(updateProfileMock).not.toHaveBeenCalled()
   })
 })
+
+describe('ProfilePage header identity', () => {
+  beforeEach(() => {
+    localStorage.setItem('ww-lang', 'en')
+  })
+
+  it('renders the authenticated user, not the hardcoded mock identity', () => {
+    renderPage()
+
+    // Real user name from useAuth() is shown in the header.
+    expect(screen.getByText('Minh Anh')).toBeInTheDocument()
+
+    // Mock account identity must not leak into the header.
+    expect(screen.queryByText(/fashionista_vn/i)).not.toBeInTheDocument()
+    expect(screen.queryByText('Nguyễn Minh Anh')).not.toBeInTheDocument()
+    // Mock follower/following counts must not be rendered.
+    expect(screen.queryByText(/1,240/)).not.toBeInTheDocument()
+  })
+})

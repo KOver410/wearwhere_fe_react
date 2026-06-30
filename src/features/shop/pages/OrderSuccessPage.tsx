@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router';
-import { CheckCircle, Package, MapPin, Copy, ArrowRight } from 'lucide-react';
+import { CheckCircle, Package, MapPin, Copy, ArrowRight, AlertTriangle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
 import { getOrder, type Order } from '@/features/account/api/orderApi';
@@ -76,6 +76,55 @@ export function OrderSuccessPage() {
           >
             {v('Go to My Orders', 'Đến đơn hàng của tôi')}
           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // A redirect back from PayOS can land here even when the payment was not
+  // actually completed (user cancelled, card declined, window expired). In that
+  // case the order exists but is unpaid, so we must NOT show a confirmation.
+  const paymentFailed =
+    order.payment_status === 'failed' ||
+    order.payment_status === 'cancelled' ||
+    order.payment_status === 'expired';
+
+  if (paymentFailed) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#fff9f2', fontFamily: "'Montserrat', sans-serif" }}>
+        <div className="text-center bg-white p-8 max-w-md w-full" style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }}>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style={{ backgroundColor: '#fdecec' }}>
+            <AlertTriangle className="w-8 h-8" style={{ color: '#d41c1c' }} />
+          </div>
+          <h1 style={{ fontSize: 'clamp(22px, 4vw, 28px)', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', marginBottom: '12px' }}>
+            {v('Payment not completed', 'Thanh toán chưa hoàn tất')}
+          </h1>
+          <p style={{ fontSize: '14px', color: '#4a4a4a', marginBottom: '8px' }}>
+            {v(
+              'Your payment was not completed, so this order has not been confirmed.',
+              'Thanh toán của bạn chưa hoàn tất, nên đơn hàng này chưa được xác nhận.',
+            )}
+          </p>
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <span style={{ fontSize: '13px', color: '#888' }}>{v('Order Number:', 'Mã đơn hàng:')}</span>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{order.order_no}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              to="/cart"
+              className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors"
+              style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}
+            >
+              {v('Try Again', 'Thử lại')}
+            </Link>
+            <Link
+              to={`/account/orders/${order.order_no}`}
+              className="flex-1 flex items-center justify-center gap-2 py-3 border-2 border-[#0d0d0d] hover:bg-[#f3f0eb] transition-colors"
+              style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, color: '#0d0d0d', letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}
+            >
+              {v('View Order', 'Xem đơn hàng')}
+            </Link>
+          </div>
         </div>
       </div>
     );

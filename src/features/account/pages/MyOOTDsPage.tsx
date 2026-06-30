@@ -2,11 +2,13 @@ import { Link } from 'react-router';
 import { Heart, MessageCircle, Plus, Camera, Grid3X3 } from 'lucide-react';
 import { AccountLayout } from '@/shared/components/AccountLayout';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
-import { ootdPosts, currentUser } from '@/shared/data/accountMockData';
+import { ootdPosts } from '@/shared/data/accountMockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
+import { useAuth } from '@/shared/contexts/AuthContext';
 
 export function MyOOTDsPage() {
-  const myPosts = ootdPosts.filter(p => p.user.id === currentUser.id);
+  const { user } = useAuth();
+  const myPosts = ootdPosts.filter(p => p.user.id === user?.id);
   const { v } = useLanguage();
 
   return (

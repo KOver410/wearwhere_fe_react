@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { AccountLayout } from '@/shared/components/AccountLayout';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
-import { currentUser, ootdPosts } from '@/shared/data/accountMockData';
+import { ootdPosts } from '@/shared/data/accountMockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { useAuth } from '@/shared/contexts/AuthContext';
 import { updateProfile } from '@/features/auth/api/authApi';
@@ -28,7 +28,7 @@ export function ProfilePage() {
   } = useForm<ProfileFormValues>({
     defaultValues: { name: user?.name ?? '', bio: user?.bio ?? '' },
   });
-  const myPosts = ootdPosts.filter(p => p.user.id === currentUser.id);
+  const myPosts = ootdPosts.filter(p => p.user.id === user?.id);
 
   // Mock tagged products count
   const taggedProductsCount = myPosts.reduce((sum, p) => sum + p.products.length, 0);
@@ -78,8 +78,8 @@ export function ProfilePage() {
           {/* Avatar */}
           <div className="flex-shrink-0">
             <ImageWithFallback
-              src={currentUser.avatar}
-              alt={currentUser.fullName}
+              src={user?.avatar_url ?? undefined}
+              alt={user?.name ?? ''}
               className="w-24 h-24 sm:w-[120px] sm:h-[120px] rounded-full object-cover"
               style={{ border: '3px solid #e0d8cf' } as any}
             />
@@ -96,7 +96,7 @@ export function ProfilePage() {
                 color: '#0d0d0d',
                 lineHeight: 1.2,
               }}>
-                {currentUser.username}
+                {user?.name}
               </h1>
               <button
                 onClick={openEditor}
@@ -156,18 +156,6 @@ export function ProfilePage() {
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Follower / Following stats */}
-            <div className="flex items-center gap-1 flex-wrap" style={{ fontSize: '14px', color: '#0d0d0d', fontFamily: "'Montserrat', sans-serif" }}>
-              <span>
-                <span style={{ fontWeight: 700 }}>{currentUser.followers.toLocaleString()}</span>
-                <span style={{ color: '#666', marginLeft: '4px' }}>{v('followers', 'người theo dõi')}</span>
-              </span>
-              <span style={{ color: '#ccc', margin: '0 8px' }}>·</span>
-              <span>
-                {v('Following', 'Theo dõi là')} <span style={{ fontWeight: 700 }}>{currentUser.following}</span>
-              </span>
             </div>
 
             {/* Bio */}
@@ -398,8 +386,8 @@ export function ProfilePage() {
                 <div className="flex items-center gap-5">
                   <div className="relative">
                     <ImageWithFallback
-                      src={currentUser.avatar}
-                      alt={currentUser.fullName}
+                      src={user?.avatar_url ?? undefined}
+                      alt={user?.name ?? ''}
                       className="w-20 h-20 rounded-full object-cover"
                       style={{ border: '3px solid #e0d8cf' } as any}
                     />
