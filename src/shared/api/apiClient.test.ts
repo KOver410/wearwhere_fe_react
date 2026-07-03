@@ -114,6 +114,22 @@ describe('apiRequest', () => {
     expect(requestHeaders(fetchMock).get('X-Request-ID')).toBe('request-1')
   })
 
+  it('passes a FormData body through untouched and does not force a JSON content type', async () => {
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true }))
+    const { apiRequest } = await import('./apiClient')
+
+    const form = new FormData()
+    form.append('caption', 'hello')
+
+    await apiRequest('/ootd', { method: 'POST', body: form })
+
+    const init = fetchMock.mock.calls[0]?.[1] as RequestInit
+    expect(init.body).toBe(form)
+    // The browser must set multipart/form-data (with boundary), so the client
+    // must not override Content-Type with application/json.
+    expect(requestHeaders(fetchMock).get('Content-Type')).not.toBe('application/json')
+  })
+
   it('adds the stored access token as a bearer header', async () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(oldTokens))
     fetchMock.mockResolvedValue(jsonResponse({ ok: true }))

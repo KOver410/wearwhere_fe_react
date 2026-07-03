@@ -299,9 +299,15 @@ async function performRequest<T>(
 
   let serializedBody: BodyInit | undefined
   if (body !== undefined) {
-    serializedBody = JSON.stringify(body)
-    if (!headers.has('Content-Type')) {
-      headers.set('Content-Type', 'application/json')
+    if (body instanceof FormData) {
+      // Leave FormData untouched and let the browser set the
+      // multipart/form-data Content-Type (with the boundary).
+      serializedBody = body
+    } else {
+      serializedBody = JSON.stringify(body)
+      if (!headers.has('Content-Type')) {
+        headers.set('Content-Type', 'application/json')
+      }
     }
   }
 

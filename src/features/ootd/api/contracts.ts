@@ -33,6 +33,14 @@ export type OOTDPost = {
   created_at: string
 }
 
+/** A single comment on a post (CommentResponse). */
+export type OOTDComment = {
+  id: string
+  author_name: string
+  body: string
+  created_at: string
+}
+
 /** Pagination envelope (Pagination). */
 export type OOTDPagination = {
   page: number
@@ -44,6 +52,12 @@ export type OOTDPagination = {
 /** A paginated list of OOTD posts (`{ items, pagination }`). */
 export type OOTDFeed = {
   items: OOTDPost[]
+  pagination: OOTDPagination
+}
+
+/** A paginated list of comments (`{ items, pagination }`). */
+export type OOTDCommentList = {
+  items: OOTDComment[]
   pagination: OOTDPagination
 }
 
@@ -121,4 +135,48 @@ export function assertOOTDFeed(value: unknown): OOTDFeed {
     items: value.items.map(normalizePost),
     pagination: value.pagination,
   }
+}
+
+export function assertOOTDPost(value: unknown): OOTDPost {
+  if (!isOOTDPost(value)) {
+    throw invalidContractError('INVALID_OOTD_POST', 'Invalid OOTD post response')
+  }
+
+  return normalizePost(value)
+}
+
+export function isOOTDComment(value: unknown): value is OOTDComment {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    value.id.trim().length > 0 &&
+    typeof value.author_name === 'string' &&
+    typeof value.body === 'string' &&
+    typeof value.created_at === 'string'
+  )
+}
+
+export function assertOOTDCommentList(value: unknown): OOTDCommentList {
+  if (
+    !isRecord(value) ||
+    !Array.isArray(value.items) ||
+    !value.items.every(isOOTDComment) ||
+    !isOOTDPagination(value.pagination)
+  ) {
+    throw invalidContractError('INVALID_OOTD_COMMENTS', 'Invalid OOTD comments response')
+  }
+
+  return {
+    items: value.items as OOTDComment[],
+    pagination: value.pagination,
+  }
+}
+
+/** Narrow a `{ id }` creation envelope (Create/AddComment return `{ id }`). */
+export function assertCreatedId(value: unknown): { id: string } {
+  if (!isRecord(value) || typeof value.id !== 'string' || value.id.trim().length === 0) {
+    throw invalidContractError('INVALID_CREATED_RESPONSE', 'Invalid create response')
+  }
+
+  return { id: value.id }
 }
