@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
@@ -14,11 +16,14 @@ export default defineConfig({
     alias: {
       // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
-      // Resolve Figma Make asset imports to local assets
-      'figma:asset': path.resolve(__dirname, './src/assets'),
     },
   },
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    clearMocks: true,
+  },
 })
