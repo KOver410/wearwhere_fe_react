@@ -82,12 +82,18 @@ export function OrderSuccessPage() {
   }
 
   // A redirect back from PayOS can land here even when the payment was not
-  // actually completed (user cancelled, card declined, window expired). In that
-  // case the order exists but is unpaid, so we must NOT show a confirmation.
+  // actually completed (user cancelled, card declined, window expired, or the
+  // confirmation webhook simply hasn't landed yet). In all those cases the order
+  // exists but is unpaid, so we must NOT show a confirmation. A PayOS order that
+  // is still `pending` is the most common instance of this — the redirect back
+  // routinely arrives before the webhook flips the status. COD orders, by
+  // contrast, are legitimately `pending` (paid on delivery), so they stay
+  // confirmed.
   const paymentFailed =
     order.payment_status === 'failed' ||
     order.payment_status === 'cancelled' ||
-    order.payment_status === 'expired';
+    order.payment_status === 'expired' ||
+    (order.payment_method === 'payos' && order.payment_status === 'pending');
 
   if (paymentFailed) {
     return (

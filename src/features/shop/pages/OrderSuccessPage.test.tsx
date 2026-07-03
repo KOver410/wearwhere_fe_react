@@ -93,7 +93,7 @@ describe('OrderSuccessPage payment status', () => {
     expect(await screen.findByText(/order confirmed/i)).toBeInTheDocument()
   })
 
-  it.each(['cancelled', 'failed', 'expired'] as PaymentStatus[])(
+  it.each(['pending', 'cancelled', 'failed', 'expired'] as PaymentStatus[])(
     'does NOT show a false confirmation when a PayOS payment is %s',
     async (status) => {
       getOrderMock.mockResolvedValue(
