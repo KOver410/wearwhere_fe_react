@@ -107,4 +107,18 @@ describe('OrderSuccessPage payment status', () => {
       expect(await screen.findByText(/payment not completed/i)).toBeInTheDocument()
     },
   )
+
+  it('offers a working recovery path (shop, not the emptied cart) when payment failed', async () => {
+    getOrderMock.mockResolvedValue(
+      makeOrder({ payment_method: 'payos' as PaymentMethod, payment_status: 'failed' as PaymentStatus }),
+    )
+    renderPage()
+
+    // The cart is cleared at placement, so recovery is "continue shopping" (-> /shop),
+    // never a dead-end retry into the emptied cart.
+    const shopLink = await screen.findByRole('link', { name: /continue shopping/i })
+    expect(shopLink).toHaveAttribute('href', '/shop')
+    expect(screen.queryByRole('link', { name: /try again/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /^cart$/i })).not.toBeInTheDocument()
+  })
 })

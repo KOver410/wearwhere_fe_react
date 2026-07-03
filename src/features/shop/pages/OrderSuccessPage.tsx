@@ -115,13 +115,16 @@ export function OrderSuccessPage() {
             <span style={{ fontSize: '13px', color: '#888' }}>{v('Order Number:', 'Mã đơn hàng:')}</span>
             <span style={{ fontSize: '13px', fontWeight: 600, color: '#0d0d0d' }}>{order.order_no}</span>
           </div>
+          {/* The cart is cleared server-side at placement, so there is nothing to
+              "retry" there; the unpaid order can be managed (or cancelled) from
+              its detail page, and a fresh purchase starts from the shop. */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Link
-              to="/cart"
+              to="/shop"
               className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#0d0d0d] text-white hover:bg-[#d41c1c] transition-colors"
               style={{ borderRadius: '10px', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: "'Oswald', sans-serif" }}
             >
-              {v('Try Again', 'Thử lại')}
+              {v('Continue Shopping', 'Tiếp tục mua sắm')}
             </Link>
             <Link
               to={`/account/orders/${order.order_no}`}
