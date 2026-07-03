@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Camera, Save, X, Plus, Heart, Eye, MoreHorizontal, Tag } from 'lucide-react';
+import { Camera, Save, X, Plus, Heart, MoreHorizontal, Tag } from 'lucide-react';
 import { Link } from 'react-router';
 import { toast } from 'sonner';
 import { AccountLayout } from '@/shared/components/AccountLayout';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
-import { ootdPosts } from '@/shared/data/accountMockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { useAuth } from '@/shared/contexts/AuthContext';
+import { useUserOOTD } from '@/features/ootd/hooks/useUserOOTD';
 import { updateProfile } from '@/features/auth/api/authApi';
 import { ApiError } from '@/shared/api/contracts';
 
@@ -28,13 +28,10 @@ export function ProfilePage() {
   } = useForm<ProfileFormValues>({
     defaultValues: { name: user?.name ?? '', bio: user?.bio ?? '' },
   });
-  const myPosts = ootdPosts.filter(p => p.user.id === user?.id);
+  const { posts: myPosts, loading: postsLoading, error: postsError } = useUserOOTD(user?.id);
 
-  // Mock tagged products count
-  const taggedProductsCount = myPosts.reduce((sum, p) => sum + p.products.length, 0);
-
-  // Mock view counts for posts
-  const viewCounts = [52000, 32000, 26000, 56000, 18000, 41000, 9500, 23000];
+  // Products tagged across the user's posts (from the backend post `tags`).
+  const taggedProductsCount = myPosts.reduce((sum, p) => sum + p.tags.length, 0);
 
   const openEditor = () => {
     reset({ name: user?.name ?? '', bio: user?.bio ?? '' });
@@ -63,11 +60,6 @@ export function ProfilePage() {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const formatViewCount = (count: number) => {
-    if (count >= 1000) return `${(count / 1000).toFixed(0).replace(/\.0$/, '')} nghìn`;
-    return count.toString();
   };
 
   return (
@@ -207,7 +199,15 @@ export function ProfilePage() {
         </div>
 
         {/* Tab Content */}
-        {activeTab === 'posts' ? (
+        {postsLoading ? (
+          <div className="pt-4 text-center py-16" style={{ backgroundColor: '#fefcfa', borderRadius: '10px', border: '2px dashed #e0d8cf' }} data-testid="ootd-loading">
+            <p style={{ fontSize: '14px', color: '#888' }}>{v('Loading posts...', 'Đang tải bài viết...')}</p>
+          </div>
+        ) : postsError ? (
+          <div className="pt-4 text-center py-16" style={{ backgroundColor: '#fefcfa', borderRadius: '10px', border: '2px dashed #e0d8cf' }}>
+            <p style={{ fontSize: '14px', color: '#d41c1c' }}>{v('Could not load posts. Please try again.', 'Không thể tải bài viết. Vui lòng thử lại.')}</p>
+          </div>
+        ) : activeTab === 'posts' ? (
           <div className="pt-4">
             {myPosts.length === 0 ? (
               <div className="text-center py-16" style={{ backgroundColor: '#fefcfa', borderRadius: '10px', border: '2px dashed #e0d8cf' }}>
@@ -259,46 +259,18 @@ export function ProfilePage() {
                         }}
                       >
                         <ImageWithFallback
-                          src={post.image}
-                          alt={post.caption}
+                          src={post.photo_urls[0] ?? ''}
+                          alt={post.caption ?? ''}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
-                        {/* Video play icon for some posts (like KREAM) */}
-                        {index % 3 === 1 && (
-                          <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-black/50 flex items-center justify-center">
-                            <div className="w-0 h-0 border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[7px] border-l-white ml-0.5" />
-                          </div>
-                        )}
-                        {/* View count overlay — bottom left */}
-                        <div className="absolute bottom-2 left-2 flex items-center gap-1 px-2 py-0.5" style={{ backgroundColor: 'rgba(0,0,0,0.5)', borderRadius: '4px' }}>
-                          <Eye className="w-3 h-3 text-white" />
-                          <span style={{ fontSize: '11px', color: '#fff', fontWeight: 600, fontFamily: "'Montserrat', sans-serif" }}>
-                            {formatViewCount(viewCounts[index % viewCounts.length])}
-                          </span>
-                        </div>
                       </div>
 
-                      {/* User info + Like count below card — KREAM style */}
-                      <div className="flex items-center justify-between mt-2.5 px-0.5">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <ImageWithFallback
-                            src={post.user.avatar}
-                            alt={post.user.username}
-                            className="w-6 h-6 rounded-full object-cover flex-shrink-0"
-                          />
-                          <span className="truncate" style={{
-                            fontSize: '13px',
-                            color: '#0d0d0d',
-                            fontWeight: 500,
-                            fontFamily: "'Montserrat', sans-serif",
-                          }}>
-                            {post.user.username}
-                          </span>
-                        </div>
+                      {/* Like count below card — KREAM style */}
+                      <div className="flex items-center justify-end mt-2.5 px-0.5">
                         <div className="flex items-center gap-1 flex-shrink-0">
                           <Heart className="w-3.5 h-3.5" style={{ color: '#ccc' }} />
                           <span style={{ fontSize: '13px', color: '#888', fontFamily: "'Montserrat', sans-serif" }}>
-                            {post.likes}
+                            {post.like_count}
                           </span>
                         </div>
                       </div>
@@ -322,35 +294,19 @@ export function ProfilePage() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                 {myPosts.flatMap(post =>
-                  post.products.map(product => (
+                  post.tags.map(tag => (
                     <Link
-                      key={`${post.id}-${product.id}`}
-                      to={`/product/${product.id}`}
-                      className="group block"
+                      key={`${post.id}-${tag.product_id}`}
+                      to={`/product/${tag.slug}`}
+                      className="group flex items-center gap-2 p-4 bg-white transition-colors hover:border-[#d41c1c]"
+                      style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }}
                     >
-                      <div
-                        className="relative overflow-hidden"
-                        style={{ borderRadius: '4px', backgroundColor: '#f3f0eb', aspectRatio: '1/1' }}
-                      >
-                        <ImageWithFallback
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="mt-2 px-0.5">
-                        <p style={{ fontSize: '11px', color: '#888', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: "'Montserrat', sans-serif" }}>
-                          {product.brand}
-                        </p>
-                        <p className="truncate" style={{ fontSize: '13px', color: '#0d0d0d', fontWeight: 500, marginTop: '2px', fontFamily: "'Montserrat', sans-serif" }}>
-                          {product.name}
-                        </p>
-                        <p style={{ fontSize: '14px', color: '#0d0d0d', fontWeight: 700, marginTop: '4px', fontFamily: "'Montserrat', sans-serif" }}>
-                          ${product.price}
-                        </p>
-                      </div>
+                      <Tag className="w-4 h-4 flex-shrink-0" style={{ color: '#d41c1c' }} />
+                      <span className="truncate" style={{ fontSize: '13px', color: '#0d0d0d', fontWeight: 600, fontFamily: "'Montserrat', sans-serif" }}>
+                        {tag.name}
+                      </span>
                     </Link>
                   ))
                 )}

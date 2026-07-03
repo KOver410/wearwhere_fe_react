@@ -2,14 +2,17 @@ import { Link } from 'react-router';
 import { Heart, MessageCircle, Plus, Camera, Grid3X3 } from 'lucide-react';
 import { AccountLayout } from '@/shared/components/AccountLayout';
 import { ImageWithFallback } from '@/shared/components/figma/ImageWithFallback';
-import { ootdPosts } from '@/shared/data/accountMockData';
 import { useLanguage } from '@/shared/i18n/LanguageContext';
 import { useAuth } from '@/shared/contexts/AuthContext';
+import { useUserOOTD } from '@/features/ootd/hooks/useUserOOTD';
 
 export function MyOOTDsPage() {
   const { user } = useAuth();
-  const myPosts = ootdPosts.filter(p => p.user.id === user?.id);
+  const { posts: myPosts, loading, error } = useUserOOTD(user?.id);
   const { v } = useLanguage();
+
+  const totalLikes = myPosts.reduce((sum, p) => sum + p.like_count, 0);
+  const totalComments = myPosts.reduce((sum, p) => sum + p.comment_count, 0);
 
   return (
     <AccountLayout>
@@ -32,8 +35,8 @@ export function MyOOTDsPage() {
         <div className="grid grid-cols-3 gap-4">
           {[
             { label: v('Posts', 'Bài viết'), value: myPosts.length, icon: Grid3X3 },
-            { label: v('Total Likes', 'Tổng lượt thích'), value: myPosts.reduce((sum, p) => sum + p.likes, 0), icon: Heart },
-            { label: v('Comments', 'Bình luận'), value: myPosts.reduce((sum, p) => sum + p.comments.length, 0), icon: MessageCircle },
+            { label: v('Total Likes', 'Tổng lượt thích'), value: totalLikes, icon: Heart },
+            { label: v('Comments', 'Bình luận'), value: totalComments, icon: MessageCircle },
           ].map(stat => (
             <div key={stat.label} className="bg-white p-4 text-center" style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }}>
               <stat.icon className="w-5 h-5 mx-auto mb-2" style={{ color: '#e2b93b' }} />
@@ -43,7 +46,15 @@ export function MyOOTDsPage() {
           ))}
         </div>
 
-        {myPosts.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16 bg-white" style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }} data-testid="ootd-loading">
+            <p style={{ fontSize: '14px', color: '#888' }}>{v('Loading your OOTDs...', 'Đang tải OOTD của bạn...')}</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-16 bg-white" style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }}>
+            <p style={{ fontSize: '14px', color: '#d41c1c' }}>{v('Could not load your OOTDs. Please try again.', 'Không thể tải OOTD của bạn. Vui lòng thử lại.')}</p>
+          </div>
+        ) : myPosts.length === 0 ? (
           <div className="text-center py-16 bg-white" style={{ borderRadius: '10px', border: '2px solid #e0d8cf' }}>
             <Camera className="w-16 h-16 mx-auto text-[#e0d8cf] mb-4" />
             <p style={{ fontSize: '18px', fontFamily: "'Oswald', sans-serif", fontWeight: 700, color: '#0d0d0d', textTransform: 'uppercase', marginBottom: '8px' }}>{v('No OOTDs yet', 'Chưa có OOTD')}</p>
@@ -56,22 +67,19 @@ export function MyOOTDsPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {myPosts.map(post => (
               <Link key={post.id} to={`/ootd/${post.id}`} className="group relative overflow-hidden aspect-square" style={{ borderRadius: '4px', backgroundColor: '#f3f0eb' }}>
-                <ImageWithFallback src={post.image} alt={post.caption} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                <ImageWithFallback src={post.photo_urls[0] ?? ''} alt={post.caption ?? ''} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex items-center gap-4 text-white">
                     <div className="flex items-center gap-1.5">
                       <Heart className="w-5 h-5 fill-white" />
-                      <span style={{ fontSize: '14px', fontWeight: 600 }}>{post.likes}</span>
+                      <span style={{ fontSize: '14px', fontWeight: 600 }}>{post.like_count}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <MessageCircle className="w-5 h-5 fill-white" />
-                      <span style={{ fontSize: '14px', fontWeight: 600 }}>{post.comments.length}</span>
+                      <span style={{ fontSize: '14px', fontWeight: 600 }}>{post.comment_count}</span>
                     </div>
                   </div>
                 </div>
-                <span className="absolute bottom-3 left-3 px-2.5 py-1 text-white capitalize" style={{ fontSize: '11px', fontWeight: 600, borderRadius: '4px', backgroundColor: 'rgba(212,28,28,0.8)', letterSpacing: '0.05em', fontFamily: "'Oswald', sans-serif" }}>
-                  {post.style}
-                </span>
               </Link>
             ))}
           </div>
